@@ -20,7 +20,9 @@ exports.index = function(req, res)
     res.render(
         'index',
         {
-            title: 'Express JS Demo'
+            title: 'Express JS Demo',
+            FB_APP_ID: '397068970352801',
+            domain: '127.0.0.1:3000'
         }
     );
 };

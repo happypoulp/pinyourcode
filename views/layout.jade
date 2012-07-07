@@ -14,14 +14,14 @@ html.no-js(lang='en')
     title
     meta(name='description', content='')
     meta(name='viewport', content='width=device-width')
-    link(rel='stylesheet', href='stylesheets/style.css')
-    //-script(src='javascripts/libs/modernizr-2.5.3.min.js')
+    link(rel='stylesheet', href='css/style.css')
+    //-script(src='js/libs/modernizr-2.5.3.min.js')
   body!=body
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
     script
-      window.jQuery || document.write('<script src="javascripts/libs/jquery-1.7.2.min.js"><\\/script>')
-    script(src='javascripts/plugins.js')
-    script(src='javascripts/script.js')
+      window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\\/script>')
+    script(src='js/plugins.js')
+    script(src='js/script.js')
     //- change UA-XXXXX-X to your id and outdent the following:
     //-
       script
@@ -29,3 +29,25 @@ html.no-js(lang='en')
         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
         g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
         s.parentNode.insertBefore(g,s)}(document,'script'));
+    div#fb-root
+    script
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '#{FB_APP_ID}', // App ID
+          channelUrl : '//#{domain}/channel.html', // Channel File
+          status     : true, // check login status
+          cookie     : true, // enable cookies to allow the server to access the session
+          xfbml      : true  // parse XFBML
+        });
+
+        // Additional initialization code here
+      };
+
+      // Load the SDK Asynchronously
+      (function(d){
+         var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement('script'); js.id = id; js.async = true;
+         js.src = "//connect.facebook.net/en_US/all.js";
+         ref.parentNode.insertBefore(js, ref);
+       }(document));

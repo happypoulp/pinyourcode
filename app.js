@@ -23,6 +23,7 @@ app.configure(function(){
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
   db = require('mongoskin').db('localhost:27017/friends');
+  app.set('view options', { pretty: true });
 });
 
 app.configure('production', function(){

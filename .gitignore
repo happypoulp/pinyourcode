@@ -1,1 +1,8 @@
+# Temp files
+*.swp
+
+# Node files
 node_modules
+
+# IDE files
+*.iml

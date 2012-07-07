@@ -28,7 +28,7 @@ app.configure('development', function(){
 
 app.configure('production', function(){
   app.use(express.errorHandler());
-  // db = require('mongoskin').db('localhost:37751/friends');
+  db = require('mongoskin').db(process.env.MONGOLAB_URI);
 });
 
 // Routes

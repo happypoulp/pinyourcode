@@ -22,10 +22,12 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  db = require('mongoskin').db('localhost:27017/friends');
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler());
+  // db = require('mongoskin').db('localhost:37751/friends');
 });
 
 // Routes

@@ -30,6 +30,7 @@ html.no-js(lang='en')
         g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
         s.parentNode.insertBefore(g,s)}(document,'script'));
     div#fb-root
+    div#profile_pics
     script
       window.fbAsyncInit = function() {
         FB.init({
@@ -40,16 +41,45 @@ html.no-js(lang='en')
           xfbml      : true  // parse XFBML
         });
 
-        FB.login(function(response) {
-          if (response.authResponse) {
-            console.log('Welcome!  Fetching your information.... ');
-            FB.api('/me', function(response) {
-              console.log('Good to see you, ' + response.name + '.');
-            });
-          } else {
-            console.log('User cancelled login or did not fully authorize.');
+        //- FB.login(function(response) {
+        //-   if (response.authResponse) {
+        //-     console.log('Welcome!  Fetching your information.... ');
+        //-     FB.api('/me', function(response) {
+        //-       console.log('Good to see you, ' + response.name + '.');
+        //-     });
+
+        //-   } else {
+        //-     console.log('User cancelled login or did not fully authorize.');
+        //-   }
+        //- });
+        var profilePicsDiv = document.getElementById('profile_pics');
+
+        FB.getLoginStatus(function(response) {
+          if (response.status != 'connected') {
+            profilePicsDiv.innerHTML = '<em>You are not connected</em>';
+            return;
           }
+
+          FB.api({ method: 'friends.get' }, function(result) {
+            Log.info('friends.get response', result);
+        console.log(result);
+            var markup = '';
+            var numFriends = result ? Math.min(5, result.length) : 0;
+            if (numFriends > 0) {
+              for (var i=0; i<numFriends; i++) {
+                markup += (
+                  '<fb:profile-pic size="square" ' +
+                                  'uid="' + result[i] + '" ' +
+                                  'facebook-logo="true"' +
+                  '></fb:profile-pic>'
+                );
+              }
+            }
+            profilePicsDiv.innerHTML = markup;
+            FB.XFBML.parse(profilePicsDiv);
+          });
         });
+
       };
 
       // Load the SDK Asynchronously

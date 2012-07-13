@@ -1,7 +1,6 @@
-h1= title
-p Welcome to #{title}
+extends layout
 
-if (locals.prout)
-  toto
-
-#toto.titi(data-id=35) hopla
+block content
+  h1= title
+  p Welcome to #{title}
+  div#profile_pics

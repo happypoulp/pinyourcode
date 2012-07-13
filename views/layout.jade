@@ -15,13 +15,19 @@ html.no-js(lang='en')
     meta(name='description', content='')
     meta(name='viewport', content='width=device-width')
     link(rel='stylesheet', href='css/style.css')
-    //-script(src='js/libs/modernizr-2.5.3.min.js')
-  body!=body
-    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
+  body
+    div#fb-root
     script
+      window.fbAsyncInit = function()
+      {
+        setTimeout(function(){initFB("#{FB_APP_ID}", "#{domain}");}, 1000); // NOOOOOOOOOOOOOO!!!!
+      }
+    block content
+    //- script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
+    //- script
       window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\\/script>')
-    script(src='js/plugins.js')
-    script(src='js/script.js')
+    //- script(src='js/plugins.js')
+    //- script(src='js/init.js')
     //- change UA-XXXXX-X to your id and outdent the following:
     //-
       script
@@ -29,65 +35,5 @@ html.no-js(lang='en')
         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
         g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
         s.parentNode.insertBefore(g,s)}(document,'script'));
-    div#fb-root
-    div#profile_pics
-    script
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '#{FB_APP_ID}', // App ID
-          channelUrl : '//#{domain}/channel.html', // Channel File
-          status     : true, // check login status
-          cookie     : true, // enable cookies to allow the server to access the session
-          xfbml      : false  // parse XFBML
-        });
+    
 
-        var profilePicsDiv = document.getElementById('profile_pics');
-
-        FB.getLoginStatus(function(response) {
-          console.log(response);
-          if (response.status != 'connected') {
-            profilePicsDiv.innerHTML = '<em>You are not connected</em><div class="fb-login-button" data-show-faces="false" data-width="200" data-max-rows="1"></div>';
-            //- FB.login(function(response) {
-            //-   if (response.authResponse) {
-            //-     console.log('Welcome!  Fetching your information.... ');
-            //-     FB.api('/me', function(response) {
-            //-       console.log('Good to see you, ' + response.name + '.');
-            //-     });
-
-            //-   } else {
-            //-     console.log('User cancelled login or did not fully authorize.');
-            //-   }
-            //- });
-            FB.XFBML.parse(profilePicsDiv);
-            return;
-          }
-
-          FB.api({ method: 'friends.get' }, function(result) {
-            console.log('friends.get response', result);
-            var markup = '';
-            var numFriends = result ? Math.min(500, result.length) : 0;
-            if (numFriends > 0) {
-              for (var i=0; i<numFriends; i++) {
-                markup += (
-                  '<fb:profile-pic size="square" ' +
-                                  'uid="' + result[i] + '" ' +
-                                  'facebook-logo="true"' +
-                  '></fb:profile-pic>'
-                );
-              }
-            }
-            profilePicsDiv.innerHTML = markup;
-            FB.XFBML.parse(profilePicsDiv);
-          });
-        });
-
-      };
-
-      // Load the SDK Asynchronously
-      (function(d){
-         var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement('script'); js.id = id; js.async = true;
-         js.src = "//connect.facebook.net/en_US/all.js";
-         ref.parentNode.insertBefore(js, ref);
-       }(document));

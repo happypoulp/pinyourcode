@@ -4,7 +4,8 @@
  */
 
 var express = require('express')
-  , routes = require('./routes');
+  , routes = require('./routes')
+  , facebookSession = require('./middlewares/facebook-session.js') ;
 
 var app = module.exports = express.createServer();
 
@@ -16,6 +17,11 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.methodOverride());
+  app.use(facebookSession.parseCookie({
+      app_id: process.env.FACEBOOK_APP_ID,
+      secret: process.env.FACEBOOK_SECRET
+    })
+  );
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });

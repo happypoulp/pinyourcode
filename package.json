@@ -1,15 +1,15 @@
 {
-    "name": "pinyourcode"
-  , "version": "0.0.1"
-  , "private": true
-  , "dependencies": {
-      "express": "2.5.11"
-    , "jade": ">= 0.0.1"
-    , "mongoskin": "latest"
-  },
-  "engines":
-  {
-    "node": "0.8.x",
-    "npm": "1.1.9"
-  }
+    "name":"pinyourcode",
+    "version":"0.0.1",
+    "private":true,
+    "dependencies":{
+        "express":"2.5.11",
+        "jade":">= 0.0.1",
+        "mongoskin":"latest",
+        "b64url":  "1.0.3"
+    },
+    "engines":{
+        "node":"0.8.x",
+        "npm":"1.1.9"
+    }
 }

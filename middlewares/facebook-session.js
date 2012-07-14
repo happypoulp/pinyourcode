@@ -23,7 +23,7 @@ var FacebookSession = function (options) {
 
   this.check = function (req, res, next) {
     if ( !req.authenticated ) {
-      res.send('Not authenticated', 401);
+      res.send("{ 'error' : 'Not authenticated' }", 401);
     } else {
       next();
     }

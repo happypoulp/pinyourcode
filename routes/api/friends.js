@@ -22,11 +22,11 @@ module.exports = function (app) {
       if ( err ) {
         res.json(err, 400);
       } else {
-        db.collection('friends').insert(friend, function (err, friend) {
+        db.collection('friends').insert(friend, function (err, result) {
           if ( err ) {
             res.json(err, 500);
           } else {
-            res.json(friend, 201);
+            res.json(result[0], 201);
           }
         });
       }
@@ -49,7 +49,38 @@ module.exports = function (app) {
   });
 
   app.put('/friends/:fb_id', api.check, function (req, res) {
-    throw "NotImplementedYet : Lazy developer"
+    friend_builder.build(req.facebook.user_id, req.body, function (err, friend) {
+      if ( err ) {
+        res.json(err, 400);
+      } else {
+        db.collection('friends').update(
+          {
+            user_id : req.facebook.user_id,
+            fb_id : req.params.fb_id
+          },
+          {
+            $set : {extensions : friend.extensions}
+          }, function (err, result) {
+            if ( err ) {
+              res.json(err, 500);
+            } else {
+              // We retrieve the updated friend
+              db.collection('friends').findOne(
+                {
+                  user_id : req.facebook.user_id,
+                  fb_id : req.params.fb_id
+                },
+                function (err, friend) {
+                  if ( err ) {
+                    res.json(err, 500);
+                  } else {
+                    res.json(friend);
+                  }
+                })
+            }
+          });
+      }
+    });
   });
 
   app.delete('/friends/:fb_id', api.check, function (req, res) {

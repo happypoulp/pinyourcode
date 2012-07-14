@@ -1,5 +1,5 @@
-var b64url = require('b64url');
-var crypto = require('crypto');
+var b64url = require('b64url'),
+  crypto = require('crypto');
 
 var FacebookSession = function (options) {
 
@@ -17,6 +17,14 @@ var FacebookSession = function (options) {
           req.authenticated = true;
         }
       }
+      next();
+    }
+  }
+
+  this.check = function (req, res, next) {
+    if ( !req.authenticated ) {
+      res.send('Not authenticated', 401);
+    } else {
       next();
     }
   }
@@ -50,6 +58,12 @@ var FacebookSession = function (options) {
   }
 }
 
-module.exports.parseCookie = function (options) {
-  return new FacebookSession(options).middleware();
+module.exports = {
+  parseCookie : function (options) {
+    return new FacebookSession(options).middleware();
+  },
+  check : function (req, res, cb) {
+    return new FacebookSession().check(req, res, cb);
+  }
 }
+

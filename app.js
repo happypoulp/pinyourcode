@@ -18,8 +18,8 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(express.methodOverride());
   app.use(facebookSession.parseCookie({
-      app_id: process.env.FACEBOOK_APP_ID,
-      secret: process.env.FACEBOOK_SECRET
+      app_id: process.env.FACEBOOK_APP_ID || '397068970352801',
+      secret: process.env.FACEBOOK_SECRET || '6971160015d5c88ecc9d64cbbc4f8844'
     })
   );
   app.use(app.router);
@@ -28,8 +28,8 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  db = require('mongoskin').db('localhost:27017/friends');
   app.set('view options', { pretty: true });
+  db = require('mongoskin').db('localhost:27017/friends');
 });
 
 app.configure('production', function(){
@@ -39,7 +39,7 @@ app.configure('production', function(){
 
 // Routes
 app.get('/', routes.index);
-app.get('/zob', routes.zob);
+app.get('/auth', routes.auth);
 
 app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

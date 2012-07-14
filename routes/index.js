@@ -5,18 +5,6 @@
 
 exports.index = function(req, res)
 {
-    // var doc = {toto: 'toto value'};
-
-    // var coll = db.collection('test_insert');
-    // coll.insert(
-    //     doc,
-    //     function (err, collection)
-    //     {
-    //         console.log(err);
-    //         console.log(collection);
-    //     }
-    // );
-
     res.render(
         'index',
         {
@@ -27,12 +15,12 @@ exports.index = function(req, res)
     );
 };
 
-exports.zob = function(req, res)
+exports.auth = function(req, res)
 {
     res.render(
-        'zob',
+        'auth',
         {
-            title: 'Arrête de péter STP!!',
+            authenticated : req.authenticated,
             FB_APP_ID: '397068970352801',
             domain: '127.0.0.1:3000'
         }

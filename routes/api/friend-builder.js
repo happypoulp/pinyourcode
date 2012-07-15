@@ -29,7 +29,7 @@ FriendBuilder.prototype = {
         extensions : this.extensions
       });
     } else {
-      cb('Facebook id is mandatory', null);
+      cb('fb_id is mandatory', null);
     }
   }
 

@@ -1,21 +1,84 @@
-initFB = function(appID, domain)
+window.fbAsyncInit = function()
 {
-    console.log('window.fbAsyncInit');
     FB.init(
     {
-        appId      : appID, // App ID
-        channelUrl : '//' + domain + '/channel.html', // Channel File
-        status     : true, // check login status
+        appId      : window.FB_APP_ID, // App ID
+        channelUrl : '//' + window.FB_APP_DOMAIN + '/channel.html', // Channel File
+        status     : false, // check login status
         cookie     : true, // enable cookies to allow the server to access the session
         xfbml      : false  // parse XFBML
     });
 
+    console.log('FB initialized');
+
     var profilePicsDiv = document.getElementById('profile_pics');
 
-    FB.Event.subscribe('auth.statusChange', function(response)
+    var updateButton = function(response)
     {
-        console.log(response);
-        // do something with response
+        console.log('updateButton', response);
+        var button = document.getElementById('auth_button');
+        if (response.status === 'connected')
+        {
+            button.innerHTML = 'Logout';
+            button.onclick = function()
+            {
+                if (!window.statusChangeSubscribed)
+                {
+                    window.statusChangeSubscribed = true;
+                    FB.Event.subscribe(
+                        'auth.statusChange',
+                        function(response)
+                        {
+                            console.log('auth.statusChange');
+                            updateButton(response);
+                        }
+                    );
+                }
+                console.log('## Button Logout click');
+                FB.logout(function(response)
+                {
+                    console.log('FB.logout callback', response);
+                });
+            };
+        }
+        else
+        {
+            button.innerHTML = 'Login';
+            button.onclick = function()
+            {
+                console.log('## Button Login click');
+                FB.login(function(response)
+                {
+                    console.log('FB.login callback', response);
+                    if (response.status === 'connected')
+                    {
+                        console.log('User is logged in');
+                    }
+                    else
+                    {
+                        console.log('User is logged out');
+                    }
+                });
+            };
+        }
+    };
+
+    FB.getLoginStatus(function(response)
+    {
+        console.log('FB.getLoginStatus', response);
+        if (response.status == 'unknown')
+        {
+            console.log('login status unknown');
+            window.statusChangeSubscribed = true;
+            FB.Event.subscribe(
+                'auth.statusChange',
+                function(response)
+                {
+                    console.log('auth.statusChange');
+                    updateButton(response);
+                });
+        }
+        updateButton(response);
     });
 
     // FB.getLoginStatus(function(response)
@@ -62,20 +125,3 @@ initFB = function(appID, domain)
     // });
 };
 
-// Load the SDK Asynchronously
-(function(d){
-   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-   if (d.getElementById(id)) {return;}
-   js = d.createElement('script'); js.id = id; js.async = true;
-   js.src = "//connect.facebook.net/en_US/all.js";
-   ref.parentNode.insertBefore(js, ref);
- }(document));
-
-
-(function(a){
-    function b(){}
-    for(var c="assert,count,debug,dir,dirxml,error,exception,group,groupCollapsed,groupEnd,info,log,markTimeline,profile,profileEnd,time,timeEnd,trace,warn".split(","),d;!!(d=c.pop());)
-    {
-        a[d]=a[d]||b;
-    }
-})

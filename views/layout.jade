@@ -15,19 +15,17 @@ html.no-js(lang='en')
     meta(name='description', content='')
     meta(name='viewport', content='width=device-width')
     link(rel='stylesheet', href='css/style.css')
+    script
+      window.FB_APP_ID = "#{FB_APP_ID}";
+      window.FB_APP_DOMAIN = "#{FB_APP_DOMAIN}";
+    include includes/nj_head
   body
     div#fb-root
     script
-      window.fbAsyncInit = function()
-      {
-        setTimeout(function(){initFB("#{FB_APP_ID}", "#{domain}");}, 1000); // NOOOOOOOOOOOOOO!!!!
-      }
+      Nj.Runnable.runOrQueue(function() {
+        Nj.Modules.load('Main');
+      });
     block content
-    //- script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js')
-    //- script
-      window.jQuery || document.write('<script src="js/libs/jquery-1.7.2.min.js"><\\/script>')
-    //- script(src='js/plugins.js')
-    //- script(src='js/init.js')
     //- change UA-XXXXX-X to your id and outdent the following:
     //-
       script

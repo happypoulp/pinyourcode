@@ -72,13 +72,13 @@
             FB.Event.subscribe
             (
                 'auth.statusChange',
-                this.onFbStatusChange
+                $.proxy(this.onFbStatusChange, this)
             );
         },
-        onFbStatusChange: function(respoonse)
+        onFbStatusChange: function(response)
         {
             // console.log('auth.statusChange');
-            that.updateFbButton(response.status);
+            this.updateFbButton(response.status);
         },
         initFbSdk: function()
         {

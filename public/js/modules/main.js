@@ -7,26 +7,83 @@
             {
                 fb_button: function(handlerDatas)
                 {
-                    var button = handlerDatas.element;
-                    console.log(handlerDatas, button);
-                    console.log(this);
-                    // $(handlerDatas.element).append('<span class="green">#done click# </span>');
-                    return false;
-                },
-                done_no_prop: function(handlerDatas)
-                {
-                    // $(handlerDatas.element).append('<span class="green">#done_no_prop click# </span>');
+                    var button = $(handlerDatas.element),
+                        that = this;
+
+                    if (button.hasClass('logout'))
+                    {
+                        // console.log('## Button Logout click');
+                        FB.logout(function(response)
+                        {
+                            that.updateFbButton(response.status);
+                        });
+                    }
+                    else
+                    {
+                        // console.log('## Button Login click');
+                        FB.login(function(response)
+                        {
+                            // console.log('FB.login callback', response);
+                            that.updateFbButton(response.status);
+                        });
+                    }
+
                     return false;
                 }
             }
         },
-        updateFbButton: function(text)
+        getFbButton: function()
         {
-            var button = $('#auth_button').get(0);
-            button.innerHTML = text;
+            if (!this.fbButton)
+            {
+                this.fbButton = $('#auth_button');
+            }
+            return this.fbButton;
+        },
+        getFriendsContainer: function()
+        {
+            if (!this.friendsContainer)
+            {
+                this.friendsContainer = $('#profile_pics');
+            }
+            return this.friendsContainer;
+        },
+        updateFbButton: function(status)
+        {
+            var text = 'Login',
+                className = 'login';
+
+            if (status === 'connected')
+            {
+                text = 'Logout';
+                className = 'logout';
+            }
+
+            this.getFbButton().removeClass('login logout').addClass(className).html(text);
+        },
+        subscribeToStatusChange: function()
+        {
+            if (arguments.callee.done)
+            {
+                return;
+            }
+
+            arguments.callee.done = true;
+            FB.Event.subscribe
+            (
+                'auth.statusChange',
+                this.onFbStatusChange
+            );
+        },
+        onFbStatusChange: function(respoonse)
+        {
+            // console.log('auth.statusChange');
+            that.updateFbButton(response.status);
         },
         initFbSdk: function()
         {
+            var that = this;
+
             FB.init(
             {
                 appId      : window.FB_APP_ID, // App ID
@@ -36,121 +93,71 @@
                 xfbml      : false  // parse XFBML
             });
 
-            console.log('FB initialized');
+            // console.log('FB initialized');
 
             FB.getLoginStatus(function(response)
             {
-                console.log('FB.getLoginStatus', response);
+                // console.log('FB.getLoginStatus', response);
                 if (response.status == 'unknown')
                 {
-                    console.log('login status unknown');
-                    window.statusChangeSubscribed = true;
-                    FB.Event.subscribe(
-                        'auth.statusChange',
-                        function(response)
-                        {
-                            console.log('auth.statusChange');
-                            // updateButton(response);
-                        });
+                    // console.log('login status unknown');
+                    that.subscribeToStatusChange();
                 }
-                // updateButton(response);
+
+                that.updateFbButton(response.status);
+                that.buildFbFriendList();
             });
         },
+        conditionalCall: function(logged_callback, unlogged_callback)
+        {
+            FB.getLoginStatus(function(response)
+            {
+                if (response.status === 'connected')
+                {
+                    logged_callback();
+                }
+                else
+                {
+                    unlogged_callback();
+                }
+            });
+        },
+        printUnloggedMessage: function()
+        {
+            this.getFriendsContainer().html('<em>You are not connected</em>');
+        },
+        loadFbFriends: function()
+        {
+            var that = this;
 
-            // var profilePicsDiv = document.getElementById('profile_pics');
+            FB.api({ method: 'friends.get' }, function(result)
+                {
+                    console.log('friends.get response', result);
+                    var markup = '';
+                    var numFriends = result ? Math.min(500, result.length) : 0;
+                    if (numFriends > 0)
+                    {
+                        for (var i=0; i<numFriends; i++)
+                        {
+                            markup += (
+                                '<fb:profile-pic size="square" ' +
+                                'uid="' + result[i] + '" ' +
+                                'facebook-logo="true"' +
+                                '></fb:profile-pic>'
+                            );
+                        }
+                    }
 
-            // var updateButton = function(response)
-            // {
-            //     console.log('updateButton', response);
-            //     var button = document.getElementById('auth_button');
-            //     if (response.status === 'connected')
-            //     {
-            //         button.innerHTML = 'Logout';
-            //         button.onclick = function()
-            //         {
-            //             if (!window.statusChangeSubscribed)
-            //             {
-            //                 window.statusChangeSubscribed = true;
-            //                 FB.Event.subscribe(
-            //                     'auth.statusChange',
-            //                     function(response)
-            //                     {
-            //                         console.log('auth.statusChange');
-            //                         updateButton(response);
-            //                     }
-            //                 );
-            //             }
-            //             console.log('## Button Logout click');
-            //             FB.logout(function(response)
-            //             {
-            //                 console.log('FB.logout callback', response);
-            //             });
-            //         };
-            //     }
-            //     else
-            //     {
-            //         button.innerHTML = 'Login';
-            //         button.onclick = function()
-            //         {
-            //             console.log('## Button Login click');
-            //             FB.login(function(response)
-            //             {
-            //                 console.log('FB.login callback', response);
-            //                 if (response.status === 'connected')
-            //                 {
-            //                     console.log('User is logged in');
-            //                 }
-            //                 else
-            //                 {
-            //                     console.log('User is logged out');
-            //                 }
-            //             });
-            //         };
-            //     }
-            // };
+                    that.getFriendsContainer().html(markup);
 
-            // FB.getLoginStatus(function(response)
-            // {
-            //     console.log(response);
-            //     if (response.status != 'connected')
-            //     {
-            //         profilePicsDiv.innerHTML = '<em>You are not connected</em><div class="fb-login-button" data-show-faces="false" data-width="200" data-max-rows="1"></div>';
-            //         //- FB.login(function(response) {
-            //         //-   if (response.authResponse) {
-            //         //-     console.log('Welcome!  Fetching your information.... ');
-            //         //-     FB.api('/me', function(response) {
-            //         //-       console.log('Good to see you, ' + response.name + '.');
-            //         //-     });
-
-            //         //-   } else {
-            //         //-     console.log('User cancelled login or did not fully authorize.');
-            //         //-   }
-            //         //- });
-            //         FB.XFBML.parse(profilePicsDiv);
-            //         return;
-            //     }
-
-            //     FB.api({ method: 'friends.get' }, function(result)
-            //     {
-            //         console.log('friends.get response', result);
-            //         var markup = '';
-            //         var numFriends = result ? Math.min(500, result.length) : 0;
-            //         if (numFriends > 0)
-            //         {
-            //             for (var i=0; i<numFriends; i++)
-            //             {
-            //                 markup += (
-            //                     '<fb:profile-pic size="square" ' +
-            //                     'uid="' + result[i] + '" ' +
-            //                     'facebook-logo="true"' +
-            //                     '></fb:profile-pic>'
-            //                 );
-            //             }
-            //         }
-            //         profilePicsDiv.innerHTML = markup;
-            //         FB.XFBML.parse(profilePicsDiv);
-            //     });
-            // });
+                    FB.XFBML.parse(that.getFriendsContainer().get(0));
+                }
+            );
+        },
+        buildFbFriendList: function()
+        {
+            this.conditionalCall($.proxy(this.loadFbFriends, this), $.proxy(this.printUnloggedMessage, this));
+        },
         loadFbSdk: function()
         {
             window.fbAsyncInit = $.proxy(this.initFbSdk, this);
@@ -166,6 +173,7 @@
         init: function()
         {
             Nj.Modules.register(this);
+
             this.loadFbSdk();
         }
     }.init();

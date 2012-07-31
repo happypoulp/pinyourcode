@@ -134,13 +134,13 @@
                 {
                     console.log('friends.get response', result);
                     var markup = '';
-                    var numFriends = result ? Math.min(500, result.length) : 0;
+                    var numFriends = result ? result.length : 0;
                     if (numFriends > 0)
                     {
                         for (var i=0; i<numFriends; i++)
                         {
                             markup += (
-                                '<fb:profile-pic size="square" ' +
+                                '<fb:profile-pic size="normal" ' +
                                 'uid="' + result[i] + '" ' +
                                 'facebook-logo="true"' +
                                 '></fb:profile-pic>'

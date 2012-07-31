@@ -1,0 +1,124 @@
+script
+  (function(window){
+    var document = window.document,
+      // "Fake" Nj object to handle actions while "Real" Nj js are asynchronously loaded
+      Nj = {
+        initialized: false,
+        Runnable:
+        {
+          actions: [],
+          queue: function(action)
+          {
+            this.actions.push(action);
+          },
+          runOrQueue: function(fn)
+          {
+            if (Nj.initialized)
+            {
+              fn();
+            }
+            else
+            {
+              this.queue(fn);
+            }
+          },
+          unqueueAll: function ()
+          {
+            for (var i = 0, l = this.actions.length; i < l ; i++)
+            {
+              this.actions[i]();
+            }
+          }
+        },
+        Preload:
+        {
+          init: function()
+          {
+            var documentClick = function(e)
+            {
+              var ev = e || window.event,
+                evCancel = ev.preventDefault ? ev.preventDefault() : (ev.returnValue = false),
+                evStopProp = ev.stopPropagation ? ev.stopPropagation : (ev.cancelBubble = true);
+            };
+            if (document.addEventListener)
+            {
+              document.addEventListener('click', documentClick, false);
+              this.resetDefaultDocumentHandler = function()
+              {
+                document.removeEventListener('click', documentClick, false)
+              };
+            }
+            else if (document.attachEvent)
+            {
+              document.attachEvent('onclick', this.documentClick);
+              this.resetDefaultDocumentHandler = function()
+              {
+                element.detachEvent('onclick', this.documentClick);
+              };
+            }
+          },
+          end: function()
+          {
+            this.resetDefaultDocumentHandler();
+            Nj.Runnable.unqueueAll();
+          }
+        },
+        Envs:
+        {
+          all: {},
+          get: function(key, datas)
+          {
+            var value = this.all[key];
+
+            if (value && datas)
+            {
+              for (key in datas)
+              {
+                value = value.replace(new RegExp('{#' + key + '}'), datas[key]);
+              }
+            }
+
+            return value || '';
+          },
+          set: function(key, value)
+          {
+            this.all[key] = value;
+          }
+        }
+      };
+
+    Nj.Preload.init();
+    window.Nj = Nj;
+
+    /*DEV_CONFIG*/
+    // Now asynchronously load the real js lib
+    var head = document.getElementById('head') || document.documentElement,
+      baseUri = '/js',
+      sources = ['/libs/jquery-1.7.1.min.js', '/nj.js']; // Add our main js files : jQuery, jQuery extensions, Nj, ...
+
+    (function()
+    {
+      var e = document.createElement('script'),
+        args = arguments.callee;
+      e.type = 'text/javascript';
+      e.src = baseUri + sources[0];
+      e.async = true;
+      head.insertBefore(e, head.firstChild);
+      sources = sources.slice(1);
+      if (sources.length)
+      {
+        setTimeout(function(){args(sources);}, 100);
+      }
+    })();
+    /*END_DEV_CONFIG*/
+    /*PROD_CONFIG
+    var head = document.getElementById('head') || document.documentElement,
+      e = document.createElement('script');
+    e.type = 'text/javascript';
+    e.src = JS_MAIN_PACK_NAME;
+    e.async = true;
+    head.insertBefore(e, head.firstChild);
+    END_PROD_CONFIG*/
+  })(window);
+
+  Nj.Envs.set('modulesBaseURI', /*MODULES_BASE_URI*/'/js/modules/'/*END_MODULES_BASE_URI*/);

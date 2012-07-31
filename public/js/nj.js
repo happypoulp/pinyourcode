@@ -198,7 +198,7 @@
                 rememberElementForEvent: function(eventName, jElt)
                 {
                     // log('rememberElementForEvent', eventName, jElt);
-                    if (eventName == 'mousedown' && jElt.data('mousedown') && jElt.data('mouseup') && jElt.attr('data-followmouseup') == '' && !this.mouseDownEltId)
+                    if (eventName == 'mousedown' && jElt.attr('data-mousedown') && jElt.attr('data-mouseup') && jElt.attr('data-followmouseup') == '' && !this.mouseDownEltId)
                     {
                         this.mouseDownEltId = Nj.Utils.identify(jElt);
                         // log('Registered for mousedown', this.mouseDownEltId);
@@ -338,7 +338,7 @@
                     var elt = elt || (ev ? ev.target : null),
                         jElt = $(elt),
                         propagate = force_propagate === undefined ? true : force_propagate,
-                        data = jElt.data(eventName);
+                        data = jElt.attr('data-'+eventName);
                         // log('Search for data-' + eventName + ' in ', jElt);
 
                     // log('this.register_no_data_elements', this.register_no_data_elements);
@@ -471,7 +471,7 @@
                 {
                     var jElt = $(element),
                         jEltId = Nj.Utils.identify(jElt),
-                        data = jElt.data(eventName),
+                        data = jElt.attr('data-'+eventName),
                         parts = data.split('.'),
                         jsonData = {module: parts[0],name: parts[1]},
                         loadKey = jEltId + '_' + eventName + '_' + parts[1];

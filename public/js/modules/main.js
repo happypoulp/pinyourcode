@@ -7,6 +7,11 @@
             {
                 fb_button: function(handlerDatas)
                 {
+                    if (!this.FbInitialized)
+                    {
+                        return;
+                    }
+
                     var button = $(handlerDatas.element),
                         that = this;
 
@@ -27,6 +32,17 @@
                             that.updateFbButton(response.status);
                         });
                     }
+
+                    return false;
+                },
+                get_fb_friends: function(handlerDatas)
+                {
+                    if (!this.FbInitialized)
+                    {
+                        return;
+                    }
+
+                    this.buildFbFriendList();
 
                     return false;
                 }
@@ -93,6 +109,7 @@
                 xfbml      : false  // parse XFBML
             });
 
+            this.FbInitialized = true;
             // console.log('FB initialized');
 
             FB.getLoginStatus(function(response)
@@ -105,7 +122,6 @@
                 }
 
                 that.updateFbButton(response.status);
-                that.buildFbFriendList();
             });
         },
         conditionalCall: function(logged_callback, unlogged_callback)

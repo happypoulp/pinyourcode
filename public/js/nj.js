@@ -604,7 +604,8 @@
                                         $.parseJSON(result) : // Use this in text mode to debug malformed JSON result
                                         result;
 
-                                    if (result && result.success && datas.callback)
+                                    if (result && datas.callback)
+                                    // if (result && result.success && datas.callback)
                                     {
                                         if (typeof datas.callback.module == 'string')
                                         {

@@ -9,12 +9,18 @@ function FriendBuilder(user_id, body) {
 
 FriendBuilder.prototype = {
 
-  build : function (cb) {
-    if ( this.fb_id ) {
-      if ( this.body.extensions ) {
-        _.each(this.body.extensions, function (extension) {
-            if ( extension.name && extension.type ) {
-              this.extensions.push({
+  build : function (cb)
+  {
+    if ( this.fb_id )
+    {
+      if ( this.body.extensions )
+      {
+        _.each(this.body.extensions, function (extension)
+        {
+            if ( extension.name && extension.type )
+            {
+              this.extensions.push(
+              {
                 name : extension.name,
                 type : extension.type,
                 content : extension.content
@@ -23,12 +29,16 @@ FriendBuilder.prototype = {
           }
         ,this);
       }
+
       cb(null, {
-        user_id : this.user_id,
-        fb_id : this.fb_id,
-        extensions : this.extensions
-      });
-    } else {
+          user_id : this.user_id,
+          fb_id : this.fb_id,
+          extensions : this.extensions
+        }
+      );
+    }
+    else
+    {
       cb('fb_id is mandatory', null);
     }
   }

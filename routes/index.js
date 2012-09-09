@@ -2,7 +2,7 @@ var index = function (req, res) {
   res.render(
     'index',
     {
-      title : 'Express JS Demo',
+      title : 'So human',
       FB_APP_ID : '397068970352801',
       FB_APP_DOMAIN : 'localhost:3000'
     }

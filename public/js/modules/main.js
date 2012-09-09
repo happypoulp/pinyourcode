@@ -35,6 +35,19 @@
 
                     return false;
                 },
+                get_friends: function(handlerDatas)
+                {
+                    var that = this;
+
+                    Nj.Ajax.call({
+                        href: '/friends',
+                        method: 'get',
+                        callback: {
+                            module: that,
+                            method: 'getFriendsCallback'
+                        }
+                    });
+                },
                 get_fb_friends: function(handlerDatas)
                 {
                     if (!this.FbInitialized)
@@ -47,6 +60,26 @@
                     return false;
                 }
             }
+        },
+        getFriendsCallback: function(result, datas)
+        {
+            var friends_html = 'No friends yet';
+
+            if (result.length)
+            {
+                friends_html = '';
+            }
+            else
+            {
+                $('#add_friend_container').show();
+            }
+
+            for (var i = result.length - 1; i >= 0; i--)
+            {
+                friends_html += result[i];
+            }
+
+            $('#friends_list').html(friends_html);
         },
         getFbButton: function()
         {

@@ -1,4 +1,6 @@
 (function() {
+    var Connection = function(){};
+
     return {
         name: 'Main',
         handlers:
@@ -34,8 +36,8 @@
                     }
 
                     return false;
-                },
-                get_friends: function(handlerDatas)
+                }
+                ,get_friends: function(handlerDatas)
                 {
                     var that = this;
 
@@ -47,22 +49,73 @@
                             method: 'getFriendsCallback'
                         }
                     });
-                },
-                get_fb_friends: function(handlerDatas)
+                }
+                ,select_friend: function(handlerDatas)
                 {
-                    if (!this.FbInitialized)
+                    var el = $(handlerDatas.element),
+                        uid = el.data('uid'),
+                        input = el.find('input'),
+                        that = this,
+                        add_friend = true;
+
+                    if (input.attr('checked'))
                     {
-                        return;
+                        input.attr('checked', null);
+                        add_friend = false;
+                    }
+                    else
+                    {
+                        input.attr('checked', 'checked');
                     }
 
-                    this.buildFbFriendList();
+                    if (add_friend)
+                    {
+                        Nj.Ajax.call({
+                            href: '/friends',
+                            method: 'post',
+                            callback: {
+                                module: that,
+                                method: 'addFriendCallback'
+                            },
+                            params: {
+                                fb_id: uid
+                            }
+                        });
+                    }
+                    else
+                    {
+                        Nj.Ajax.call({
+                            href: '/friends/' + uid,
+                            method: 'post',
+                            callback: {
+                                module: that,
+                                method: 'removeFriendCallback'
+                            },
+                            params: {
+                                _method: 'delete'
+                            }
+                        });
+                    }
 
                     return false;
                 }
+                // ,get_fb_friends: function(handlerDatas)
+                // {
+                //     if (!this.FbInitialized)
+                //     {
+                //         return;
+                //     }
+
+                //     this.buildFbFriendList();
+
+                //     return false;
+                // }
             }
         },
         getFriendsCallback: function(result, datas)
         {
+            console.log(result);
+
             var friends_html = 'No friends yet';
 
             if (result.length)
@@ -72,14 +125,31 @@
             else
             {
                 $('#add_friend_container').show();
+                this.buildFbFriendList();
             }
 
             for (var i = result.length - 1; i >= 0; i--)
             {
-                friends_html += result[i];
+                var className = i%2 ? 'odd' : 'even';
+                friends_html += 
+                    '<div data-click="Main.select_friend" data-uid="' + result[i].fb_id + '"class="fb_friend ' + className + '">'+
+                        '<span class="checkbox_container">'+
+                            '<input type="checkbox" checked="checked" />'+
+                        '</span>'+
+                        '<fb:profile-pic size="square" uid="' + result[i].fb_id + '" facebook-logo="true"></fb:profile-pic>'+
+                    '</div>';
             }
 
             $('#friends_list').html(friends_html);
+            FB.XFBML.parse($('#friends_list').get(0));
+        },
+        addFriendCallback: function(result, datas)
+        {
+            console.log('addFriendCallback');
+        },
+        removeFriendCallback: function(result, datas)
+        {
+            console.log('removeFriendCallback');
         },
         getFbButton: function()
         {
@@ -93,7 +163,7 @@
         {
             if (!this.friendsContainer)
             {
-                this.friendsContainer = $('#profile_pics');
+                this.friendsContainer = $('#fb_friends_list');
             }
             return this.friendsContainer;
         },
@@ -182,22 +252,26 @@
             FB.api({ method: 'friends.get' }, function(result)
                 {
                     console.log('friends.get response', result);
-                    var markup = '';
-                    var numFriends = result ? result.length : 0;
+                    var markupArray = [],
+                        numFriends = result ? result.length : 0;
+
                     if (numFriends > 0)
                     {
                         for (var i=0; i<numFriends; i++)
                         {
-                            markup += (
-                                '<fb:profile-pic size="normal" ' +
-                                'uid="' + result[i] + '" ' +
-                                'facebook-logo="true"' +
-                                '></fb:profile-pic>'
+                            var className = i%2 ? 'odd' : 'even';
+                            markupArray.push(
+                                '<div data-click="Main.select_friend" data-uid="' + result[i] + '"class="fb_friend ' + className + '">'+
+                                    '<span class="checkbox_container">'+
+                                        '<input type="checkbox" />'+
+                                    '</span>'+
+                                    '<fb:profile-pic size="square" uid="' + result[i] + '" facebook-logo="true"></fb:profile-pic>'+
+                                '</div>'
                             );
                         }
                     }
 
-                    that.getFriendsContainer().html(markup);
+                    that.getFriendsContainer().html(markupArray.join(''));
 
                     FB.XFBML.parse(that.getFriendsContainer().get(0));
                 }
@@ -205,6 +279,11 @@
         },
         buildFbFriendList: function()
         {
+            console.log('buildFbFriendList');
+            if (!this.FbInitialized)
+            {
+                return;
+            }
             this.conditionalCall($.proxy(this.loadFbFriends, this), $.proxy(this.printUnloggedMessage, this));
         },
         loadFbSdk: function()

@@ -3,3 +3,25 @@ body
     background: #222;
     color: #eee;
 }
+
+.fb_friend
+{
+    margin: 4px 8px;
+    padding: 8px;
+}
+
+.fb_friend:hover
+{
+    background: rgba(8, 147, 212, 0.2);
+}
+
+.odd
+{
+    background: rgba(100, 100, 100, 0.1);
+}
+
+.checkbox_container
+{
+    display: inline-block;
+    margin-right: 12px;
+}

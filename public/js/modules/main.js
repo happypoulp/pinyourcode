@@ -300,8 +300,14 @@
         loadFbFriends: function()
         {
             var that = this;
-
-            FB.api({ method: 'friends.get' }, function(result)
+            // fql?q=SELECT uid, name, pic_square FROM user WHERE  uid IN (SELECT uid2 FROM friend WHERE uid1 = me())
+            FB.api(
+                {
+                    // method: 'friends.get'
+                    method: 'fql.query',
+                    query: 'SELECT uid, name FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = me()) AND strpos(name,"ierre") >= 0'
+                },
+                function(result)
                 {
                     console.log('friends.get response', result);
                     var markupArray = [],
@@ -313,11 +319,12 @@
                         {
                             var className = i%2 ? 'odd' : 'even';
                             markupArray.push(
-                                '<div data-click="Main.select_friend" data-uid="' + result[i] + '"class="fb_friend ' + className + '">'+
+                                '<div data-click="Main.select_friend" data-uid="' + result[i].uid + '"class="fb_friend ' + className + '">'+
                                     '<span class="checkbox_container">'+
                                         '<input type="checkbox" />'+
                                     '</span>'+
-                                    '<fb:profile-pic size="square" uid="' + result[i] + '" facebook-logo="true"></fb:profile-pic>'+
+                                    '<fb:profile-pic size="square" uid="' + result[i].uid + '" facebook-logo="true"></fb:profile-pic>'+
+                                    '<span class="name">' + result[i].name + '</span>' +
                                 '</div>'
                             );
                         }

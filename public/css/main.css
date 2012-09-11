@@ -24,6 +24,12 @@ body
     background: rgba(20, 20, 20, 0.3);
 }
 
+.name
+{
+    display: inline-block;
+    margin-left: 12px;
+}
+
 .checkbox_container
 {
     display: inline-block;

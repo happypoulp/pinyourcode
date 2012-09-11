@@ -1,5 +1,68 @@
 (function() {
-    var Connection = function(){};
+
+    var ExtensionAPI = function()
+    {
+        this.baseURI = '/friends';
+    };
+
+    ExtensionAPI.prototype =
+    {
+        create: function(fb_id, callback)
+        {
+            Nj.Ajax.call({
+                href: this.baseURI,
+                method: 'post',
+                callback: callback,
+                params: {
+                    fb_id: fb_id
+                }
+            });
+        },
+        read: function(fb_id, callback)
+        {
+            if (fb_id)
+            {
+                // get user infos
+                Nj.Ajax.call({
+                    href: this.baseURI + '/' + fb_id,
+                    method: 'get',
+                    callback: callback
+                });
+            }
+            else
+            {
+                // get user list
+
+                Nj.Ajax.call({
+                    href: this.baseURI,
+                    method: 'get',
+                    callback: callback
+                });
+            }
+        },
+        update: function(fb_id, data, callback)
+        {
+            Nj.Ajax.call({
+                href: this.baseURI + '/' + fb_id,
+                method: 'post',
+                callback: callback,
+                params: {
+                    _method: 'put'
+                }
+            });
+        },
+        delete: function(fb_id, callback)
+        {
+            Nj.Ajax.call({
+                href: this.baseURI + '/' + fb_id,
+                method: 'post',
+                callback: callback,
+                params: {
+                    _method: 'delete'
+                }
+            });
+        }
+    };
 
     return {
         name: 'Main',
@@ -39,16 +102,13 @@
                 }
                 ,get_friends: function(handlerDatas)
                 {
-                    var that = this;
-
-                    Nj.Ajax.call({
-                        href: '/friends',
-                        method: 'get',
-                        callback: {
-                            module: that,
+                    this.api.read(
+                        null,
+                        {
+                            module: 'Main',
                             method: 'getFriendsCallback'
                         }
-                    });
+                    );
                 }
                 ,select_friend: function(handlerDatas)
                 {
@@ -70,31 +130,23 @@
 
                     if (add_friend)
                     {
-                        Nj.Ajax.call({
-                            href: '/friends',
-                            method: 'post',
-                            callback: {
-                                module: that,
+                        this.api.create(
+                            uid,
+                            {
+                                module: 'Main',
                                 method: 'addFriendCallback'
-                            },
-                            params: {
-                                fb_id: uid
                             }
-                        });
+                        );
                     }
                     else
                     {
-                        Nj.Ajax.call({
-                            href: '/friends/' + uid,
-                            method: 'post',
-                            callback: {
-                                module: that,
+                        this.api.delete(
+                            uid,
+                            {
+                                module: 'Main',
                                 method: 'removeFriendCallback'
-                            },
-                            params: {
-                                _method: 'delete'
                             }
-                        });
+                        );
                     }
 
                     return false;
@@ -303,6 +355,8 @@
             Nj.Modules.register(this);
 
             this.loadFbSdk();
+
+            this.api = new ExtensionAPI();
         }
     }.init();
 })();

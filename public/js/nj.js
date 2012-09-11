@@ -612,7 +612,7 @@
                                             Nj.Modules.run(datas.callback.module, function(module)
                                             {
                                                 datas.callId = callId.ajax_call_id;
-                                                module[datas.callback.method].call(module, result.html, datas);
+                                                module[datas.callback.method].call(module, result, datas);
                                             });
                                         }
                                         else if (typeof datas.callback.module == 'object')

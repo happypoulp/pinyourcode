@@ -2,10 +2,12 @@ body
 {
     background: #222;
     color: #eee;
+    padding: 12px;
 }
 
 .fb_friend
 {
+    line-height: 50px;
     margin: 0 8px;
     padding: 8px;
 }
@@ -13,6 +15,12 @@ body
 .fb_friend:hover
 {
     background: rgba(8, 147, 212, 0.2);
+}
+
+.fb_friend .profile_pic
+{
+    display: inline-block;
+    width: 50px;
 }
 
 .odd
@@ -34,4 +42,18 @@ body
 {
     display: inline-block;
     margin-right: 12px;
+}
+
+#auth_button
+{
+    position: absolute;
+    top: 40px;
+    right: 20px;
+}
+
+#friends_list
+{
+    border-bottom: 4px solid #333;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
 }

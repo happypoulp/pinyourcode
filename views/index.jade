@@ -3,11 +3,12 @@ extends layout
 block content
   h1= title
   button#auth_button(data-click="Main.fb_button") ...
-  button#friends_button2(data-click="Main.get_friends") get friends
   div#friends_list
+  button#friends_button2(data-click="Main.add_friend") Add friend
   div#add_friend_container(style="display: none;")
     div#fb_friends_list_container
-      h2 Choose a friend(s) to add in the list below
+      h2 Find a friend
+      form#add_friend.toto.titi(action="/friends", method="post")
+        input(type="text", name="friend_name", placeholder="John Doe", data-keyup="Main.friend_search")
       div#fb_friends_list.loading
-    form#add_friend.toto.titi(action="/friends", method="post")
-      input(type="submit", value="Add friend")
+      //- input(type="submit", value="Add friend")

@@ -388,7 +388,7 @@
         },
         clearPageContent: function()
         {
-            this.getFriendsContainer().html('');
+            this.getFriendsContainer().html('<em>You are not authenticated!</em>');
         },
         initPageContent: function()
         {
@@ -400,10 +400,6 @@
                     method: 'getFriendsCallback'
                 }
             );
-        },
-        printUnloggedMessage: function()
-        {
-            this.getFBFriendsContainer().html('<em>You are not connected</em>');
         },
         loadFbFriends: function()
         {

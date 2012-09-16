@@ -19,6 +19,10 @@
                 ref.parentNode.insertBefore(js, ref);
             }(document));
         },
+        initialized: function()
+        {
+            return this.FbInitialized;
+        },
         asyncInit: function()
         {
             var that = this;
@@ -49,9 +53,41 @@
 
             this.readyCallback();
         },
+        toggleLoginStatus: function()
+        {
+            var that = this;
+
+            FB.getLoginStatus(function(response)
+            {
+                if (response.status === 'connected')
+                {
+                    that.logout();
+                }
+                else
+                {
+                    that.login();
+                }
+            });
+        },
+        login: function()
+        {
+            // console.log('## FB Login');
+            FB.login(function(response)
+            {
+                $(document).trigger('login_status_updated', [response.status]);
+            });
+        },
+        logout: function()
+        {
+            // console.log('## FB Logout');
+            FB.logout(function(response)
+            {
+                $(document).trigger('login_status_updated', [response.status]);
+            });
+        },
         sendUpdateSignal: function(status)
         {
-            $(document).trigger('update_login_button', [status]);
+            $(document).trigger('login_status_updated', [status]);
         },
         subscribeToStatusChange: function()
         {
@@ -67,7 +103,7 @@
         onFbStatusChange: function(response)
         {
             // console.log('auth.statusChange');
-            that.sendUpdateSignal(response.status);
+            this.sendUpdateSignal(response.status);
         },
         render: function(container)
         {
@@ -188,37 +224,20 @@
             {
                 fb_button: function(handlerDatas)
                 {
-                    if (!this.FbInitialized)
+                    if (!this.facebook.initialized())
                     {
                         return;
                     }
 
-                    var button = $(handlerDatas.element),
-                        that = this;
-
-                    if (button.hasClass('logout'))
-                    {
-                        // console.log('## Button Logout click');
-                        FB.logout(function(response)
-                        {
-                            that.updateFbButton(response.status);
-                        });
-                    }
-                    else
-                    {
-                        // console.log('## Button Login click');
-                        FB.login(function(response)
-                        {
-                            // console.log('FB.login callback', response);
-                            that.updateFbButton(response.status);
-                        });
-                    }
+                    this.facebook.toggleLoginStatus();
 
                     return false;
                 }
                 ,add_friend: function(handlerDatas)
                 {
                     $('#add_friend_container').toggle();
+
+                    return false;
                 }
                 ,select_friend: function(handlerDatas)
                 {
@@ -261,8 +280,8 @@
 
                     return false;
                 }
-            },
-            keyup:
+            }
+            ,keyup:
             {
                 friend_search: function(handlerDatas)
                 {
@@ -276,10 +295,10 @@
 
                     return false;
                 }
-            },
-            facebook:
+            }
+            ,facebook:
             {
-                update_login_button: function(event, status)
+                login_status_updated: function(event, status)
                 {
                     var text = 'Login',
                         className = 'login';
@@ -288,6 +307,11 @@
                     {
                         text = 'Logout';
                         className = 'logout';
+                        this.initPageContent();
+                    }
+                    else
+                    {
+                        this.clearPageContent();
                     }
 
                     this.getFbButton().removeClass('login logout').addClass(className).html(text);
@@ -309,9 +333,9 @@
                 }
             }
 
-            this.getFriendsContainer().html(markupArray.join(''));
+            this.getFBFriendsContainer().html(markupArray.join(''));
 
-            this.facebook.render(this.getFriendsContainer().get(0));
+            this.facebook.render(this.getFBFriendsContainer().get(0));
         },
         getFriendsCallback: function(result, datas)
         {
@@ -328,9 +352,9 @@
             // console.log(friends_ids);
             this.facebook.getFriendsInfos(friends_ids, $.proxy(this.getFriendsInfosCallback, this));
 
-            $('#friends_list').html(friends_html);
+            this.getFriendsContainer().html(friends_html);
 
-            this.facebook.render($('#friends_list').get(0));
+            this.facebook.render(this.getFriendsContainer().get(0));
         },
         getFriendsInfosCallback: function(result)
         {
@@ -349,9 +373,37 @@
             console.log('removeFriendCallback');
         },
         //////////////////////////////////////////////// UTILITY FUNCTIONS
+        updateLoginButton: function(connected)
+        {
+            var text = 'Login',
+                className = 'login';
+
+            if (connected)
+            {
+                text = 'Logout';
+                className = 'logout';
+            }
+
+            this.getFbButton().removeClass('login logout').addClass(className).html(text);
+        },
+        clearPageContent: function()
+        {
+            this.getFriendsContainer().html('');
+        },
+        initPageContent: function()
+        {
+            console.log('initPageContent');
+            this.api.read(
+                null,
+                {
+                    module: 'Main',
+                    method: 'getFriendsCallback'
+                }
+            );
+        },
         printUnloggedMessage: function()
         {
-            this.getFriendsContainer().html('<em>You are not connected</em>');
+            this.getFBFriendsContainer().html('<em>You are not connected</em>');
         },
         loadFbFriends: function()
         {
@@ -382,16 +434,24 @@
         {
             if (!this.friendsContainer)
             {
-                this.friendsContainer = $('#fb_friends_list');
+                this.friendsContainer = $('#friends_list');
             }
             return this.friendsContainer;
+        },
+        getFBFriendsContainer: function()
+        {
+            if (!this.FBFriendsContainer)
+            {
+                this.FBFriendsContainer = $('#fb_friends_list');
+            }
+            return this.FBFriendsContainer;
         },
         //////////////////////////////////////////////////// INIT
         init: function()
         {
             Nj.Modules.register(this);
 
-            $(document).bind('update_login_button', $.proxy(this.handlers.facebook.update_login_button, this));
+            $(document).bind('login_status_updated', $.proxy(this.handlers.facebook.login_status_updated, this));
 
             var that = this;
 
@@ -399,13 +459,6 @@
             this.facebook.init(function()
             {
                 that.api = new ExtensionAPI();
-                that.api.read(
-                    null,
-                    {
-                        module: 'Main',
-                        method: 'getFriendsCallback'
-                    }
-                );
             });
         }
     }.init();

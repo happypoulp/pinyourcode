@@ -1,4 +1,139 @@
-(function() {
+require(['jquery', 'facebook', 'iandco_api'], function($)
+{
+    var handlers = {
+            click:
+            {
+                fb_button: function(handlerDatas)
+                {
+                    if (!this.facebook.initialized())
+                    {
+                        return;
+                    }
+
+                    this.facebook.toggleLoginStatus();
+
+                    return false;
+                }
+                ,add_friend: function(handlerDatas)
+                {
+                    $('#add_friend_container').toggle();
+
+                    return false;
+                }
+                ,select_friend: function(handlerDatas)
+                {
+                    if ($(handlerDatas.event.target).parent('form'))
+                    {
+                        console.log('from form', handlerDatas.event);
+                        if (!arguments.callee.called)
+                        {
+                            arguments.callee.called = true;
+                            $(document).trigger(handlerDatas.event);
+                        }
+                        return false;
+                    }
+
+                    var el = $(handlerDatas.element),
+                        uid = el.data('uid'),
+                        input = el.find('input'),
+                        that = this,
+                        add_friend = true;
+
+                    if (input.attr('checked'))
+                    {
+                        input.attr('checked', null);
+                        add_friend = false;
+                    }
+                    else
+                    {
+                        input.attr('checked', 'checked');
+                    }
+
+                    if (add_friend)
+                    {
+                        this.api.create(
+                            uid,
+                            {
+                                module: 'Main',
+                                method: 'addFriendCallback'
+                            }
+                        );
+                    }
+                    else
+                    {
+                        this.api.delete(
+                            uid,
+                            {
+                                module: 'Main',
+                                method: 'removeFriendCallback'
+                            }
+                        );
+                    }
+
+                    return false;
+                }
+            }
+            ,keyup:
+            {
+                friend_search: function(handlerDatas)
+                {
+                    clearTimeout(this.inputTO);
+
+                    this.inputTO = setTimeout($.proxy(function()
+                    {
+                        console.log('search', $(handlerDatas.element).val());
+                        this.facebook.searchFriend($(handlerDatas.element).val(), $.proxy(this.searchFriendCallback, this));
+                    }, this), 150);
+
+                    return false;
+                }
+            }
+            ,facebook:
+            {
+                login_status_updated: function(event, status)
+                {
+                    var text = 'Login',
+                        className = 'login';
+
+                    if (status === 'connected')
+                    {
+                        text = 'Logout';
+                        className = 'logout';
+                        this.initPageContent();
+                    }
+                    else
+                    {
+                        this.clearPageContent();
+                    }
+
+                    this.getFbButton().removeClass('login logout').addClass(className).html(text).show();
+                }
+            }
+            ,submit:
+            {
+                add_extension: function(handlerDatas)
+                {
+                    console.log('add_extension', handlerDatas);
+                    return false;
+                }
+            }
+        };
+
+    $(function()
+    {
+        $(document).bind('login_status_updated', $.proxy(handlers.facebook.login_status_updated, this));
+
+        var that = this;
+
+        this.facebook = new Facebook();
+        this.facebook.init(function()
+        {
+            that.api = new IAndCoAPI();
+        });
+    });
+});
+
+/*(function() {
 
     /////////////////////////////////////////// FACEBOOK CLASS
 
@@ -148,14 +283,14 @@
         }
     };
 
-    /////////////////////////////////////////// EXTENSION API CLASS
+    /////////////////////////////////////////// IAndCo API CLASS
 
-    var ExtensionAPI = function()
+    var IAndCoAPI = function()
     {
         this.baseURI = '/friends';
     };
 
-    ExtensionAPI.prototype =
+    IAndCoAPI.prototype =
     {
         create: function(fb_id, callback)
         {
@@ -241,6 +376,17 @@
                 }
                 ,select_friend: function(handlerDatas)
                 {
+                    if ($(handlerDatas.event.target).parent('form'))
+                    {
+                        console.log('from form', handlerDatas.event);
+                        if (!arguments.callee.called)
+                        {
+                            arguments.callee.called = true;
+                            $(document).trigger(handlerDatas.event);
+                        }
+                        return false;
+                    }
+
                     var el = $(handlerDatas.element),
                         uid = el.data('uid'),
                         input = el.find('input'),
@@ -314,7 +460,15 @@
                         this.clearPageContent();
                     }
 
-                    this.getFbButton().removeClass('login logout').addClass(className).html(text);
+                    this.getFbButton().removeClass('login logout').addClass(className).html(text).show();
+                }
+            }
+            ,submit:
+            {
+                add_extension: function(handlerDatas)
+                {
+                    console.log('add_extension', handlerDatas);
+                    return false;
                 }
             }
         },
@@ -329,7 +483,15 @@
             {
                 for (var i=0; i<numFriends; i++)
                 {
-                    markupArray.push(this.getFriendHtml(i, result[i].uid, result[i].name));
+                    markupArray.push(
+                        this.getFriendHtml(
+                            i,
+                            {
+                                fb_id: result[i].uid,
+                                name: result[i].name
+                            }
+                        )
+                    );
                 }
             }
 
@@ -345,7 +507,13 @@
 
             for (var i = result.length - 1; i >= 0; i--)
             {
-                friends_html += this.getFriendHtml(i, result[i].fb_id, '', true);
+                result[i].name = '';
+                result[i].active = true;
+
+                friends_html += this.getFriendHtml(
+                    i,
+                    result[i]
+                );
                 friends_ids.push(result[i].fb_id);
             }
 
@@ -407,15 +575,37 @@
 
             this.facebook.listFriends();
         },
-        getFriendHtml: function(index, fb_id, name, active)
+        getFriendHtml: function(index, friend)
         {
-            return '<div data-click="Main.select_friend" data-uid="' + fb_id + '"class="fb_friend ' + (index%2 ? 'odd' : 'even') + '">'+
+            return '<div data-click="Main.select_friend" data-uid="' + friend.fb_id + '"class="fb_friend ' + (index%2 ? 'odd' : 'even') + '">'+
                         '<span class="checkbox_container">'+
-                            '<input type="checkbox" ' + (active ? 'checked="checked"' : '') + '/>'+
+                            '<input type="checkbox" ' + (friend.active ? 'checked="checked"' : '') + '/>'+
                         '</span>'+
-                        '<div class="profile_pic"><fb:profile-pic size="square" uid="' + fb_id + '" facebook-logo="true"></fb:profile-pic></div>'+
-                            '<span class="name">' + name + '</span>' +
+                        '<div class="profile_pic"><fb:profile-pic size="square" uid="' + friend.fb_id + '" facebook-logo="true"></fb:profile-pic></div>'+
+                        '<span class="name">' + friend.name + '</span>' +
+                        '<h3>Extensions:</h3>' +
+                        '<div class="extensions">' + this.getExtensionsHtml(friend.extensions) + '</div>' +
+                        '<div>Add an extension:</div>' +
+                        '<form action="/friends/' + friend.fb_id + '" data-click="Main.add_extension">' +
+                            '<input type="text" name="extension" />' +
+                            '<input type="submit" />' +
+                        '</form>' +
                     '</div>';
+        },
+        getExtensionsHtml: function(extensions)
+        {
+            var html = '';
+
+            if (extensions && extensions.length)
+            {
+                for (extension in extensions)
+                {
+                    html += extension;
+                }
+                return html;
+            }
+
+            return 'none';
         },
         //////////////////////// DOM ELEMENTS GETTERS
         getFbButton: function()
@@ -454,8 +644,8 @@
             this.facebook = new Facebook();
             this.facebook.init(function()
             {
-                that.api = new ExtensionAPI();
+                that.api = new IAndCoAPI();
             });
         }
     }.init();
-})();
+})();*/

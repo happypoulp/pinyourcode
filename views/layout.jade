@@ -19,13 +19,9 @@ html.no-js(lang='en')
     script
       window.FB_APP_ID = "#{FB_APP_ID}";
       window.FB_APP_DOMAIN = "#{FB_APP_DOMAIN}";
-    include includes/nj_head
+    script(src="js/require-jquery.js", data-main="js/modules/main")
   body
     div#fb-root
-    script
-      Nj.Runnable.runOrQueue(function() {
-        Nj.Modules.load('Main');
-      });
     block content
     //- change UA-XXXXX-X to your id and outdent the following:
     //-

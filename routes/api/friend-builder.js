@@ -49,6 +49,6 @@ FriendBuilder.prototype = {
 }
 
 exports.build = function (user_id, body, cb) 
-
+{
     return new FriendBuilder(user_id, body).build(cb);
 }

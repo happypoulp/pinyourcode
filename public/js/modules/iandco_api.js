@@ -90,15 +90,16 @@ define(['jquery'], function($)
                 });
             }
         },
-        update: function(fbID, data, callback)
+        update: function(fbID, extension, callback)
         {
-            data._method = 'put';
-            data.extensions = {ext1:'extension 1'}
             $.ajax
             (
                 this.baseURI + '/' + fbID,
                 {
-                    data: data,
+                    data: {
+                        extensions: [extension],
+                        _method: 'put'
+                    },
                     type: 'post',
                     dataType: 'json'
                 }

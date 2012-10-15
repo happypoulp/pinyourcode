@@ -118,7 +118,9 @@ define(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                     this.api.update(
                         $form.closest('div.fb_friend').data('uid'),
                         {
-                            extensions: $form.children('input[name="extension"]').val()
+                            name: 'test',
+                            type: 'toto',
+                            content: $form.children('input[name="extension"]').val()
                         },
                         $.proxy(this.updateFriendCallback, this)
                     );
@@ -261,9 +263,13 @@ define(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
 
             if (extensions && extensions.length)
             {
-                for (extension in extensions)
+                for (var i = 0, l = extensions.length; i < l ; i++)
                 {
-                    html += extension;
+                    html += '<div class="extension">';
+                    html += '<div><b>Type</b>: <span>' + extensions[i].type + '</span></div>';
+                    html += '<div><b>Name</b>: <span>' + extensions[i].name + '</span></div>';
+                    html += '<div><b>Content</b>: <span>' + extensions[i].content + '</span></div>';
+                    html += '</div>';
                 }
                 return html;
             }

@@ -86,6 +86,7 @@ module.exports = function (app) {
   });
 
   app.put('/friends/:fb_id', api.check, function (req, res) {
+    if (!req.body.fb_id) req.body.fb_id = req.params.fb_id;
     // Parsing the request body
     friend_builder.build(req.facebook.user_id, req.body, function (err, friend) {
       if ( err ) {

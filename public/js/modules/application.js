@@ -112,7 +112,17 @@ define(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                 add_extension: function(ev)
                 {
                     ev.preventDefault();
-                    console.log('add_extension', ev);
+
+                    var $form = $(ev.target);
+
+                    this.api.update(
+                        $form.closest('div.fb_friend').data('uid'),
+                        {
+                            extensions: $form.children('input[name="extension"]').val()
+                        },
+                        $.proxy(this.updateFriendCallback, this)
+                    );
+
                     return false;
                 }
             }
@@ -153,7 +163,11 @@ define(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
 
             this.facebook.render(this.getFBFriendsContainer().get(0));
         },
-        getFriendsCallback: function(result, datas)
+        updateFriendCallback: function(result)
+        {
+            console.log('updateFriendCallback', result);
+        },
+        getFriendsCallback: function(result)
         {
             console.log('getFriendsCallback', result);
             var friends_html = result.length ? '' : 'No friends yet...',

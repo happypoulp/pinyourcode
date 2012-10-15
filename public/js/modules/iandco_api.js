@@ -46,10 +46,6 @@ define(['jquery'], function($)
                 (
                     this.baseURI + '/' + fbID,
                     {
-                        data:
-                        {
-                            fb_id: fbID
-                        },
                         type: 'get',
                         dataType: 'json'
                     }
@@ -73,12 +69,8 @@ define(['jquery'], function($)
                 // get user list
                 $.ajax
                 (
-                    this.baseURI + '/',
+                    this.baseURI,
                     {
-                        data:
-                        {
-                            fb_id: fbID
-                        },
                         type: 'get',
                         dataType: 'json'
                     }
@@ -100,15 +92,13 @@ define(['jquery'], function($)
         },
         update: function(fbID, data, callback)
         {
+            data._method = 'put';
+            data.extensions = {ext1:'extension 1'}
             $.ajax
             (
-                this.baseURI,
+                this.baseURI + '/' + fbID,
                 {
-                    data:
-                    {
-                        fb_id: fbID,
-                        _method: 'put'
-                    },
+                    data: data,
                     type: 'post',
                     dataType: 'json'
                 }
@@ -131,11 +121,10 @@ define(['jquery'], function($)
         {
             $.ajax
             (
-                this.baseURI,
+                this.baseURI + '/' + fbID,
                 {
                     data:
                     {
-                        fb_id: fbID,
                         _method: 'delete'
                     },
                     type: 'post',

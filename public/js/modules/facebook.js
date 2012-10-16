@@ -129,9 +129,21 @@ define(['jquery'], function($)
                 {
                     // method: 'friends.get'
                     method: 'fql.query',
-                    query: 'SELECT uid, name FROM user WHERE uid IN ' +
-                        '(SELECT uid2 FROM friend WHERE uid1 = me()) AND ' +
-                        'strpos(name,"' + friend_string + '") >= 0'
+                    query:
+                        'SELECT uid, name ' +
+                            'FROM user ' +
+                                'WHERE uid IN ' +
+                                '( ' +
+                                    'SELECT uid2 FROM friend WHERE uid1 = me() ' +
+                                ') ' +
+                                'AND ' +
+                                '( ' +
+                                    'strpos(name,"' + friend_string + '") >= 0 ' +
+                                    'OR ' +
+                                    'strpos(name,"' + friend_string.toLowerCase() + '") >= 0 ' +
+                                    'OR ' +
+                                    'strpos(name,"' + friend_string.charAt(0).toUpperCase() + friend_string.substring(1) + '") >= 0 ' +
+                                ')'
                 },
                 callback
             );

@@ -1,3 +1,14 @@
+@font-face
+{
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Playfair Display'),
+    local('PlayfairDisplay'),
+    url(/fonts/fairplay.woff) format('woff');
+}
+
+
 body
 {
     background: #222 url(/images/asfalt.png) repeat 0 0;
@@ -9,9 +20,11 @@ body
 
 .logo
 {
-    text-shadow: 4px 4px 0 rgba(0, 168, 255, 0.9), 8px 8px 0 rgba(255, 0, 180, 0.61);
-    font-size: 3em;
+    font-size: 3.6em;
     margin-top: 0;
+    text-shadow: 2px 2px 0 rgba(0, 168, 255, 0.9);
+    letter-spacing: -5px;
+    font-family: 'Playfair Display', serif;
 }
 
 .logo a
@@ -60,9 +73,9 @@ body
 .fb_friend.odd:hover,
 .fb_friend.even:hover
 {
-    background: rgba(8, 147, 212, 0.2);
+    background: rgba(100, 100, 100, 0.3);
     cursor: pointer;
-    border-left: 4px solid #CCC;
+    border-left: 4px solid rgba(0, 190, 255, 0.7);
     padding-left: 16px;
 }
 
@@ -74,8 +87,7 @@ body
 
 .fb_friend .profile_pic img
 {
-    border: 4px solid #D1D1D1;
-    box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px #AAA;
     border-radius: 2px;
 }
 
@@ -95,7 +107,7 @@ body
 }
 .fb_friend.even
 {
-    background: rgba(70, 70, 80, 0.3);
+    background: rgba(100, 100, 100, 0.17);
 }
 
 .fb_friend .name

@@ -30,18 +30,13 @@ define(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                 }
                 ,add_friend: function(ev)
                 {
-                    $('#add_friend_container').toggle();
+                    $('#friends_list').toggle();
+                    $('#add_friend_form').toggle().children('input').focus();
                 }
                 ,select_friend: function(ev)
                 {
                     if ($(ev.target).parent('form').length)
                     {
-                        console.log('from form', ev);
-                        // if (!arguments.callee.called)
-                        // {
-                        //     arguments.callee.called = true;
-                        //     $(document).trigger(handlerDatas.event);
-                        // }
                         return;
                     }
 
@@ -133,10 +128,10 @@ define(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
         {
             $(document)
                 .bind('login_status_updated', $.proxy(this.handlers.facebook.login_status_updated, this))
-                .on('click', '#friends_button2', $.proxy(this.handlers.click.add_friend, this))
+                .on('click', '#add_fb_friend', $.proxy(this.handlers.click.add_friend, this))
                 .on('click', '#auth_button', $.proxy(this.handlers.click.fb_button, this))
                 .on('click', 'div.fb_friend', $.proxy(this.handlers.click.select_friend, this))
-                .on('keyup', '#add_friend input[name="friend_name"]', $.proxy(this.handlers.keyup.friend_search, this))
+                .on('keyup', '#add_friend_form input[name="friend_name"]', $.proxy(this.handlers.keyup.friend_search, this))
                 .on('submit', 'form.add_extension_form', $.proxy(this.handlers.submit.add_extension, this));
         },
         searchFriendCallback: function(result)
@@ -297,7 +292,7 @@ define(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
         {
             if (!this.FBFriendsContainer)
             {
-                this.FBFriendsContainer = $('#fb_friends_list');
+                this.FBFriendsContainer = $('#fb_search_results');
             }
             return this.FBFriendsContainer;
         }

@@ -161,6 +161,11 @@ body
     text-indent: 8px;
 }
 
+#fb_search_results
+{
+    margin-top: 30px;
+}
+
 /************************* BUTTONS ***************************/
 
 .button,

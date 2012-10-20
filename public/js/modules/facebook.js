@@ -125,6 +125,11 @@ define(['jquery'], function($)
         },
         searchFriend: function(friend_string, callback)
         {
+            if (!friend_string)
+            {
+                return callback(friend_string);
+            }
+
             FB.api(
                 {
                     // method: 'friends.get'
@@ -138,14 +143,13 @@ define(['jquery'], function($)
                                 ') ' +
                                 'AND ' +
                                 '( ' +
-                                    'strpos(name,"' + friend_string + '") >= 0 ' +
-                                    'OR ' +
-                                    'strpos(name,"' + friend_string.toLowerCase() + '") >= 0 ' +
-                                    'OR ' +
-                                    'strpos(name,"' + friend_string.charAt(0).toUpperCase() + friend_string.substring(1) + '") >= 0 ' +
+                                    'strpos(lower(name),"' + friend_string.toLowerCase() + '") >= 0 ' +
                                 ')'
                 },
-                callback
+                function(result)
+                {
+                    callback(friend_string, result);
+                }
             );
         },
         getFriendsInfos: function(friend_list, callback)

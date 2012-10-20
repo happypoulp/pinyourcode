@@ -1,4 +1,5 @@
 var _ = require("underscore")._;
+var ObjectID = require("mongodb").pure().ObjectID;
 
 function FriendBuilder(user_id, body)
 {
@@ -21,13 +22,14 @@ FriendBuilder.prototype = {
                     if ( extension.name && extension.type )
                     {
                         this.extensions.push(
-                        {
-                            name : extension.name,
-                            type : extension.type,
-                            content : extension.content
-                        });
+                            {
+                                _id : new ObjectID( ObjectID.prototype.generate() ),
+                                name : extension.name,
+                                type : extension.type,
+                                content : extension.content
+                            });
                     }
-                  }
+                }
                 ,this);
             }
     

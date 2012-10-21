@@ -54,26 +54,31 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                 }
                 ,select_friend: function(ev)
                 {
-                    if ($(ev.target).parent('form').length) return;
+                    $('#friend_details').html($(ev.target).closest('.fb_friend').html());
 
-                    var el = $(ev.target).closest('[data-uid]'),
-                        uid = el.data('uid'),
-                        that = this;
+                    $('#pages').addClass('show_friend_details');
 
-                    if (!el.find('input.extended').prop('checked'))
-                    {
-                        this.api.create(uid, function()
-                        {
-                            that.addFriendCallback(uid);
-                        });
-                    }
-                    else
-                    {
-                        this.api.delete(uid, function()
-                        {
-                            that.removeFriendCallback(uid);
-                        });
-                    }
+                    // if ($(ev.target).parent('form').length) return;
+
+                    // var el = $(ev.target).closest('[data-uid]'),
+                    //     uid = el.data('uid'),
+                    //     that = this;
+
+                    // if (!el.find('input.extended').prop('checked'))
+                    // {
+                    //     this.api.create(uid, function()
+                    //     {
+                    //         that.addFriendCallback(uid);
+                    //     });
+                    // }
+                    // else
+                    // {
+                    //     // this.api.delete(uid, function()
+                    //     // {
+                    //     //     that.removeFriendCallback(uid);
+                    //     // });
+                    //     $('div.viewport_inner').toggleClass('show-right');
+                    // }
                 }
             }
             ,keyup:
@@ -261,18 +266,18 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
         getFriendHtml: function(index, friend)
         {
             return '<div data-uid="' + friend.fb_id + '"class="fb_friend ' + (index%2 ? 'odd' : 'even') + '">'+
-                        '<span class="checkbox_container">'+
-                            '<input class="extended" type="checkbox" ' + (friend.active ? 'checked="checked"' : '') + '/>'+
-                        '</span>'+
+                        // '<span class="checkbox_container">'+
+                        //     '<input class="extended" type="checkbox" ' + (friend.active ? 'checked="checked"' : '') + '/>'+
+                        // '</span>'+
                         '<div class="profile_pic"><fb:profile-pic size="square" uid="' + friend.fb_id + '" facebook-logo="true"></fb:profile-pic></div>'+
                         '<span class="name">' + friend.name + '</span>' +
-                        '<h3>Extensions:</h3>' +
-                        '<div class="extensions">' + this.getExtensionsHtml(friend.extensions) + '</div>' +
-                        '<div>Add an extension:</div>' +
-                        '<form class="add_extension_form" action="/friends/' + friend.fb_id + '">' +
-                            '<input type="text" name="extension" />' +
-                            '<input type="submit" />' +
-                        '</form>' +
+                        // '<h3>Extensions:</h3>' +
+                        // '<div class="extensions">' + this.getExtensionsHtml(friend.extensions) + '</div>' +
+                        // '<div>Add an extension:</div>' +
+                        // '<form class="add_extension_form" action="/friends/' + friend.fb_id + '">' +
+                        //     '<input type="text" name="extension" />' +
+                        //     '<input type="submit" />' +
+                        // '</form>' +
                     '</div>';
         },
         getExtensionsHtml: function(extensions)

@@ -1,0 +1,107 @@
+/********************* FRIEND CONTAINER **********************/
+
+.fb_friend
+{
+    margin: 0 8px;
+    padding: 16px 8px 16px 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    border-bottom: 2px solid #333;
+}
+
+.fb_friend:hover,
+.fb_friend.odd:hover,
+.fb_friend.even:hover
+{
+    background: rgba(100, 100, 100, 0.3);
+    cursor: pointer;
+    border-left: 4px solid rgba(0, 190, 255, 0.7);
+    padding-left: 16px;
+}
+
+.fb_friend .profile_pic
+{
+    display: inline-block;
+    width: 50px;
+}
+
+.fb_friend .profile_pic img
+{
+    box-shadow: 0 0 2px #AAA;
+    border-radius: 2px;
+}
+
+.fb_friend h3
+{
+    font-size: 1em;
+}
+
+.fb_friend .extensions
+{
+    text-indent: 20px;
+}
+
+.fb_friend.odd
+{
+    background: rgba(100, 100, 100, 0.1);
+}
+.fb_friend.even
+{
+    background: rgba(100, 100, 100, 0.17);
+}
+
+.fb_friend .name
+{
+    display: inline-block;
+    margin-left: 20px;
+    line-height: 50px;
+}
+
+.fb_friend .checkbox_container
+{
+    display: inline-block;
+    margin-right: 12px;
+}
+
+/********************** FRIENDS EXTENDED LIST **************************/
+
+#friends_list
+{
+    padding-bottom: 20px;
+}
+
+/*#friends_list:after
+{
+    content: '';
+    display: block;
+    height: 4px;
+    background-color: rgba(168, 40, 97, 0.49);
+    border-radius: 2px;
+    margin: 35px 145px;
+}*/
+
+/********************** SEARCH FB FORM **************************/
+
+#add_friend_form
+{
+    display: none;
+}
+
+#add_friend_form input[name="friend_name"]
+{
+    width: 80%;
+    display: block;
+    box-shadow: 0 0 2px white;
+    margin: 12px auto;
+    height: 30px;
+    border-radius: 2px;
+    border: 1px solid #CCC;
+    color: #333;
+    font-size: 1.3em;
+    text-indent: 8px;
+}
+
+#fb_search_results
+{
+    margin-top: 30px;
+}

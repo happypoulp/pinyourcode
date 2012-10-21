@@ -14,15 +14,23 @@ html.no-js(lang='en')
     title
     meta(name='description', content='')
     meta(name='viewport', content='width=device-width')
-    link(rel='stylesheet', href='css/style.css')
-    link(rel='stylesheet', href='css/main.css')
+    link(rel='stylesheet', href='css/boilerplate.css')
+    link(rel='stylesheet', href='css/common-iandco.css')
+    block css
     script
       window.FB_APP_ID = "#{FB_APP_ID}";
       window.FB_APP_DOMAIN = "#{FB_APP_DOMAIN}";
-    script(src="js/require-jquery.js", data-main="js/modules/main")
+    block js
   body
     div#fb-root
-    block content
+    header
+      h1.logo
+        a(href="/")= title
+      div#top_buttons_container
+        button.large.button.green#add_fb_friend Add friend
+        button.large.button.red#auth_button ...
+    div#page_content
+      block content
     //- change UA-XXXXX-X to your id and outdent the following:
     //-
       script

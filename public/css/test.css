@@ -1,0 +1,45 @@
+
+/**************************** CUBE TRANSITIONS *********************************/
+
+.cube
+{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    -webkit-transition: -webkit-transform .2s linear;
+}
+.cube > div
+{
+    width: 100%;
+    position: absolute;
+    -webkit-transition: opacity .2s linear;
+}
+
+.cube .front
+{
+    opacity: 1;
+    background: #aaa;
+    -webkit-transform: translateX(0);
+}
+
+.cube .right
+{
+    background: #f00;
+    -webkit-transform: translateX(100%);
+    opacity: 0;
+}
+
+.cube.show-right
+{
+    -webkit-transform: translateX(-100%);
+}
+
+.cube.show-right .front
+{
+    opacity: 0;
+}
+
+.cube.show-right .right
+{
+    opacity: 1;
+}

@@ -1,12 +1,17 @@
 extends layout
 
+block css
+  link(rel='stylesheet', href='css/index.css')
+block js
+  script(src="js/require-jquery.js", data-main="js/modules/main")
+
 block content
-  h1.logo
-    a(href="/")= title
-  div#top_buttons_container
-    button.large.button.green#add_fb_friend Add friend
-    button.large.button.red#auth_button ...
-  form#add_friend_form(action="/friends", method="post")
-    input(type="text", name="friend_name", placeholder="John Doe")
-    div#fb_search_results
-  div#friends_list
+  div.viewport
+    div#pages
+      div#friends_list
+      div#friend_details
+      div#friend_search
+        form#add_friend_form(action="/friends", method="post")
+          input(type="text", name="friend_name", placeholder="John Doe")
+          div#fb_search_results
+      div#logout_message.bottom

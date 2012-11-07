@@ -192,6 +192,7 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
         },
         getFriendsCallback: function(result)
         {
+            this.friends = result;
             console.log('getFriendsCallback', result);
             var friends_html = result.length ? '' : 'No friends yet...',
                 friends_ids = [];
@@ -265,12 +266,15 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
         },
         getFriendHtml: function(index, friend)
         {
+            var extensionsCount = friend.extensions ? friend.extensions.length : 0;
+
             return '<div data-uid="' + friend.fb_id + '"class="fb_friend ' + (index%2 ? 'odd' : 'even') + '">'+
                         // '<span class="checkbox_container">'+
                         //     '<input class="extended" type="checkbox" ' + (friend.active ? 'checked="checked"' : '') + '/>'+
                         // '</span>'+
                         '<div class="profile_pic"><fb:profile-pic size="square" uid="' + friend.fb_id + '" facebook-logo="true"></fb:profile-pic></div>'+
                         '<span class="name">' + friend.name + '</span>' +
+                        '<div class="extensions_count" title="' + extensionsCount + ' extensions">' + extensionsCount + '</div>' +
                         // '<h3>Extensions:</h3>' +
                         // '<div class="extensions">' + this.getExtensionsHtml(friend.extensions) + '</div>' +
                         // '<div>Add an extension:</div>' +

@@ -228,7 +228,8 @@ header
     -webkit-transform: translateX(-100%);
 }
 
-#pages.show_friend_details #friends_list
+#pages.show_friend_details #friends_list,
+#pages.show_friend_details #friend_search
 {
     opacity: 0;
 }

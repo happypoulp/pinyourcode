@@ -26,6 +26,8 @@ header
 
 header
 {
+    box-shadow: 0 4px 8px #111;
+    border-bottom: 1px solid #0C0C0C;
     position: fixed;
     top: 0;
     left: 0;
@@ -41,6 +43,7 @@ header
     font-size: 3.6em;
     margin-top: 0;
     margin-bottom: 0;
+    margin-left: 20px;
     text-shadow: 2px 2px 0 rgba(0, 168, 255, 0.9);
     letter-spacing: -5px;
     font-family: 'Playfair Display', serif;
@@ -64,16 +67,16 @@ header
 #top_buttons_container .button
 {
     margin-left: 8px;
-}
-
-#add_fb_friend
-{
     float: left;
 }
 
 #auth_button
 {
-    float: left;
+    display: none;
+}
+
+#back_button
+{
     display: none;
 }
 
@@ -221,7 +224,15 @@ header
 {
     -webkit-transform: translateX(100%);
     opacity: 0;
+    background: rgba(100, 100, 100, 0.1);
 }
+
+#pages #friend_details #friend_details_inner,
+#pages #friend_details form
+{
+    margin: 20px;
+}
+
 
 #pages.show_friend_details
 {

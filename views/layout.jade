@@ -23,12 +23,7 @@ html.no-js(lang='en')
     block js
   body
     div#fb-root
-    header
-      h1.logo
-        a(href="/")= title
-      div#top_buttons_container
-        button.large.button.green#add_fb_friend Add friend
-        button.large.button.red#auth_button ...
+    include includes/header
     div#page_content
       block content
     //- change UA-XXXXX-X to your id and outdent the following:

@@ -153,7 +153,8 @@ module.exports = function (app)
                                     fb_id : dbFriend.fb_id
                                 },
                                 {
-                                    $set : {extensions : friend.extensions}
+                                    '$push' : {extensions : friend.extensions[0]}
+                                    // $set : {extensions : friend.extensions}
                                 },
                                 function (err, result)
                                 {

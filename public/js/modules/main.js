@@ -29,6 +29,7 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                 .bind('login_status_updated', $.proxy(this.handlers.facebook.login_status_updated, this))
                 .on('click', '#add_fb_friend', $.proxy(this.handlers.click.add_friend, this))
                 .on('click', '#auth_button', $.proxy(this.handlers.click.fb_button, this))
+                .on('click', '#back_button', $.proxy(this.handlers.click.back_button, this))
                 .on('mouseup', 'div.fb_friend', $.proxy(this.handlers.click.select_friend, this))
                 .on('keyup', '#add_friend_form input[name="friend_name"]', $.proxy(this.handlers.keyup.friend_search, this))
                 .on('submit', 'form.add_extension_form', $.proxy(this.handlers.submit.add_extension, this))
@@ -52,11 +53,31 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                     $('#friends_list').toggle();
                     $('#add_friend_form').toggle().children('input').focus();
                 }
+                ,back_button: function(ev)
+                {
+                    $('#pages').removeClass('show_friend_details');
+                    $('#back_button').hide();
+                    $('#add_fb_friend').show();
+                }
                 ,select_friend: function(ev)
                 {
-                    $('#friend_details').html($(ev.target).closest('.fb_friend').html());
-
+                    var friend_source = $(ev.target).closest('.fb_friend'),
+                        friend_id = friend_source.data('uid');
+                    $('#friend_details_inner').html(friend_source.html()).parent().attr('data-uid', friend_id);
+                    $('form.add_extension_form').attr('action', '/friends/' + friend_id);
                     $('#pages').addClass('show_friend_details');
+                    $('#back_button').show();
+                    $('#add_fb_friend').hide();
+                    window.scrollTo(0,0);
+
+                    for (var i = 0 , l = this.friends.length ; i < l ; i++)
+                    {
+                        if (this.friends[i].fb_id == friend_id)
+                        {
+                            $('#friend_details_inner').append(this.getExtensionsHtml(this.friends[i].extensions));
+                            break;
+                        }
+                    }
 
                     // if ($(ev.target).parent('form').length) return;
 
@@ -126,7 +147,7 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                     var $form = $(ev.target);
 
                     this.api.update(
-                        $form.closest('div.fb_friend').data('uid'),
+                        $form.attr('action').replace('/friends/', ''),
                         {
                             name: 'test',
                             type: 'toto',
@@ -193,6 +214,7 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
         getFriendsCallback: function(result)
         {
             this.friends = result;
+            console.log(this.friends);
             console.log('getFriendsCallback', result);
             var friends_html = result.length ? '' : 'No friends yet...',
                 friends_ids = [];
@@ -275,13 +297,6 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                         '<div class="profile_pic"><fb:profile-pic size="square" uid="' + friend.fb_id + '" facebook-logo="true"></fb:profile-pic></div>'+
                         '<span class="name">' + friend.name + '</span>' +
                         '<div class="extensions_count" title="' + extensionsCount + ' extensions">' + extensionsCount + '</div>' +
-                        // '<h3>Extensions:</h3>' +
-                        // '<div class="extensions">' + this.getExtensionsHtml(friend.extensions) + '</div>' +
-                        // '<div>Add an extension:</div>' +
-                        // '<form class="add_extension_form" action="/friends/' + friend.fb_id + '">' +
-                        //     '<input type="text" name="extension" />' +
-                        //     '<input type="submit" />' +
-                        // '</form>' +
                     '</div>';
         },
         getExtensionsHtml: function(extensions)

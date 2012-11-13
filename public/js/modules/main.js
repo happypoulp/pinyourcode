@@ -144,14 +144,14 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                 {
                     ev.preventDefault();
 
-                    var $form = $(ev.target);
+                    var form = ev.target;
 
                     this.api.update(
-                        $form.attr('action').replace('/friends/', ''),
+                        form.action.replace(/.*\/friends\//, ''),
                         {
-                            name: 'test',
-                            type: 'toto',
-                            content: $form.children('input[name="extension"]').val()
+                            name: form.extension_name.value,
+                            type: form.extension_type.value,
+                            content: form.extension_content.value
                         },
                         $.proxy(this.updateFriendCallback, this)
                     );

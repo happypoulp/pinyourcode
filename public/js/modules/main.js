@@ -79,6 +79,11 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                         }
                     }
 
+                    if (friend_source.closest('#fb_search_results').length)
+                    {
+                        this.api.create(friend_id);
+                    }
+
                     // if ($(ev.target).parent('form').length) return;
 
                     // var el = $(ev.target).closest('[data-uid]'),

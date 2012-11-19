@@ -26,7 +26,7 @@ define(['jquery'], function($)
             .done(function(data)
             {
                 console.log('create - done.');
-                callback(data);
+                callback && callback(data);
             })
             .fail(function()
             {
@@ -53,7 +53,7 @@ define(['jquery'], function($)
                 .done(function(data)
                 {
                     console.log('read - done.');
-                    callback(data);
+                    callback && callback(data);
                 })
                 .fail(function()
                 {
@@ -78,7 +78,7 @@ define(['jquery'], function($)
                 .done(function(data)
                 {
                     console.log('read - done.', data);
-                    callback(data);
+                    callback && callback(data);
                 })
                 .fail(function()
                 {
@@ -107,7 +107,7 @@ define(['jquery'], function($)
             .done(function(data)
             {
                 console.log('update - done.');
-                callback(data);
+                callback && callback(data);
             })
             .fail(function()
             {
@@ -135,7 +135,7 @@ define(['jquery'], function($)
             .done(function(data)
             {
                 console.log('delete - done.');
-                callback(data);
+                callback && callback(data);
             })
             .fail(function()
             {

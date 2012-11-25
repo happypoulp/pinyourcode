@@ -1,5 +1,5 @@
 var _ = require("underscore")._;
-var ObjectID = require("mongodb").pure().ObjectID;
+var ObjectID = require("mongodb").ObjectID;
 
 function FriendBuilder(user_id, body)
 {
@@ -23,7 +23,7 @@ FriendBuilder.prototype = {
                     {
                         this.extensions.push(
                             {
-                                _id : new ObjectID( ObjectID.prototype.generate() ),
+                                _id : new ObjectID(),
                                 name : extension.name,
                                 type : extension.type,
                                 content : extension.content

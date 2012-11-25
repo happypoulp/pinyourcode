@@ -6,14 +6,16 @@ module.exports = function (app)
 
     db.collection('friends').ensureIndex({user_id : 1}, function (err, result)
     {
-        if ( err ) {
+        if ( err )
+        {
             throw 'Initialization error : Could not create friend collection user_id index'
         }
     });
 
     db.collection('friends').ensureIndex({user_id : 1, fb_id : 1}, {unique : true}, function (err, result)
     {
-        if ( err ) {
+        if ( err )
+        {
             throw 'Initialization error : Could not create friend collection {user_id, fb_id} unique index'
         }
     });

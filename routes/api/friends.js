@@ -42,21 +42,23 @@ module.exports = function (app)
     /////////////////////////////////////////////
     app.get('/friends', api.check, function (req, res)
     {
-        db.collection('friends').find(
-        {
-            user_id : req.facebook.user_id
-        })
-        .toArray(function (err, friends)
-        {
-            if ( err )
+        db
+            .collection('friends')
+            .find(
             {
-                res.json(err, 500);
-            }
-            else
+                user_id : req.facebook.user_id
+            })
+            .toArray(function (err, friends)
             {
-                res.json(friends);
-            }
-        });
+                if ( err )
+                {
+                    res.json(err, 500);
+                }
+                else
+                {
+                    res.json(friends);
+                }
+            });
     });
   
     /////////////////////////////////////////////

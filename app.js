@@ -13,7 +13,8 @@ app.configure(function(){
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.methodOverride());
-    app.use(facebookSession.parseCookie(
+    app.use(
+        facebookSession.parseCookie(
         {
             app_id: process.env.FACEBOOK_APP_ID || '397068970352801',
             secret: process.env.FACEBOOK_SECRET || '6971160015d5c88ecc9d64cbbc4f8844'
@@ -40,6 +41,8 @@ app.configure('production', function(){
 routes.load(app);
 
 // Startin the server
-app.listen(process.env.PORT || 3000, function(){
-    console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen(process.env.PORT || 3000, function()
+{
+    console.log(app);
+    console.log("Express server listening on port %d in %s mode", process.env.PORT || 3000, app.settings.env);
 });

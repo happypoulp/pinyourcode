@@ -1,7 +1,8 @@
 var b64url = require('b64url'),
   crypto = require('crypto');
 
-var FacebookSession = function (options) {
+var FacebookSession = function (options)
+{
 
   var self = this;
 
@@ -9,11 +10,15 @@ var FacebookSession = function (options) {
   this.app_id = this.options.app_id;
   this.secret = this.options.secret;
 
-  this.middleware = function () {
-    return function (req, res, next) {
-      if ( req.cookies["fbsr_" + self.app_id] ) {
+  this.middleware = function ()
+  {
+    return function (req, res, next)
+    {
+      if ( req.cookies["fbsr_" + self.app_id] )
+      {
         req.facebook = self.parse_signed_request(req.cookies["fbsr_" + self.app_id]);
-        if ( req.facebook ) {
+        if ( req.facebook )
+        {
           req.authenticated = true;
         }
       }

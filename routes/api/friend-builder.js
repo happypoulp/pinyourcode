@@ -7,6 +7,7 @@ function FriendBuilder(user_id, body)
     this.body = body;
     this.fb_id = body.fb_id;
     this.extensions = [];
+    this.extension = null;
 }
 
 FriendBuilder.prototype = {
@@ -32,13 +33,19 @@ FriendBuilder.prototype = {
                 }
                 ,this);
             }
+            if (this.body.extension)
+            {
+                this.extension = this.body.extension;
+                this.extension._id = new ObjectID();
+            }
     
             cb(
                 null,
                 {
                     user_id : this.user_id,
                     fb_id : this.fb_id,
-                    extensions : this.extensions
+                    extensions : this.extensions,
+                    extension: this.extension
                 }
             );
         }

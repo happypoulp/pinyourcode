@@ -3,7 +3,7 @@ var express = require('express')
     , routes = require('./routes')
     , facebookSession = require('./middlewares/facebook-session.js');
 
-var app = module.exports = express.createServer();
+var app = module.exports = express();
 
 // Configuration
 app.configure(function(){
@@ -43,6 +43,5 @@ routes.load(app);
 // Startin the server
 app.listen(process.env.PORT || 3000, function()
 {
-    console.log(app);
     console.log("Express server listening on port %d in %s mode", process.env.PORT || 3000, app.settings.env);
 });

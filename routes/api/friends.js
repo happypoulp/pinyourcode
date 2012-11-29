@@ -277,45 +277,40 @@ module.exports = function (app)
     /////////////////////////////////////////////
     app.get('/friends/:fb_id/extensions/:extension_id', api.check, function (req, res)
     {
-        db.collection('friends').get(req.facebook.user_id, req.params.fb_id, function (err, friend)
-        {
-            if ( err )
-            {
-                res.send(err, 500);
-            }
-            else
-            {
-                if ( friend )
+        db
+            .collection('friends')
+            .find
+            (
                 {
-                    var extension = null;
-
-                    if (friend.extensions && friend.extensions.length)
+                    user_id : req.facebook.user_id,
+                    fb_id : req.params.fb_id
+                },
+                {
+                    _id: 0,
+                    extensions: {$elemMatch: {_id: ObjectID.createFromHexString(req.params.extension_id)}}
+                }
+            )
+            .toArray
+            (
+                function(err, results)
+                {
+                    if ( err )
                     {
-                        for (var i = 0, l = friend.extensions.length ; i < l ; i++)
-                        {
-                            if (friend.extensions[i] && friend.extensions[i]._id == req.params.extension_id)
-                            {
-                                extension = friend.extensions[i];
-                                break;
-                            }
-                        }
-                    }
-
-                    if (extension)
-                    {
-                        res.json(extension);
+                        res.send(err, 500);
                     }
                     else
                     {
-                        res.json('No extension found with this id', 404);
+                        if (results && results.length && results[0].extensions)
+                        {
+                            res.json(results[0].extensions[0], 200);
+                        }
+                        else
+                        {
+                            res.json('No document found with this fb_id / extension_id', 404);
+                        }
                     }
                 }
-                else
-                {
-                    res.json('No document found with this fb_id', 404);
-                }
-            }
-        });
+            );
     });
 
     /////////////////////////////////////////////
@@ -456,7 +451,7 @@ module.exports = function (app)
     });
 
     /////////////////////////////////////////////
-    // DELETE A FRIEND
+    // DELETE AN EXTENSION
     /////////////////////////////////////////////
     app.delete('/friends/:fb_id/extensions/:extension_id', api.check, function (req, res)
     {

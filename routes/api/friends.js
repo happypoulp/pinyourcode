@@ -324,7 +324,7 @@ module.exports = function (app)
         {
             if ( err )
             {
-                // Parsing error must be donne first, don't need to hit the db
+                // Parsing error must be done first, don't need to hit the db
                 res.json(err, 400);
             }
             else
@@ -386,68 +386,69 @@ module.exports = function (app)
     /////////////////////////////////////////////
     app.put('/friends/:fb_id/extensions/:extension_id', api.check, function (req, res)
     {
-        // if (!req.body.fb_id) req.body.fb_id = req.params.fb_id;
-        // // Parsing the request body
-        // friend_builder.build(req.facebook.user_id, req.body, function (err, friend)
-        // {
-        //     if ( err )
-        //     {
-        //         // Parsing error must be donne first, don't need to hit the db
-        //         res.json(err, 400);
-        //     }
-        //     else
-        //     {
-        //         // Checking cohesion between document and url
-        //         if ( req.params.fb_id === friend.fb_id )
-        //         {
-        //             db.collection('friends').get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
-        //             {
-        //                 if ( err )
-        //                 {
-        //                     res.send(err, 500);
-        //                 }
-        //                 else
-        //                 {
-        //                     if ( dbFriend )
-        //                     {
-        //                         console.log(friend.extension);
-        //                         // Update only the extensions section
-        //                         db.collection('friends').update(
-        //                         {
-        //                             user_id : req.facebook.user_id,
-        //                             fb_id : dbFriend.fb_id
-        //                         },
-        //                         {
-        //                             '$push' : {extensions : friend.extension}
-        //                             // $set : {extensions : friend.extensions}
-        //                         },
-        //                         function (err, result)
-        //                         {
-        //                             if ( err )
-        //                             {
-        //                                 res.json(err, 400);
-        //                             }
-        //                             else
-        //                             {
-        //                                 // Update dbFriend extensions and send it (manual merging)
-        //                                 dbFriend.extensions = friend.extensions;
-        //                                 res.json(dbFriend);
-        //                             }
-        //                         });
-        //                     }
-        //                     else
-        //                     {
-        //                         res.json('No document found with this fb_id', 404);
-        //                     }
-        //                 }
-        //             });
-        //         }
-        //         else
-        //         {
-        //             res.json("The document's fb_id doesn't match the requested url", 400);
-        //         }
-        //     }
-        // });
+        if (!req.body.fb_id) req.body.fb_id = req.params.fb_id;
+        // Parsing the request body
+        friend_builder.build(req.facebook.user_id, req.body, function (err, friend)
+        {
+            if ( err )
+            {
+                // Parsing error must be done first, don't need to hit the db
+                res.json(err, 400);
+            }
+            else
+            {
+                // Checking cohesion between document and url
+                if ( req.params.fb_id === friend.fb_id )
+                {
+                    db.collection('friends').get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+                    {
+                        if ( err )
+                        {
+                            res.send(err, 500);
+                        }
+                        else
+                        {
+                            if ( dbFriend )
+                            {
+                                friend.extension._id = ObjectID.createFromHexString(req.params.extension_id);
+
+                                db
+                                    .collection('friends')
+                                    .update(
+                                    {
+                                        user_id : req.facebook.user_id,
+                                        fb_id : dbFriend.fb_id,
+                                        'extensions._id': ObjectID.createFromHexString(req.params.extension_id)
+                                    },
+                                    {
+                                        '$set' : {'extensions.$' : friend.extension}
+                                    },
+                                    function (err, result)
+                                    {
+                                        if ( err )
+                                        {
+                                            res.json(err, 400);
+                                        }
+                                        else
+                                        {
+                                            res.json(friend.extension, 200);
+                                        }
+                                    });
+
+                            }
+                            else
+                            {
+                                res.json('No document found with this fb_id', 404);
+                            }
+                        }
+                    });
+                }
+                else
+                {
+                    res.json("The document's fb_id doesn't match the requested url", 400);
+                }
+            }
+        });
     });
 
     /////////////////////////////////////////////

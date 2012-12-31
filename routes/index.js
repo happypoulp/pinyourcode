@@ -1,37 +1,74 @@
-var routes =
+var routes = {};
+
+// Main application routes
+routes['application'] = 
 {
-  '/': function (req, res)
+  'get':
   {
-    res.render(
-      'index',
-      {
-        title : 'I & Co' ,
-        FB_APP_ID : '397068970352801',
-        FB_APP_DOMAIN : 'localhost:3000'
-      }
-    );
+    'index': '/'
+  }
+};
+
+// Friends & extensions api routes
+routes['api'] =
+{
+  'get':
+  {
+    'friend_list': '/friends',
+    'friend_show': '/friends/:fb_id',
+    'extension_list': '/friends/:fb_id/extensions',
+    'extension_show': '/friends/:fb_id/extensions/:extension_id'
   },
-
-  '/test': function (req, res)
+  'post':
   {
-    res.render(
-      'test',
-      {
-        title : 'I & Co' ,
-        FB_APP_ID : '397068970352801',
-        FB_APP_DOMAIN : 'localhost:3000'
-      }
-    );
+    'friend_create': '/friends',
+    'extension_create': '/friends/:fb_id/extensions'
+  },
+  'put':
+  {
+    'friend_update': '/friends/:fb_id',
+    'extension_update': '/friends/:fb_id/extensions/:extension_id'
+  },
+  'delete':
+  {
+    'friend_delete': '/friends/:fb_id',
+    'extension_delete': '/friends/:fb_id/extensions/:extension_id'
   }
-}
+};
 
-exports.load = function (app)
+// Tests routes
+routes['test'] =
 {
-  for (route in routes)
+  'get':
   {
-    app.get(route, routes[route]);
+    'templating': '/templating',
+    'authenticated': '/authenticated'
   }
+};
 
-  require('./auth')(app);
-  require('./api').routes(app);
+module.exports = function(app)
+{
+  for (routesGroupName in routes)
+  {
+    var controller = require('../controllers/' + routesGroupName)
+      , methodGroupedRoutes = routes[routesGroupName];
+
+    controllerInstance = new controller.class();
+
+    if (controller.setup)
+    {
+      controller.setup(app, routes[routesGroupName]);
+    }
+
+    for (method in methodGroupedRoutes)
+    {
+      var methodRoutes = methodGroupedRoutes[method];
+
+      for (action in methodRoutes)
+      {
+        var route = methodRoutes[action];
+        app[method].call(app, route, controllerInstance[action]);
+      }
+    }
+  }
 }

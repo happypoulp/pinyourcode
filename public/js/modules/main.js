@@ -313,9 +313,14 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                 for (var i = 0, l = extensions.length; i < l ; i++)
                 {
                     html += '<div class="extension">';
-                    html += '<div><b>Type</b>: <span>' + extensions[i].type + '</span></div>';
-                    html += '<div><b>Name</b>: <span>' + extensions[i].name + '</span></div>';
-                    html += '<div><b>Content</b>: <span>' + extensions[i].content + '</span></div>';
+
+                    if (extensions[i])
+                    {
+                        html += '<div><b>Type</b>: <span>' + extensions[i].type + '</span></div>';
+                        html += '<div><b>Name</b>: <span>' + extensions[i].name + '</span></div>';
+                        html += '<div><b>Content</b>: <span>' + extensions[i].content + '</span></div>';
+                    }
+
                     html += '</div>';
                 }
                 return html;

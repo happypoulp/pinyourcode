@@ -122,3 +122,9 @@
     margin-top: 30px;
 }
 
+/********************** FRIEND DETAILS **************************/
+
+#friend_details .extension
+{
+    margin: 8px 0;
+}

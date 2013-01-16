@@ -3,6 +3,8 @@
 
 # Node files
 node_modules
+.sass-cache
+public/css/gen/
 
 # IDE files
 *.iml

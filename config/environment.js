@@ -1,7 +1,8 @@
 module.exports = function(app)
 {
     var express = require('express'),
-      rootPath = __dirname + '/..';
+      rootPath = __dirname + '/..',
+      toobusy = require('toobusy');
 
     // Configuration
     app.configure(function()
@@ -10,6 +11,11 @@ module.exports = function(app)
       app.set('view engine', 'jade');
       app.set('view options', { layout: false });
 
+      app.use(function(req, res, next)
+      {
+        if (toobusy()) res.send(503, "I'm busy right now, sorry.");
+        else next();
+      });
       app.use(express.bodyParser());
       app.use(express.cookieParser());
       app.use(express.methodOverride());

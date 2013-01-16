@@ -1,1 +1,4 @@
-sass --watch public/css/sass:public/css/gen
+Compile scss to css:
+
+# sass --watch public/css/sass:public/css/gen
+compass watch .

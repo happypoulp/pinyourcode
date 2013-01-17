@@ -1,3 +1,8 @@
+Install sass & compass:
+
+gem install sass
+gem install compass
+
 Compile scss to css:
 
 # sass --watch public/css/sass:public/css/gen

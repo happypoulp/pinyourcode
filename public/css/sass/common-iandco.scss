@@ -9,22 +9,22 @@
 }
 
 
-body
+.body
 {
     color: #eee;
     padding: 12px;
     overflow-x: hidden;
 }
 
-body,
-header
+.body,
+.header
 {
     background: #222 url(/images/asfalt.png) repeat 0 0;
 }
 
 /********************* HEADER **********************/
 
-header
+.header
 {
     box-shadow: 0 4px 8px #111;
     border-bottom: 1px solid #0C0C0C;

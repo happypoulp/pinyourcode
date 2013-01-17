@@ -27,9 +27,9 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
         {
             $(document)
                 .bind('login_status_updated', $.proxy(this.handlers.facebook.login_status_updated, this))
-                .on('click', '#add_fb_friend', $.proxy(this.handlers.click.add_friend, this))
-                .on('click', '#auth_button', $.proxy(this.handlers.click.fb_button, this))
-                .on('click', '#back_button', $.proxy(this.handlers.click.back_button, this))
+                .on('click', 'button.js-add_fb_friend', $.proxy(this.handlers.click.add_friend, this))
+                .on('click', 'button.js-auth_button', $.proxy(this.handlers.click.fb_button, this))
+                .on('click', 'button.js-back_button', $.proxy(this.handlers.click.back_button, this))
                 .on('mouseup', 'div.fb_friend', $.proxy(this.handlers.click.select_friend, this))
                 .on('keyup', '#add_friend_form input[name="friend_name"]', $.proxy(this.handlers.keyup.friend_search, this))
                 .on('submit', 'form.add_extension_form', $.proxy(this.handlers.submit.add_extension, this))
@@ -56,8 +56,8 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                 ,back_button: function(ev)
                 {
                     $('#pages').removeClass('show_friend_details');
-                    $('#back_button').hide();
-                    $('#add_fb_friend').show();
+                    $('button.js-back_button').hide();
+                    $('button.js-add_fb_friend').show();
                 }
                 ,select_friend: function(ev)
                 {
@@ -66,8 +66,8 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
                     $('#friend_details_inner').html(friend_source.html()).parent().attr('data-uid', friend_id);
                     $('form.add_extension_form').attr('action', '/friends/' + friend_id);
                     $('#pages').addClass('show_friend_details');
-                    $('#back_button').show();
-                    $('#add_fb_friend').hide();
+                    $('button.js-back_button').show();
+                    $('button.js-add_fb_friend').hide();
                     window.scrollTo(0,0);
 
                     for (var i = 0 , l = this.friends.length ; i < l ; i++)
@@ -333,7 +333,7 @@ require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)
         {
             if (!this.fbButton)
             {
-                this.fbButton = $('#auth_button');
+                this.fbButton = $('button.js-auth_button');
             }
             return this.fbButton;
         },

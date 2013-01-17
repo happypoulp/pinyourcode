@@ -21,10 +21,10 @@ html.no-js(lang='en')
       window.FB_APP_ID = "#{FB_APP_ID}";
       window.FB_APP_DOMAIN = "#{FB_APP_DOMAIN}";
     block js
-  body.body
+  body.body.background
     div#fb-root
     include includes/header
-    div#page_content
+    div#page_content.page_content
       block content
     //- change UA-XXXXX-X to your id and outdent the following:
     //-

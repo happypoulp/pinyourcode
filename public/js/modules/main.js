@@ -2,12 +2,17 @@ require.config({
     paths: {
         underscore: '/js/libs/underscore-min',
         backbone: '/js/libs/backbone-min'
+    },
+    shim: {
+        'backbone': {
+            deps: ['underscore'],
+            exports: 'Backbone'
+        }
     }
 });
 
 require(['application'], function(Application)
 {
-    console.log('Before Application initialize');
     Application.initialize();
 });
 

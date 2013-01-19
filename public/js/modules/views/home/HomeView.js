@@ -1,24 +1,51 @@
 define([
   'jquery',
-  'underscore',
-  'backbone'
-  // 'views/sidebar/SidebarView',
-  // 'text!templates/home/homeTemplate.html'
-], function($, _, Backbone)
+  'backbone',
+  'facebook',
+  'collections/friends',
+  '/js/modules/templates/list.js'
+], function($, Backbone, Facebook, FriendsCollection, ListTemplate)
 {
-    console.log(Backbone);
     var HomeView = Backbone.View.extend(
     {
-        el: $("#page"),
+        el: $("#friends_list"),
     
         render: function()
         {
-          // $('.menu li').removeClass('active');
-          // $('.menu li a[href="#"]').parent().addClass('active');
-          // this.$el.html(homeTemplate);
-    
-          // var sidebarView = new SidebarView();
-          // sidebarView.render();
+            var that = this,
+                friends = new FriendsCollection();
+
+            friends.fetch(
+            {
+                success: function(friends)
+                {
+                    $(that.el).html(
+                        ListTemplate(
+                            {
+                              friends: friends.models
+                            }
+                        )
+                    );
+                    Facebook.render(that.el);
+
+                    var friends_ids = [];
+                    for (var i = friends.models.length - 1; i >= 0; i--)
+                    {
+                        friends_ids.push(friends.models[i].get('fb_id'));
+                    }
+                    Facebook.getFriendsInfos(
+                        friends_ids,
+                        function(result)
+                        {
+                            for (var i = result.length - 1; i >= 0; i--)
+                            {
+                                var friend_element = $('li[data-uid="' + result[i].uid + '"]');
+                                friend_element.find('span.name').html(result[i].name);
+                            }
+                        }
+                    );
+                }
+            });
         }
     });
 

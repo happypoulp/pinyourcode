@@ -164,6 +164,6 @@ define(['jquery'], function($)
         }
     };
 
-    return Facebook;
+    return new Facebook();
 });
 

@@ -3,6 +3,7 @@ var express = require('express')
 
 require('./config/locals.js')(app);
 require('./config/environment.js')(app);
+require('./config/templates.js')(app);
 require('./config/db.js')(app);
 require('./routes')(app);
 // console.log(app.routes);

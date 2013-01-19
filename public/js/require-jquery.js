@@ -1,5 +1,5 @@
 /** vim: et:ts=4:sw=4:sts=4
- * @license RequireJS 2.1.0 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
+ * @license RequireJS 2.1.2 Copyright (c) 2010-2012, The Dojo Foundation All Rights Reserved.
  * Available via the MIT or new BSD license.
  * see: http://github.com/jrburke/requirejs for details
  */
@@ -12,7 +12,7 @@ var requirejs, require, define;
 (function (global) {
     var req, s, head, baseElement, dataMain, src,
         interactiveScript, currentlyAddingScript, mainScript, subPath,
-        version = '2.1.0',
+        version = '2.1.2',
         commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg,
         cjsRequireRegExp = /[^.]\s*require\s*\(\s*["']([^'"\s]+)["']\s*\)/g,
         jsSuffixRegExp = /\.js$/,
@@ -81,6 +81,10 @@ var requirejs, require, define;
         return hasOwn.call(obj, prop);
     }
 
+    function getOwn(obj, prop) {
+        return hasProp(obj, prop) && obj[prop];
+    }
+
     /**
      * Cycles over properties in an object and calls a function for each
      * property value. If the function returns a truthy value, then the
@@ -89,7 +93,7 @@ var requirejs, require, define;
     function eachProp(obj, func) {
         var prop;
         for (prop in obj) {
-            if (obj.hasOwnProperty(prop)) {
+            if (hasProp(obj, prop)) {
                 if (func(obj[prop], prop)) {
                     break;
                 }
@@ -100,9 +104,6 @@ var requirejs, require, define;
     /**
      * Simple function to mix in properties from source into target,
      * but only if target does not already have a property of the same name.
-     * This is not robust in IE for transferring methods that match
-     * Object.prototype names, but the uses of mixin here seem unlikely to
-     * trigger a problem related to that.
      */
     function mixin(target, source, force, deepStringMixin) {
         if (source) {
@@ -195,7 +196,9 @@ var requirejs, require, define;
                 baseUrl: './',
                 paths: {},
                 pkgs: {},
-                shim: {}
+                shim: {},
+                map: {},
+                config: {}
             },
             registry = {},
             undefEvents = {},
@@ -262,7 +265,7 @@ var requirejs, require, define;
                 //otherwise, assume it is a top-level require that will
                 //be relative to baseUrl in the end.
                 if (baseName) {
-                    if (config.pkgs[baseName]) {
+                    if (getOwn(config.pkgs, baseName)) {
                         //If the baseName is a package name, then just treat it as one
                         //name to concat the name with.
                         normalizedBaseParts = baseParts = [baseName];
@@ -280,7 +283,7 @@ var requirejs, require, define;
 
                     //Some use of packages may use a . path to reference the
                     //'main' module name, so normalize for that.
-                    pkgConfig = config.pkgs[(pkgName = name[0])];
+                    pkgConfig = getOwn(config.pkgs, (pkgName = name[0]));
                     name = name.join('/');
                     if (pkgConfig && name === pkgName + '/' + pkgConfig.main) {
                         name = pkgName;
@@ -303,12 +306,12 @@ var requirejs, require, define;
                         //Find the longest baseName segment match in the config.
                         //So, do joins on the biggest to smallest lengths of baseParts.
                         for (j = baseParts.length; j > 0; j -= 1) {
-                            mapValue = map[baseParts.slice(0, j).join('/')];
+                            mapValue = getOwn(map, baseParts.slice(0, j).join('/'));
 
                             //baseName segment has config, find if it has one for
                             //this name.
                             if (mapValue) {
-                                mapValue = mapValue[nameSegment];
+                                mapValue = getOwn(mapValue, nameSegment);
                                 if (mapValue) {
                                     //Match, update name to the new value.
                                     foundMap = mapValue;
@@ -326,8 +329,8 @@ var requirejs, require, define;
                     //Check for a star map match, but just hold on to it,
                     //if there is a shorter segment match later in a matching
                     //config, then favor over this star map.
-                    if (!foundStarMap && starMap && starMap[nameSegment]) {
-                        foundStarMap = starMap[nameSegment];
+                    if (!foundStarMap && starMap && getOwn(starMap, nameSegment)) {
+                        foundStarMap = getOwn(starMap, nameSegment);
                         starI = i;
                     }
                 }
@@ -359,7 +362,7 @@ var requirejs, require, define;
         }
 
         function hasPathFallback(id) {
-            var pathConfig = config.paths[id];
+            var pathConfig = getOwn(config.paths, id);
             if (pathConfig && isArray(pathConfig) && pathConfig.length > 1) {
                 removeScript(id);
                 //Pop off the first array value, since it failed, and
@@ -420,7 +423,7 @@ var requirejs, require, define;
 
             if (prefix) {
                 prefix = normalize(prefix, parentName, applyMap);
-                pluginModule = defined[prefix];
+                pluginModule = getOwn(defined, prefix);
             }
 
             //Account for relative paths if there is a base name.
@@ -473,7 +476,7 @@ var requirejs, require, define;
 
         function getModule(depMap) {
             var id = depMap.id,
-                mod = registry[id];
+                mod = getOwn(registry, id);
 
             if (!mod) {
                 mod = registry[id] = new context.Module(depMap);
@@ -484,7 +487,7 @@ var requirejs, require, define;
 
         function on(depMap, name, fn) {
             var id = depMap.id,
-                mod = registry[id];
+                mod = getOwn(registry, id);
 
             if (hasProp(defined, id) &&
                     (!mod || mod.defineEmitComplete)) {
@@ -504,7 +507,7 @@ var requirejs, require, define;
                 errback(err);
             } else {
                 each(ids, function (id) {
-                    var mod = registry[id];
+                    var mod = getOwn(registry, id);
                     if (mod) {
                         //Set error on module, so it skips timeout checks.
                         mod.error = err;
@@ -563,7 +566,7 @@ var requirejs, require, define;
                         id: mod.map.id,
                         uri: mod.map.url,
                         config: function () {
-                            return (config.config && config.config[mod.map.id]) || {};
+                            return (config.config && getOwn(config.config, mod.map.id)) || {};
                         },
                         exports: defined[mod.map.id]
                     });
@@ -585,14 +588,14 @@ var requirejs, require, define;
                 traced[id] = true;
                 each(mod.depMaps, function (depMap, i) {
                     var depId = depMap.id,
-                        dep = registry[depId];
+                        dep = getOwn(registry, depId);
 
                     //Only force things that have not completed
                     //being defined, so still in the registry,
                     //and only if it has not been matched up
                     //in the module already.
                     if (dep && !mod.depMatched[i] && !processed[depId]) {
-                        if (traced[depId]) {
+                        if (getOwn(traced, depId)) {
                             mod.defineDep(i, defined[depId]);
                             mod.check(); //pass false?
                         } else {
@@ -692,9 +695,9 @@ var requirejs, require, define;
         }
 
         Module = function (map) {
-            this.events = undefEvents[map.id] || {};
+            this.events = getOwn(undefEvents, map.id) || {};
             this.map = map;
-            this.shim = config.shim[map.id];
+            this.shim = getOwn(config.shim, map.id);
             this.depExports = [];
             this.depMaps = [];
             this.depMatched = [];
@@ -941,7 +944,7 @@ var requirejs, require, define;
                                 });
                             }));
 
-                        normalizedMod = registry[normalizedMap.id];
+                        normalizedMod = getOwn(registry, normalizedMap.id);
                         if (normalizedMod) {
                             //Mark this as a dependency for this plugin, so it
                             //can be traced for cycles.
@@ -1006,6 +1009,11 @@ var requirejs, require, define;
                         //it.
                         getModule(moduleMap);
 
+                        //Transfer any config to this other module.
+                        if (hasProp(config.config, id)) {
+                            config.config[moduleName] = config.config[id];
+                        }
+
                         try {
                             req.exec(text);
                         } catch (e) {
@@ -1061,7 +1069,7 @@ var requirejs, require, define;
                                                !this.skipMap);
                         this.depMaps[i] = depMap;
 
-                        handler = handlers[depMap.id];
+                        handler = getOwn(handlers, depMap.id);
 
                         if (handler) {
                             this.depExports[i] = handler(this);
@@ -1086,7 +1094,7 @@ var requirejs, require, define;
                     //Skip special modules like 'require', 'exports', 'module'
                     //Also, don't call enable if it is already enabled,
                     //important in circular dependency cases.
-                    if (!handlers[id] && mod && !mod.enabled) {
+                    if (!hasProp(handlers, id) && mod && !mod.enabled) {
                         context.enable(depMap, this);
                     }
                 }));
@@ -1094,7 +1102,7 @@ var requirejs, require, define;
                 //Enable each plugin that is used in
                 //a dependency
                 eachProp(this.pluginMaps, bind(this, function (pluginMap) {
-                    var mod = registry[pluginMap.id];
+                    var mod = getOwn(registry, pluginMap.id);
                     if (mod && !mod.enabled) {
                         context.enable(pluginMap, this);
                     }
@@ -1127,7 +1135,10 @@ var requirejs, require, define;
         };
 
         function callGetModule(args) {
-            getModule(makeModuleMap(args[0], null, true)).init(args[1], args[2]);
+            //Skip modules already defined.
+            if (!hasProp(defined, args[0])) {
+                getModule(makeModuleMap(args[0], null, true)).init(args[1], args[2]);
+            }
         }
 
         function removeListener(node, func, name, ieName) {
@@ -1167,6 +1178,25 @@ var requirejs, require, define;
             };
         }
 
+        function intakeDefines() {
+            var args;
+
+            //Any defined modules in the global queue, intake them now.
+            takeGlobalQueue();
+
+            //Make sure any remaining defQueue items get properly processed.
+            while (defQueue.length) {
+                args = defQueue.shift();
+                if (args[0] === null) {
+                    return onError(makeError('mismatch', 'Mismatched anonymous define() module: ' + args[args.length - 1]));
+                } else {
+                    //args are id, deps, factory. Should be normalized by the
+                    //define() function.
+                    callGetModule(args);
+                }
+            }
+        }
+
         context = {
             config: config,
             contextName: contextName,
@@ -1194,20 +1224,23 @@ var requirejs, require, define;
                 //they are additive.
                 var pkgs = config.pkgs,
                     shim = config.shim,
-                    paths = config.paths,
-                    map = config.map;
+                    objs = {
+                        paths: true,
+                        config: true,
+                        map: true
+                    };
 
-                //Mix in the config values, favoring the new values over
-                //existing ones in context.config.
-                mixin(config, cfg, true);
-
-                //Merge paths.
-                config.paths = mixin(paths, cfg.paths, true);
-
-                //Merge map
-                if (cfg.map) {
-                    config.map = mixin(map || {}, cfg.map, true, true);
-                }
+                eachProp(cfg, function (value, prop) {
+                    if (objs[prop]) {
+                        if (prop === 'map') {
+                            mixin(config[prop], value, true, true);
+                        } else {
+                            mixin(config[prop], value, true);
+                        }
+                    } else {
+                        config[prop] = value;
+                    }
+                });
 
                 //Merge shim
                 if (cfg.shim) {
@@ -1218,7 +1251,7 @@ var requirejs, require, define;
                                 deps: value
                             };
                         }
-                        if (value.exports && !value.exportsFn) {
+                        if ((value.exports || value.init) && !value.exportsFn) {
                             value.exportsFn = context.makeShimExports(value);
                         }
                         shim[id] = value;
@@ -1280,7 +1313,7 @@ var requirejs, require, define;
                     if (value.init) {
                         ret = value.init.apply(global, arguments);
                     }
-                    return ret || getGlobal(value.exports);
+                    return ret || (value.exports && getGlobal(value.exports));
                 }
                 return fn;
             },
@@ -1288,8 +1321,8 @@ var requirejs, require, define;
             makeRequire: function (relMap, options) {
                 options = options || {};
 
-                function require(deps, callback, errback) {
-                    var id, map, requireMod, args;
+                function localRequire(deps, callback, errback) {
+                    var id, map, requireMod;
 
                     if (options.enableBuildCallback && callback && isFunction(callback)) {
                         callback.__requireJsBuild = true;
@@ -1304,7 +1337,7 @@ var requirejs, require, define;
                         //If require|exports|module are requested, get the
                         //value for them from the special handlers. Caveat:
                         //this only works while module is being defined.
-                        if (relMap && handlers[deps]) {
+                        if (relMap && hasProp(handlers, deps)) {
                             return handlers[deps](registry[relMap.id]);
                         }
 
@@ -1328,23 +1361,15 @@ var requirejs, require, define;
                         return defined[id];
                     }
 
-                    //Any defined modules in the global queue, intake them now.
-                    takeGlobalQueue();
-
-                    //Make sure any remaining defQueue items get properly processed.
-                    while (defQueue.length) {
-                        args = defQueue.shift();
-                        if (args[0] === null) {
-                            return onError(makeError('mismatch', 'Mismatched anonymous define() module: ' + args[args.length - 1]));
-                        } else {
-                            //args are id, deps, factory. Should be normalized by the
-                            //define() function.
-                            callGetModule(args);
-                        }
-                    }
+                    //Grab defines waiting in the global queue.
+                    intakeDefines();
 
                     //Mark all the dependencies as needing to be loaded.
                     context.nextTick(function () {
+                        //Some defines could have been added since the
+                        //require call, collect them.
+                        intakeDefines();
+
                         requireMod = getModule(makeModuleMap(null, relMap));
 
                         //Store if map config should be applied to this require
@@ -1358,10 +1383,10 @@ var requirejs, require, define;
                         checkLoaded();
                     });
 
-                    return require;
+                    return localRequire;
                 }
 
-                mixin(require, {
+                mixin(localRequire, {
                     isBrowser: isBrowser,
 
                     /**
@@ -1394,13 +1419,13 @@ var requirejs, require, define;
 
                 //Only allow undef on top level require calls
                 if (!relMap) {
-                    require.undef = function (id) {
+                    localRequire.undef = function (id) {
                         //Bind any waiting define() calls to this context,
                         //fix for #408
                         takeGlobalQueue();
 
                         var map = makeModuleMap(id, relMap, true),
-                            mod = registry[id];
+                            mod = getOwn(registry, id);
 
                         delete defined[id];
                         delete urlFetched[map.url];
@@ -1419,7 +1444,7 @@ var requirejs, require, define;
                     };
                 }
 
-                return require;
+                return localRequire;
             },
 
             /**
@@ -1428,7 +1453,7 @@ var requirejs, require, define;
              * used by the optimizer.
              */
             enable: function (depMap, parent) {
-                var mod = registry[depMap.id];
+                var mod = getOwn(registry, depMap.id);
                 if (mod) {
                     getModule(depMap).enable();
                 }
@@ -1442,7 +1467,7 @@ var requirejs, require, define;
              */
             completeLoad: function (moduleName) {
                 var found, args, mod,
-                    shim = config.shim[moduleName] || {},
+                    shim = getOwn(config.shim, moduleName) || {},
                     shExports = shim.exports;
 
                 takeGlobalQueue();
@@ -1468,9 +1493,9 @@ var requirejs, require, define;
 
                 //Do this after the cycle of callGetModule in case the result
                 //of those calls/init calls changes the registry.
-                mod = registry[moduleName];
+                mod = getOwn(registry, moduleName);
 
-                if (!found && !defined[moduleName] && mod && !mod.inited) {
+                if (!found && !hasProp(defined, moduleName) && mod && !mod.inited) {
                     if (config.enforceDefine && (!shExports || !getGlobal(shExports))) {
                         if (hasPathFallback(moduleName)) {
                             return;
@@ -1521,8 +1546,8 @@ var requirejs, require, define;
                     //and work up from it.
                     for (i = syms.length; i > 0; i -= 1) {
                         parentModule = syms.slice(0, i).join('/');
-                        pkg = pkgs[parentModule];
-                        parentPath = paths[parentModule];
+                        pkg = getOwn(pkgs, parentModule);
+                        parentPath = getOwn(paths, parentModule);
                         if (parentPath) {
                             //If an array, it means there are a few choices,
                             //Choose the one that is desired
@@ -1647,7 +1672,7 @@ var requirejs, require, define;
             contextName = config.context;
         }
 
-        context = contexts[contextName];
+        context = getOwn(contexts, contextName);
         if (!context) {
             context = contexts[contextName] = req.s.newContext(contextName);
         }
@@ -1967,7 +1992,7 @@ var requirejs, require, define;
     req(cfg);
 }(this));
 /*!
- * jQuery JavaScript Library v1.8.2
+ * jQuery JavaScript Library v1.8.3
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -1977,7 +2002,7 @@ var requirejs, require, define;
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: Thu Sep 20 2012 21:13:05 GMT-0400 (Eastern Daylight Time)
+ * Date: Tue Nov 13 2012 08:20:33 GMT-0500 (Eastern Standard Time)
  */
 (function( window, undefined ) {
 var
@@ -2154,7 +2179,7 @@ jQuery.fn = jQuery.prototype = {
 	selector: "",
 
 	// The current version of jQuery being used
-	jquery: "1.8.2",
+	jquery: "1.8.3",
 
 	// The default length of a jQuery object is 0
 	length: 0,
@@ -2967,8 +2992,10 @@ jQuery.Callbacks = function( options ) {
 					(function add( args ) {
 						jQuery.each( args, function( _, arg ) {
 							var type = jQuery.type( arg );
-							if ( type === "function" && ( !options.unique || !self.has( arg ) ) ) {
-								list.push( arg );
+							if ( type === "function" ) {
+								if ( !options.unique || !self.has( arg ) ) {
+									list.push( arg );
+								}
 							} else if ( arg && arg.length && type !== "string" ) {
 								// Inspect recursively
 								add( arg );
@@ -3221,24 +3248,23 @@ jQuery.support = (function() {
 		clickFn,
 		div = document.createElement("div");
 
-	// Preliminary tests
+	// Setup
 	div.setAttribute( "className", "t" );
 	div.innerHTML = "  <link/><table></table><a href='/a'>a</a><input type='checkbox'/>";
 
+	// Support tests won't run in some limited or non-browser environments
 	all = div.getElementsByTagName("*");
 	a = div.getElementsByTagName("a")[ 0 ];
-	a.style.cssText = "top:1px;float:left;opacity:.5";
-
-	// Can't get basic test support
-	if ( !all || !all.length ) {
+	if ( !all || !a || !all.length ) {
 		return {};
 	}
 
-	// First batch of supports tests
+	// First batch of tests
 	select = document.createElement("select");
 	opt = select.appendChild( document.createElement("option") );
 	input = div.getElementsByTagName("input")[ 0 ];
 
+	a.style.cssText = "top:1px;float:left;opacity:.5";
 	support = {
 		// IE strips leading whitespace when .innerHTML is used
 		leadingWhitespace: ( div.firstChild.nodeType === 3 ),
@@ -3280,7 +3306,7 @@ jQuery.support = (function() {
 		// Test setAttribute on camelCase class. If it works, we need attrFixes when doing get/setAttribute (ie6/7)
 		getSetAttribute: div.className !== "t",
 
-		// Tests for enctype support on a form(#6743)
+		// Tests for enctype support on a form (#6743)
 		enctype: !!document.createElement("form").enctype,
 
 		// Makes sure cloning an html5 element does not cause problems
@@ -4185,26 +4211,25 @@ jQuery.extend({
 		},
 		select: {
 			get: function( elem ) {
-				var value, i, max, option,
-					index = elem.selectedIndex,
-					values = [],
+				var value, option,
 					options = elem.options,
-					one = elem.type === "select-one";
-
-				// Nothing was selected
-				if ( index < 0 ) {
-					return null;
-				}
+					index = elem.selectedIndex,
+					one = elem.type === "select-one" || index < 0,
+					values = one ? null : [],
+					max = one ? index + 1 : options.length,
+					i = index < 0 ?
+						max :
+						one ? index : 0;
 
 				// Loop through all the selected options
-				i = one ? index : 0;
-				max = one ? index + 1 : options.length;
 				for ( ; i < max; i++ ) {
 					option = options[ i ];
 
-					// Don't return options that are disabled or in a disabled optgroup
-					if ( option.selected && (jQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null) &&
-							(!option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" )) ) {
+					// oldIE doesn't update selected after form reset (#2551)
+					if ( ( option.selected || i === index ) &&
+							// Don't return options that are disabled or in a disabled optgroup
+							( jQuery.support.optDisabled ? !option.disabled : option.getAttribute("disabled") === null ) &&
+							( !option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
 
 						// Get the specific value for the option
 						value = jQuery( option ).val();
@@ -4217,11 +4242,6 @@ jQuery.extend({
 						// Multi-Selects return an array
 						values.push( value );
 					}
-				}
-
-				// Fixes Bug #2551 -- select.val() broken in IE after form.reset()
-				if ( one && !values.length && options.length ) {
-					return jQuery( options[ index ] ).val();
 				}
 
 				return values;
@@ -5201,7 +5221,7 @@ jQuery.removeEvent = document.removeEventListener ?
 
 		if ( elem.detachEvent ) {
 
-			// #8545, #7054, preventing memory leaks for custom events in IE6-8 –
+			// #8545, #7054, preventing memory leaks for custom events in IE6-8
 			// detachEvent needed property on element, by name of that event, to properly expose it to GC
 			if ( typeof elem[ name ] === "undefined" ) {
 				elem[ name ] = null;
@@ -5693,7 +5713,8 @@ var cachedruns,
 				delete cache[ keys.shift() ];
 			}
 
-			return (cache[ key ] = value);
+			// Retrieve with (key + " ") to avoid collision with native Object.prototype properties (see Issue #157)
+			return (cache[ key + " " ] = value);
 		}, cache );
 	},
 
@@ -6227,13 +6248,13 @@ Expr = Sizzle.selectors = {
 		},
 
 		"CLASS": function( className ) {
-			var pattern = classCache[ expando ][ className ];
-			if ( !pattern ) {
-				pattern = classCache( className, new RegExp("(^|" + whitespace + ")" + className + "(" + whitespace + "|$)") );
-			}
-			return function( elem ) {
-				return pattern.test( elem.className || (typeof elem.getAttribute !== strundefined && elem.getAttribute("class")) || "" );
-			};
+			var pattern = classCache[ expando ][ className + " " ];
+
+			return pattern ||
+				(pattern = new RegExp( "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)" )) &&
+				classCache( className, function( elem ) {
+					return pattern.test( elem.className || (typeof elem.getAttribute !== strundefined && elem.getAttribute("class")) || "" );
+				});
 		},
 
 		"ATTR": function( name, operator, check ) {
@@ -6479,7 +6500,7 @@ Expr = Sizzle.selectors = {
 
 		"focus": function( elem ) {
 			var doc = elem.ownerDocument;
-			return elem === doc.activeElement && (!doc.hasFocus || doc.hasFocus()) && !!(elem.type || elem.href);
+			return elem === doc.activeElement && (!doc.hasFocus || doc.hasFocus()) && !!(elem.type || elem.href || ~elem.tabIndex);
 		},
 
 		"active": function( elem ) {
@@ -6487,11 +6508,11 @@ Expr = Sizzle.selectors = {
 		},
 
 		// Positional types
-		"first": createPositionalPseudo(function( matchIndexes, length, argument ) {
+		"first": createPositionalPseudo(function() {
 			return [ 0 ];
 		}),
 
-		"last": createPositionalPseudo(function( matchIndexes, length, argument ) {
+		"last": createPositionalPseudo(function( matchIndexes, length ) {
 			return [ length - 1 ];
 		}),
 
@@ -6499,14 +6520,14 @@ Expr = Sizzle.selectors = {
 			return [ argument < 0 ? argument + length : argument ];
 		}),
 
-		"even": createPositionalPseudo(function( matchIndexes, length, argument ) {
+		"even": createPositionalPseudo(function( matchIndexes, length ) {
 			for ( var i = 0; i < length; i += 2 ) {
 				matchIndexes.push( i );
 			}
 			return matchIndexes;
 		}),
 
-		"odd": createPositionalPseudo(function( matchIndexes, length, argument ) {
+		"odd": createPositionalPseudo(function( matchIndexes, length ) {
 			for ( var i = 1; i < length; i += 2 ) {
 				matchIndexes.push( i );
 			}
@@ -6627,7 +6648,9 @@ baseHasDuplicate = !hasDuplicate;
 // Document sorting and removing duplicates
 Sizzle.uniqueSort = function( results ) {
 	var elem,
-		i = 1;
+		duplicates = [],
+		i = 1,
+		j = 0;
 
 	hasDuplicate = baseHasDuplicate;
 	results.sort( sortOrder );
@@ -6635,8 +6658,11 @@ Sizzle.uniqueSort = function( results ) {
 	if ( hasDuplicate ) {
 		for ( ; (elem = results[i]); i++ ) {
 			if ( elem === results[ i - 1 ] ) {
-				results.splice( i--, 1 );
+				j = duplicates.push( i );
 			}
+		}
+		while ( j-- ) {
+			results.splice( duplicates[ j ], 1 );
 		}
 	}
 
@@ -6648,8 +6674,9 @@ Sizzle.error = function( msg ) {
 };
 
 function tokenize( selector, parseOnly ) {
-	var matched, match, tokens, type, soFar, groups, preFilters,
-		cached = tokenCache[ expando ][ selector ];
+	var matched, match, tokens, type,
+		soFar, groups, preFilters,
+		cached = tokenCache[ expando ][ selector + " " ];
 
 	if ( cached ) {
 		return parseOnly ? 0 : cached.slice( 0 );
@@ -6664,7 +6691,8 @@ function tokenize( selector, parseOnly ) {
 		// Comma and first run
 		if ( !matched || (match = rcomma.exec( soFar )) ) {
 			if ( match ) {
-				soFar = soFar.slice( match[0].length );
+				// Don't consume trailing commas as valid
+				soFar = soFar.slice( match[0].length ) || soFar;
 			}
 			groups.push( tokens = [] );
 		}
@@ -6683,8 +6711,7 @@ function tokenize( selector, parseOnly ) {
 		// Filters
 		for ( type in Expr.filter ) {
 			if ( (match = matchExpr[ type ].exec( soFar )) && (!preFilters[ type ] ||
-				// The last two arguments here are (context, xml) for backCompat
-				(match = preFilters[ type ]( match, document, true ))) ) {
+				(match = preFilters[ type ]( match ))) ) {
 
 				tokens.push( matched = new Token( match.shift() ) );
 				soFar = soFar.slice( matched.length );
@@ -6804,18 +6831,13 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 		postFinder = setMatcher( postFinder, postSelector );
 	}
 	return markFunction(function( seed, results, context, xml ) {
-		// Positional selectors apply to seed elements, so it is invalid to follow them with relative ones
-		if ( seed && postFinder ) {
-			return;
-		}
-
-		var i, elem, postFilterIn,
+		var temp, i, elem,
 			preMap = [],
 			postMap = [],
 			preexisting = results.length,
 
 			// Get initial elements from seed or context
-			elems = seed || multipleContexts( selector || "*", context.nodeType ? [ context ] : context, [], seed ),
+			elems = seed || multipleContexts( selector || "*", context.nodeType ? [ context ] : context, [] ),
 
 			// Prefilter to get matcher input, preserving a map for seed-results synchronization
 			matcherIn = preFilter && ( seed || !selector ) ?
@@ -6840,27 +6862,45 @@ function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postS
 
 		// Apply postFilter
 		if ( postFilter ) {
-			postFilterIn = condense( matcherOut, postMap );
-			postFilter( postFilterIn, [], context, xml );
+			temp = condense( matcherOut, postMap );
+			postFilter( temp, [], context, xml );
 
 			// Un-match failing elements by moving them back to matcherIn
-			i = postFilterIn.length;
+			i = temp.length;
 			while ( i-- ) {
-				if ( (elem = postFilterIn[i]) ) {
+				if ( (elem = temp[i]) ) {
 					matcherOut[ postMap[i] ] = !(matcherIn[ postMap[i] ] = elem);
 				}
 			}
 		}
 
-		// Keep seed and results synchronized
 		if ( seed ) {
-			// Ignore postFinder because it can't coexist with seed
-			i = preFilter && matcherOut.length;
-			while ( i-- ) {
-				if ( (elem = matcherOut[i]) ) {
-					seed[ preMap[i] ] = !(results[ preMap[i] ] = elem);
+			if ( postFinder || preFilter ) {
+				if ( postFinder ) {
+					// Get the final matcherOut by condensing this intermediate into postFinder contexts
+					temp = [];
+					i = matcherOut.length;
+					while ( i-- ) {
+						if ( (elem = matcherOut[i]) ) {
+							// Restore matcherIn since elem is not yet a final match
+							temp.push( (matcherIn[i] = elem) );
+						}
+					}
+					postFinder( null, (matcherOut = []), temp, xml );
+				}
+
+				// Move matched elements from seed to results to keep them synchronized
+				i = matcherOut.length;
+				while ( i-- ) {
+					if ( (elem = matcherOut[i]) &&
+						(temp = postFinder ? indexOf.call( seed, elem ) : preMap[i]) > -1 ) {
+
+						seed[temp] = !(results[temp] = elem);
+					}
 				}
 			}
+
+		// Add elements to results, through postFinder if defined
 		} else {
 			matcherOut = condense(
 				matcherOut === results ?
@@ -6901,7 +6941,6 @@ function matcherFromTokens( tokens ) {
 		if ( (matcher = Expr.relative[ tokens[i].type ]) ) {
 			matchers = [ addCombinator( elementMatcher( matchers ), matcher ) ];
 		} else {
-			// The concatenated values are (context, xml) for backCompat
 			matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].matches );
 
 			// Return special upon seeing a positional matcher
@@ -7030,7 +7069,7 @@ compile = Sizzle.compile = function( selector, group /* Internal Use Only */ ) {
 	var i,
 		setMatchers = [],
 		elementMatchers = [],
-		cached = compilerCache[ expando ][ selector ];
+		cached = compilerCache[ expando ][ selector + " " ];
 
 	if ( !cached ) {
 		// Generate a function of recursive functions that can be used to check each element
@@ -7053,11 +7092,11 @@ compile = Sizzle.compile = function( selector, group /* Internal Use Only */ ) {
 	return cached;
 };
 
-function multipleContexts( selector, contexts, results, seed ) {
+function multipleContexts( selector, contexts, results ) {
 	var i = 0,
 		len = contexts.length;
 	for ( ; i < len; i++ ) {
-		Sizzle( selector, contexts[i], results, seed );
+		Sizzle( selector, contexts[i], results );
 	}
 	return results;
 }
@@ -7135,15 +7174,14 @@ if ( document.querySelectorAll ) {
 			rescape = /'|\\/g,
 			rattributeQuotes = /\=[\x20\t\r\n\f]*([^'"\]]*)[\x20\t\r\n\f]*\]/g,
 
-			// qSa(:focus) reports false when true (Chrome 21),
+			// qSa(:focus) reports false when true (Chrome 21), no need to also add to buggyMatches since matches checks buggyQSA
 			// A support test would require too much code (would include document ready)
-			rbuggyQSA = [":focus"],
+			rbuggyQSA = [ ":focus" ],
 
-			// matchesSelector(:focus) reports false when true (Chrome 21),
 			// matchesSelector(:active) reports false when true (IE9/Opera 11.5)
 			// A support test would require too much code (would include document ready)
 			// just skip matchesSelector for :active
-			rbuggyMatches = [ ":active", ":focus" ],
+			rbuggyMatches = [ ":active" ],
 			matches = docElem.matchesSelector ||
 				docElem.mozMatchesSelector ||
 				docElem.webkitMatchesSelector ||
@@ -7197,7 +7235,7 @@ if ( document.querySelectorAll ) {
 			// Only use querySelectorAll when not filtering,
 			// when this is not xml,
 			// and when no QSA bugs apply
-			if ( !seed && !xml && (!rbuggyQSA || !rbuggyQSA.test( selector )) ) {
+			if ( !seed && !xml && !rbuggyQSA.test( selector ) ) {
 				var groups, i,
 					old = true,
 					nid = expando,
@@ -7266,7 +7304,7 @@ if ( document.querySelectorAll ) {
 				expr = expr.replace( rattributeQuotes, "='$1']" );
 
 				// rbuggyMatches always contains :active, so no need for an existence check
-				if ( !isXML( elem ) && !rbuggyMatches.test( expr ) && (!rbuggyQSA || !rbuggyQSA.test( expr )) ) {
+				if ( !isXML( elem ) && !rbuggyMatches.test( expr ) && !rbuggyQSA.test( expr ) ) {
 					try {
 						var ret = matches.call( elem, expr );
 
@@ -8501,7 +8539,7 @@ var curCSS, iframe, iframeDoc,
 	rnumsplit = new RegExp( "^(" + core_pnum + ")(.*)$", "i" ),
 	rnumnonpx = new RegExp( "^(" + core_pnum + ")(?!px)[a-z%]+$", "i" ),
 	rrelNum = new RegExp( "^([-+])=(" + core_pnum + ")", "i" ),
-	elemdisplay = {},
+	elemdisplay = { BODY: "block" },
 
 	cssShow = { position: "absolute", visibility: "hidden", display: "block" },
 	cssNormalTransform = {
@@ -8782,7 +8820,9 @@ if ( window.getComputedStyle ) {
 
 		if ( computed ) {
 
-			ret = computed[ name ];
+			// getPropertyValue is only needed for .css('filter') in IE9, see #12537
+			ret = computed.getPropertyValue( name ) || computed[ name ];
+
 			if ( ret === "" && !jQuery.contains( elem.ownerDocument, elem ) ) {
 				ret = jQuery.style( elem, name );
 			}
@@ -9811,9 +9851,12 @@ jQuery.extend({
 
 		// A cross-domain request is in order when we have a protocol:host:port mismatch
 		if ( s.crossDomain == null ) {
-			parts = rurl.exec( s.url.toLowerCase() ) || false;
-			s.crossDomain = parts && ( parts.join(":") + ( parts[ 3 ] ? "" : parts[ 1 ] === "http:" ? 80 : 443 ) ) !==
-				( ajaxLocParts.join(":") + ( ajaxLocParts[ 3 ] ? "" : ajaxLocParts[ 1 ] === "http:" ? 80 : 443 ) );
+			parts = rurl.exec( s.url.toLowerCase() );
+			s.crossDomain = !!( parts &&
+				( parts[ 1 ] !== ajaxLocParts[ 1 ] || parts[ 2 ] !== ajaxLocParts[ 2 ] ||
+					( parts[ 3 ] || ( parts[ 1 ] === "http:" ? 80 : 443 ) ) !=
+						( ajaxLocParts[ 3 ] || ( ajaxLocParts[ 1 ] === "http:" ? 80 : 443 ) ) )
+			);
 		}
 
 		// Convert data if not already a string
@@ -10432,7 +10475,7 @@ if ( jQuery.support.ajax ) {
 									// on any attempt to access responseText (#11426)
 									try {
 										responses.text = xhr.responseText;
-									} catch( _ ) {
+									} catch( e ) {
 									}
 
 									// Firefox throws an exception when accessing
@@ -10585,7 +10628,9 @@ function Animation( elem, properties, options ) {
 		tick = function() {
 			var currentTime = fxNow || createFxNow(),
 				remaining = Math.max( 0, animation.startTime + animation.duration - currentTime ),
-				percent = 1 - ( remaining / animation.duration || 0 ),
+				// archaic crash bug won't allow us to use 1 - ( 0.5 || 0 ) (#12497)
+				temp = remaining / animation.duration || 0,
+				percent = 1 - temp,
 				index = 0,
 				length = animation.tweens.length;
 
@@ -10737,7 +10782,7 @@ jQuery.Animation = jQuery.extend( Animation, {
 });
 
 function defaultPrefilter( elem, props, opts ) {
-	var index, prop, value, length, dataShow, tween, hooks, oldfire,
+	var index, prop, value, length, dataShow, toggle, tween, hooks, oldfire,
 		anim = this,
 		style = elem.style,
 		orig = {},
@@ -10811,6 +10856,7 @@ function defaultPrefilter( elem, props, opts ) {
 		value = props[ index ];
 		if ( rfxtypes.exec( value ) ) {
 			delete props[ index ];
+			toggle = toggle || value === "toggle";
 			if ( value === ( hidden ? "hide" : "show" ) ) {
 				continue;
 			}
@@ -10821,6 +10867,14 @@ function defaultPrefilter( elem, props, opts ) {
 	length = handled.length;
 	if ( length ) {
 		dataShow = jQuery._data( elem, "fxshow" ) || jQuery._data( elem, "fxshow", {} );
+		if ( "hidden" in dataShow ) {
+			hidden = dataShow.hidden;
+		}
+
+		// store state if its toggle - enables .stop().toggle() to "reverse"
+		if ( toggle ) {
+			dataShow.hidden = !hidden;
+		}
 		if ( hidden ) {
 			jQuery( elem ).show();
 		} else {
@@ -11117,6 +11171,8 @@ jQuery.fx.tick = function() {
 		timers = jQuery.timers,
 		i = 0;
 
+	fxNow = jQuery.now();
+
 	for ( ; i < timers.length; i++ ) {
 		timer = timers[ i ];
 		// Checks the timer has not already been removed
@@ -11128,6 +11184,7 @@ jQuery.fx.tick = function() {
 	if ( !timers.length ) {
 		jQuery.fx.stop();
 	}
+	fxNow = undefined;
 };
 
 jQuery.fx.timer = function( timer ) {

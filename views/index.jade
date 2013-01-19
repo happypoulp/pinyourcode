@@ -8,17 +8,17 @@ block js
 block content
   div.viewport
     div#pages.full-width
-      div#friends_list
-      div#friend_details
-        div#friend_details_inner
-        form.add_extension_form(action="/friends/", name="extension_form")
-          h3 Add an extension
-          input(type="text",name="extension_name", placeholder="name")
-          input(type="text",name="extension_type", placeholder="type")
-          input(type="text",name="extension_content", placeholder="content")
-          input(type="submit")
-      div#friend_search
-        form#add_friend_form(action="/friends", method="post")
-          input(type="text", name="friend_name", placeholder="John Doe")
-          div#fb_search_results
-      div#logout_message.bottom
+      ul#friends_list
+      //- div#friend_details
+      //-   div#friend_details_inner
+      //-   form.add_extension_form(action="/friends/", name="extension_form")
+      //-     h3 Add an extension
+      //-     input(type="text",name="extension_name", placeholder="name")
+      //-     input(type="text",name="extension_type", placeholder="type")
+      //-     input(type="text",name="extension_content", placeholder="content")
+      //-     input(type="submit")
+      //- div#friend_search
+      //-   form#add_friend_form(action="/friends", method="post")
+      //-     input(type="text", name="friend_name", placeholder="John Doe")
+      //-     div#fb_search_results
+      //- div#logout_message.bottom

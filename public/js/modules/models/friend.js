@@ -3,9 +3,13 @@ define([
 ], function(Backbone)
 {
     var FriendModel = Backbone.Model.extend({
-        url: '/friends',
+
+        urlRoot: '/api/friends',
+
         defaults: {
             extensions: [],
+            fb_id: null,
+            user_id: null
         },
 
         add: function()

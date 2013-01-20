@@ -7,7 +7,7 @@ define([
     var FriendsCollection = Backbone.Collection.extend(
     {
         model: FriendModel,
-        url: '/friends'
+        url: '/api/friends'
     });
 
     return FriendsCollection;

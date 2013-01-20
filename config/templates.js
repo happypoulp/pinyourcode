@@ -34,7 +34,6 @@ module.exports = function(app)
      */
     function renderFile(path)
     {
-      console.log(path);
       var re = /\.jade$/;
       fs.lstat(path, function(err, stat)
       {

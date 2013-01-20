@@ -1,38 +1,29 @@
 var routes = {};
 
-// Main application routes
-routes['application'] = 
-{
-  'get':
-  {
-    'index': '/'
-  }
-};
-
 // Friends & extensions api routes
 routes['api'] =
 {
   'get':
   {
-    'friend_list': '/friends',
-    'friend_show': '/friends/:fb_id',
-    'extension_list': '/friends/:fb_id/extensions',
-    'extension_show': '/friends/:fb_id/extensions/:extension_id'
+    'friend_list': '/api/friends',
+    'friend_show': '/api/friends/:fb_id',
+    'extension_list': '/api/friends/:fb_id/extensions',
+    'extension_show': '/api/friends/:fb_id/extensions/:extension_id'
   },
   'post':
   {
-    'friend_create': '/friends',
-    'extension_create': '/friends/:fb_id/extensions'
+    'friend_create': '/api/friends',
+    'extension_create': '/api/friends/:fb_id/extensions'
   },
   'put':
   {
-    'friend_update': '/friends/:fb_id',
-    'extension_update': '/friends/:fb_id/extensions/:extension_id'
+    'friend_update': '/api/friends/:fb_id',
+    'extension_update': '/api/friends/:fb_id/extensions/:extension_id'
   },
   'delete':
   {
-    'friend_delete': '/friends/:fb_id',
-    'extension_delete': '/friends/:fb_id/extensions/:extension_id'
+    'friend_delete': '/api/friends/:fb_id',
+    'extension_delete': '/api/friends/:fb_id/extensions/:extension_id'
   }
 };
 
@@ -43,6 +34,15 @@ routes['test'] =
   {
     'templating': '/templating',
     'authenticated': '/authenticated'
+  }
+};
+
+// Main application routes
+routes['application'] = 
+{
+  'get':
+  {
+    'index': '/'
   }
 };
 

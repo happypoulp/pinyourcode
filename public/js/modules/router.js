@@ -1,12 +1,15 @@
 define([
     'jquery',
     'backbone',
-    'views/home/HomeView'
-], function($, Backbone, HomeView)
+    'views/HomeView',
+    'views/DetailView',
+    'views/CreateExtensionView',
+], function($, Backbone, HomeView, DetailView, CreateExtensionView)
 {
     var AppRouter = Backbone.Router.extend(
     {
         routes: {
+          'friend/:id': "getFriend",
           '*actions': 'defaultAction'
         }
     });
@@ -19,6 +22,17 @@ define([
         {
             var homeView = new HomeView();
             homeView.render();
+        });        
+
+        app_router.on('route:getFriend', function (id)
+        {
+            $('#pages').html('');
+
+            var detailView = new DetailView(),
+                createExtensionView = new CreateExtensionView();
+
+            detailView.render(id);
+            createExtensionView.render();
         });
     
         Backbone.history.start();

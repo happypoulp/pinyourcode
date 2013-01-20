@@ -4,7 +4,7 @@ define(['jquery'], function($)
 {
     var IAndCoAPI = function()
     {
-        this.baseURI = '/friends';
+        this.baseURI = '/api/friends';
     };
 
     IAndCoAPI.prototype =

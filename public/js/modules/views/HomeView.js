@@ -8,8 +8,17 @@ define([
 {
     var HomeView = Backbone.View.extend(
     {
-        el: $("#friends_list"),
+        el: $("#pages"),
     
+        events: {
+            'click li.fb_friend': 'showFriendDetails'
+        },
+
+        showFriendDetails: function(ev)
+        {
+            document.location.hash = '/friend/' + $(ev.currentTarget).data('uid');
+        },
+
         render: function()
         {
             var that = this,
@@ -50,5 +59,4 @@ define([
     });
 
     return HomeView;
-  
 });

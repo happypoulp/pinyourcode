@@ -1,22 +1,13 @@
 extends layout
 
 block css
-  link(rel='stylesheet', href='css/gen/index.css')
+  link(rel='stylesheet', href='/css/gen/index.css')
 block js
   script(src="/js/require-jquery.js", data-main="/js/modules/main")
 
 block content
   div.viewport
     div#pages.full-width
-      ul#friends_list
-      //- div#friend_details
-      //-   div#friend_details_inner
-      //-   form.add_extension_form(action="/friends/", name="extension_form")
-      //-     h3 Add an extension
-      //-     input(type="text",name="extension_name", placeholder="name")
-      //-     input(type="text",name="extension_type", placeholder="type")
-      //-     input(type="text",name="extension_content", placeholder="content")
-      //-     input(type="submit")
       //- div#friend_search
       //-   form#add_friend_form(action="/friends", method="post")
       //-     input(type="text", name="friend_name", placeholder="John Doe")

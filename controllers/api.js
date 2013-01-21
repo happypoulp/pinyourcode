@@ -287,10 +287,8 @@ ApiController.prototype =
   },
   extension_update: function(req, res)
   {
-    if (!req.body.fb_id) req.body.fb_id = req.params.fb_id;
-
     // Parsing the request body
-    extension_builder.build(req, function (err, friend)
+    extension_builder.build(req, function (err, extension)
     {
       if ( err )
       {
@@ -300,55 +298,49 @@ ApiController.prototype =
       else
       {
         // Checking cohesion between document and url
-        if ( req.params.fb_id === friend.fb_id )
-        {
-          db
-            .friends
-            .get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+        db
+          .friends
+          .get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+          {
+            if ( err )
             {
-              if ( err )
+              res.send(err, 500);
+            }
+            else
+            {
+              if ( dbFriend )
               {
-                res.send(err, 500);
+                extension._id = ObjectID.createFromHexString(req.params.extension_id);
+
+                db
+                  .collection('friends')
+                  .update(
+                  {
+                    user_id : req.facebook.user_id,
+                    fb_id : dbFriend.fb_id,
+                    'extensions._id': ObjectID.createFromHexString(req.params.extension_id)
+                  },
+                  {
+                    '$set' : {'extensions.$' : extension}
+                  },
+                  function (err, result)
+                  {
+                    if ( err )
+                    {
+                      res.json(err, 400);
+                    }
+                    else
+                    {
+                      res.json(extension, 200);
+                    }
+                  });
               }
               else
               {
-                if ( dbFriend )
-                {
-                  friend.extension._id = ObjectID.createFromHexString(req.params.extension_id);
-                  db
-                    .collection('friends')
-                    .update(
-                    {
-                      user_id : req.facebook.user_id,
-                      fb_id : dbFriend.fb_id,
-                      'extensions._id': ObjectID.createFromHexString(req.params.extension_id)
-                    },
-                    {
-                      '$set' : {'extensions.$' : friend.extension}
-                    },
-                    function (err, result)
-                    {
-                      if ( err )
-                      {
-                        res.json(err, 400);
-                      }
-                      else
-                      {
-                        res.json(friend.extension, 200);
-                      }
-                    });
-                }
-                else
-                {
-                  res.json('No document found with this fb_id', 404);
-                }
+                res.json('No document found with this fb_id', 404);
               }
-            });
-        }
-        else
-        {
-          res.json("The document's fb_id doesn't match the requested url", 400);
-        }
+            }
+          });
       }
     });
   },

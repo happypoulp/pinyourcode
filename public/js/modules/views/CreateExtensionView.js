@@ -16,7 +16,7 @@ define([
 
         createExtension: function(ev)
         {
-            var extension = new extensionModel({userId:$('.friend').data('uid')});
+            var extension = new extensionModel({friend_id:$('.friend').data('uid')});
 
             extension.save(
             {

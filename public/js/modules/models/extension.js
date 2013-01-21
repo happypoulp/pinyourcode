@@ -4,9 +4,14 @@ define([
 {
     var ExtensionModel = Backbone.Model.extend({
 
+        initialize: function(options)
+        {
+            this.friend_id = options.friend_id;
+        },
+
         urlRoot: function()
         {
-            return '/api/friends/' + this.get('userId') + '/extensions';
+            return '/api/friends/' + this.friend_id + '/extensions';
         },
 
         defaults: {

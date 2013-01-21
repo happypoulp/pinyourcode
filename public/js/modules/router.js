@@ -22,7 +22,7 @@ define([
         {
             var homeView = new HomeView();
             homeView.render();
-        });        
+        });
 
         app_router.on('route:getFriend', function (id)
         {

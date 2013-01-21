@@ -1,13 +1,14 @@
 var _ = require("underscore")._;
 var ObjectID = require("mongodb").ObjectID;
 
-function FriendBuilder(user_id, body)
+function FriendBuilder(request)
 {
-    this.user_id = user_id;
-    this.body = body;
-    this.fb_id = body.fb_id;
-    this.extensions = [];
-    this.extension = null;
+    this.body = request.body;
+    this.friend = {
+        user_id: request.facebook.user_id,
+        fb_id: request.body.fb_id,
+        extensions: request.body.extensions
+    };
 }
 
 FriendBuilder.prototype = {
@@ -16,38 +17,19 @@ FriendBuilder.prototype = {
     {
         if ( this.fb_id )
         {
-            if ( this.body.extensions )
+            if ( this.extensions )
             {
-                _.each(this.body.extensions, function (extension)
+                _.each(this.extensions, function (extension)
                 {
-                    if ( extension.name && extension.type )
+                    if (!extension._id)
                     {
-                        this.extensions.push(
-                            {
-                                _id : new ObjectID(),
-                                name : extension.name,
-                                type : extension.type,
-                                content : extension.content
-                            });
+                        extension._id = new ObjectID();
                     }
                 }
                 ,this);
             }
-            if (this.body.extension)
-            {
-                this.extension = this.body.extension;
-                this.extension._id = new ObjectID();
-            }
     
-            cb(
-                null,
-                {
-                    user_id : this.user_id,
-                    fb_id : this.fb_id,
-                    extensions : this.extensions,
-                    extension: this.extension
-                }
-            );
+            cb(null, this.friend);
         }
         else
         {
@@ -57,7 +39,7 @@ FriendBuilder.prototype = {
 
 }
 
-exports.build = function (user_id, body, cb) 
+exports.build = function (request, cb) 
 {
-    return new FriendBuilder(user_id, body).build(cb);
+    return new FriendBuilder(request).build(cb);
 }

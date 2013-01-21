@@ -20,11 +20,9 @@ define([
 
             extension.save(
             {
-                extension: {
-                    name: document.extension_form.extension_name.value,
-                    type: document.extension_form.extension_type.value,
-                    content: document.extension_form.extension_content.value
-                }
+                name: document.extension_form.extension_name.value,
+                type: document.extension_form.extension_type.value,
+                content: document.extension_form.extension_content.value
             });
 
             return false;

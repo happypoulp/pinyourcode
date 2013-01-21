@@ -2,6 +2,7 @@
 
 var db = require('../config/db.js')
   , friend_builder = require('../helpers/friend-builder')
+  , extension_builder = require('../helpers/extension-builder')
   , ObjectID = require("mongodb").ObjectID;
 
 function ApiController() { }
@@ -114,12 +115,12 @@ ApiController.prototype =
   friend_create: function(req, res)
   {
     // Parse the request body
-    friend_builder.build(req.facebook.user_id, req.body, function (err, friend)
+    friend_builder.build(req, function (err, friend)
     {
       if ( err )
       {
-      // Parsing error must be donne first, don't need to hit the db
-      res.json(err, 400);
+        // Parsing error must be donne first, don't need to hit the db
+        res.json(err, 400);
       }
       else
       {
@@ -160,10 +161,8 @@ ApiController.prototype =
   },
   extension_create: function(req, res)
   {
-    if (!req.body.fb_id) req.body.fb_id = req.params.fb_id;
-
     // Parsing the request body
-    friend_builder.build(req.facebook.user_id, req.body, function (err, friend)
+    extension_builder.build(req, function (err, extension)
     {
       if ( err )
       {
@@ -172,56 +171,47 @@ ApiController.prototype =
       }
       else
       {
-        // Checking cohesion between document and url
-        if ( req.params.fb_id === friend.fb_id )
-        {
-          db
-            .friends
-            .get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+        db
+          .friends
+          .get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+          {
+            if ( err )
             {
-              if ( err )
+              res.send(err, 500);
+            }
+            else
+            {
+              if ( dbFriend )
               {
-                res.send(err, 500);
+                // Update only the extensions section
+                db.collection('friends').update(
+                {
+                  user_id : req.facebook.user_id,
+                  fb_id : dbFriend.fb_id
+                },
+                {
+                  '$push' : {extensions : extension}
+                },
+                function (err, result)
+                {
+                  if ( err )
+                  {
+                    res.json(err, 400);
+                  }
+                  else
+                  {
+                    // Update dbFriend extensions and send it (manual merging)
+                    dbFriend.extensions.push(extension);
+                    res.json(dbFriend);
+                  }
+                });
               }
               else
               {
-                if ( dbFriend )
-                {
-                  console.log(friend.extension);
-                  // Update only the extensions section
-                  db.collection('friends').update(
-                  {
-                    user_id : req.facebook.user_id,
-                    fb_id : dbFriend.fb_id
-                  },
-                  {
-                    '$push' : {extensions : friend.extension}
-                  },
-                  function (err, result)
-                  {
-                    if ( err )
-                    {
-                      res.json(err, 400);
-                    }
-                    else
-                    {
-                      // Update dbFriend extensions and send it (manual merging)
-                      dbFriend.extensions = friend.extensions;
-                      res.json(dbFriend);
-                    }
-                  });
-                }
-                else
-                {
-                  res.json('No document found with this fb_id', 404);
-                }
+                res.json('No document found with this fb_id', 404);
               }
-            });
-        }
-        else
-        {
-          res.json("The document's fb_id doesn't match the requested url", 400);
-        }
+            }
+          });
       }
     });
   },
@@ -231,8 +221,7 @@ ApiController.prototype =
 
     // Parsing the request body
     friend_builder.build(
-      req.facebook.user_id,
-      req.body, 
+      req, 
       function (err, friend)
       {
         if ( err )
@@ -301,7 +290,7 @@ ApiController.prototype =
     if (!req.body.fb_id) req.body.fb_id = req.params.fb_id;
 
     // Parsing the request body
-    friend_builder.build(req.facebook.user_id, req.body, function (err, friend)
+    extension_builder.build(req, function (err, friend)
     {
       if ( err )
       {

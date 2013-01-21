@@ -5,6 +5,5 @@
 node_modules
 .sass-cache
 public/css/gen/
+public/js/modules/templates/
 
-# IDE files
-*.iml

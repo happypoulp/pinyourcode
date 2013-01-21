@@ -1,5 +1,5 @@
-var _ = require("underscore")._;
-var ObjectID = require("mongodb").ObjectID;
+var _ = require("underscore")._,
+    ObjectID = require("mongodb").ObjectID;
 
 function FriendBuilder(request)
 {

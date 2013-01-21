@@ -1,4 +1,3 @@
-var _ = require("underscore")._;
 var ObjectID = require("mongodb").ObjectID;
 
 function ExtensionBuilder(request)

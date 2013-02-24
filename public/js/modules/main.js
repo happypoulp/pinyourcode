@@ -1,3 +1,5 @@
+debuglog(true);
+
 require.config({
     paths: {
         underscore: '/js/libs/underscore-min',
@@ -11,8 +13,10 @@ require.config({
     }
 });
 
+log('main', 'require "application"');
 require(['application'], function(Application)
 {
+    log('main', 'Application.initialize');
     Application.initialize();
 });
 

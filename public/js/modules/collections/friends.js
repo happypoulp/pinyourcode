@@ -1,14 +1,24 @@
-define([
-    'jquery', 
-    'backbone',
-    'models/friend'
-], function($, Backbone, FriendModel)
+(function()
 {
-    var FriendsCollection = Backbone.Collection.extend(
-    {
-        model: FriendModel,
-        url: '/api/friends'
-    });
+    var moduleDependencies = [
+            'jquery', 
+            'backbone',
+            'models/friend'
+        ],
+        moduleName = 'collections/friends';
 
-    return FriendsCollection;
-});
+    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
+
+    define(moduleDependencies, function($, Backbone, FriendModel)
+    {
+        log(moduleName, "Dependencies loaded", "Build module");
+
+        var FriendsCollection = Backbone.Collection.extend(
+        {
+            model: FriendModel,
+            url: '/api/friends'
+        });
+
+        return FriendsCollection;
+    });
+})();

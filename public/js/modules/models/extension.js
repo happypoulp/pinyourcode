@@ -1,25 +1,35 @@
-define([
-    'backbone'
-], function(Backbone)
+(function()
 {
-    var ExtensionModel = Backbone.Model.extend({
+    var moduleDependencies = [
+            'backbone'
+        ],
+        moduleName = 'models/extension';
 
-        initialize: function(options)
-        {
-            this.friend_id = options.friend_id;
-        },
+    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-        urlRoot: function()
-        {
-            return '/api/friends/' + this.friend_id + '/extensions';
-        },
+    define(moduleDependencies, function(Backbone)
+    {
+        log(moduleName, "Dependencies loaded", "Build module");
 
-        defaults: {
-            name: '',
-            type: '',
-            content: ''
-        }
+        var ExtensionModel = Backbone.Model.extend({
+
+            initialize: function(options)
+            {
+                this.friend_id = options.friend_id;
+            },
+
+            urlRoot: function()
+            {
+                return '/api/friends/' + this.friend_id + '/extensions';
+            },
+
+            defaults: {
+                name: '',
+                type: '',
+                content: ''
+            }
+        });
+
+        return ExtensionModel;
     });
-
-    return ExtensionModel;
-});
+})();

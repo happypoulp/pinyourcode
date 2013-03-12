@@ -35,9 +35,8 @@ buf.push('</div></li>');
     }
 
   } else {
-    var $$l = 0;
     for (var $index in friend.get('extensions')) {
-      $$l++;      var extension = friend.get('extensions')[$index];
+      var extension = friend.get('extensions')[$index];
 
 if ( extension)
 {
@@ -52,8 +51,7 @@ var __val__ = extension.content
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</div></li>');
 }
-    }
-
+   }
   }
 }).call(this);
 

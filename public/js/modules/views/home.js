@@ -5,13 +5,14 @@
             'backbone',
             'facebook',
             'collections/friends',
+            'views/header',
             '/js/modules/templates/list.js'
         ],
         moduleName = 'views/home';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Backbone, Facebook, FriendsCollection, ListTemplate)
+    define(moduleDependencies, function($, Backbone, Facebook, FriendsCollection, HeaderView, ListTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -30,6 +31,11 @@
 
             render: function()
             {
+                var header = new HeaderView({
+                    // model: doc,
+                    el: 'header'
+                });
+
                 log(moduleName, 'render');
                 var that = this,
                     friends = new FriendsCollection();

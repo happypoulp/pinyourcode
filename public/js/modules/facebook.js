@@ -119,20 +119,6 @@
             {
                 FB.XFBML.parse(container);
             },
-            conditionalCall: function(logged_callback, unlogged_callback)
-            {
-                FB.getLoginStatus(function(response)
-                {
-                    if (response.status === 'connected')
-                    {
-                        logged_callback();
-                    }
-                    else
-                    {
-                        unlogged_callback();
-                    }
-                });
-            },
             searchFriend: function(friend_string, callback)
             {
                 if (!friend_string)

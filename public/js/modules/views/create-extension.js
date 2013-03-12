@@ -17,8 +17,6 @@
 
         var CreateExtensionView = Backbone.View.extend(
         {
-            el: $("#pages"),
-        
             events: {
                 'submit form.add_extension_form': 'createExtension'
             },
@@ -39,7 +37,7 @@
 
             render: function(id)
             {
-                $(this.el).append(CreateExtensionTemplate());
+                this.$el.append(CreateExtensionTemplate());
             }
         });
 

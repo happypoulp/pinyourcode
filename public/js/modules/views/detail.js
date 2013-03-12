@@ -5,23 +5,23 @@
             'backbone',
             'facebook',
             'models/friend',
-            '/js/modules/templates/detail.js'
+            '/js/modules/templates/detail.js',
+            'views/create-extension'
         ],
         moduleName = 'views/detail';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Backbone, Facebook, FriendModel, DetailTemplate)
+    define(moduleDependencies, function($, Backbone, Facebook, FriendModel, DetailTemplate, CreateExtensionView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
         var DetailView = Backbone.View.extend(
         {
-            el: $("#pages"),
-        
             render: function(id)
             {
-                console.log(id);
+                log(moduleName, 'render', id);
+
                 var that = this,
                     friend = new FriendModel({id: id});
 
@@ -30,7 +30,7 @@
                     success: function(friend)
                     {
                         console.log(friend.toJSON());
-                        $(that.el).append(
+                        that.$el.html(
                             DetailTemplate(
                                 {
                                   friend: friend
@@ -39,6 +39,8 @@
                         );
                         Facebook.render(that.el);
 
+                        new CreateExtensionView({el: $('#pages')}).render();
+                        
                         Facebook.getFriendsInfos(
                             [id],
                             function(result)

@@ -1,12 +1,19 @@
 (function(w)
 {
+    var moduleDependencies = [],
+        moduleName = 'pubsub';
+
+    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
+
     define(function()
     {
+        log(moduleName, "Dependencies loaded", "Build module");
+
         var subscribers = {},
             instance = null,
-            DM_PubSub = function() {};
+            PubSub = function() {};
 
-        DM_PubSub.prototype = {
+        PubSub.prototype = {
             subscribe: function(message, handler, context)
             {
                 (subscribers[message] = subscribers[message] || []).push([context || w, handler]);
@@ -36,6 +43,6 @@
             }
         };
 
-        return new DM_PubSub();
+        return new PubSub();
     });
 })(window);

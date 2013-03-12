@@ -3,15 +3,13 @@
     var moduleDependencies = [
             'jquery',
             'router',
-            'facebook',
-            'iandco-api',
-            'pubsub'
+            'facebook'
         ],
         moduleName = 'application';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Router, Facebook, IAndCo, PubSub)
+    define(moduleDependencies, function($, Router, Facebook)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -27,18 +25,12 @@
 
                 $(function()
                 {
-                    PubSub.subscribe('facebook:status', function(status)
-                    {
-                        log(moduleName, "facebook:status", status);
-                    });
-    
                     log(moduleName, 'Facebook.init');
                     // that.initHandlers();
                     Facebook.init(function()
                     {
                         log(moduleName, 'Facebook.init - DONE');
                         log(moduleName, 'Router.initialize');
-                        // that.api = new IAndCo();
                         Router.initialize();
                     });
 

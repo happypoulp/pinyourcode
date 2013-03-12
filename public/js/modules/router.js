@@ -3,15 +3,21 @@
     var moduleDependencies = [
             'jquery',
             'backbone',
-            'views/home',
-            'views/detail',
-            'views/create-extension',
+            'session',
+            'pubsub',
+            'views/start'
         ],
         moduleName = 'router';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Backbone, HomeView, DetailView, CreateExtensionView)
+    define(moduleDependencies, function(
+        $,
+        Backbone,
+        Session,
+        PubSub,
+        StartView
+    )
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -19,31 +25,57 @@
         {
             routes: {
               'friend/:id': "getFriend",
-              '*actions': 'defaultAction'
+              'login': "login",
+              '*actions': 'any'
             }
         });
       
         var initialize = function()
         {
-            var app_router = new AppRouter;
-            
-            app_router.on('route:defaultAction', function (actions)
+            new StartView().render();
+
+            var app_router = new AppRouter,
+                mainContainer = $('#pages');
+
+            PubSub.subscribe('session:status', function(logged)
             {
-                log(moduleName, 'route:defaultAction');
-                var homeView = new HomeView();
-                homeView.render();
+                if (!logged)
+                    app_router.navigate("login", {trigger: true});
+                else
+                    app_router.navigate("/", {trigger: true});
+            });
+            
+            app_router.on('route:any', function (actions)
+            {
+                Session.requireAuth(function()
+                {
+                    require(['views/home'], function(HomeView)
+                    {
+                        new HomeView({el: mainContainer}).render();
+                    });
+                });
+            });
+
+            app_router.on('route:login', function ()
+            {
+                if (Session.logged()) return app_router.navigate("/", {trigger: true});
+
+                require(['views/login'], function(LoginView)
+                {
+                    new LoginView({el: mainContainer}).render();
+                });
             });
 
             app_router.on('route:getFriend', function (id)
             {
-                log(moduleName, 'route:getFriend');
-                $('#pages').html('');
+                Session.requireAuth(function()
+                {
+                    require(['views/detail'], function(DetailView)
+                    {
+                        new DetailView({el: mainContainer}).render(id);
+                    });
+                });
 
-                var detailView = new DetailView(),
-                    createExtensionView = new CreateExtensionView();
-
-                detailView.render(id);
-                createExtensionView.render();
             });
         
             Backbone.history.start();

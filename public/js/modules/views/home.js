@@ -5,21 +5,19 @@
             'backbone',
             'facebook',
             'collections/friends',
-            'views/header',
-            '/js/modules/templates/list.js'
+            '/js/modules/templates/list.js',
+            'pubsub'
         ],
         moduleName = 'views/home';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Backbone, Facebook, FriendsCollection, HeaderView, ListTemplate)
+    define(moduleDependencies, function($, Backbone, Facebook, FriendsCollection, ListTemplate, PubSub)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
         var HomeView = Backbone.View.extend(
         {
-            el: $("#pages"),
-        
             events: {
                 'click li.fb_friend': 'showFriendDetails'
             },
@@ -31,10 +29,7 @@
 
             render: function()
             {
-                var header = new HeaderView({
-                    // model: doc,
-                    el: 'header'
-                });
+                PubSub.publish('header:any');
 
                 log(moduleName, 'render');
                 var that = this,
@@ -44,7 +39,7 @@
                 {
                     success: function(friends)
                     {
-                        $(that.el).html(
+                        that.$el.html(
                             ListTemplate(
                                 {
                                   friends: friends.models

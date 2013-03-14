@@ -28,8 +28,9 @@ buf.push('</div></li>');
     }
 
   } else {
+    var $$l = 0;
     for (var $index in friends) {
-      var friend = friends[$index];
+      $$l++;      var friend = friends[$index];
 
  var fb_id = friend.get('fb_id'), extensions_count = friend.get('extensions').length
 buf.push('<li');
@@ -45,7 +46,8 @@ buf.push('>');
 var __val__ = extensions_count
 buf.push(escape(null == __val__ ? "" : __val__));
 buf.push('</div></li>');
-   }
+    }
+
   }
 }).call(this);
 

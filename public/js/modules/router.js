@@ -26,6 +26,7 @@
             routes: {
               'friend/:id': "getFriend",
               'login': "login",
+              'add': "add",
               '*actions': 'any'
             }
         });
@@ -52,6 +53,17 @@
                     require(['views/home'], function(HomeView)
                     {
                         new HomeView({el: mainContainer}).render();
+                    });
+                });
+            });            
+
+            app_router.on('route:add', function (actions)
+            {
+                Session.requireAuth(function()
+                {
+                    require(['views/addfriend'], function(AddFriendView)
+                    {
+                        new AddFriendView({el: mainContainer}).render();
                     });
                 });
             });

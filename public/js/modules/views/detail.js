@@ -6,13 +6,14 @@
             'facebook',
             'models/friend',
             '/js/modules/templates/detail.js',
-            'views/create-extension'
+            'views/create-extension',
+            'pubsub'
         ],
         moduleName = 'views/detail';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Backbone, Facebook, FriendModel, DetailTemplate, CreateExtensionView)
+    define(moduleDependencies, function($, Backbone, Facebook, FriendModel, DetailTemplate, CreateExtensionView, PubSub)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -20,6 +21,8 @@
         {
             render: function(id)
             {
+                PubSub.publish('header:any');
+
                 log(moduleName, 'render', id);
 
                 var that = this,

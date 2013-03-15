@@ -1,7 +1,7 @@
 (function()
 {
     var moduleDependencies = [
-            'jquery',
+            'backbone',
             'router',
             'facebook'
         ],
@@ -9,7 +9,7 @@
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Router, Facebook)
+    define(moduleDependencies, function(Backbone, Router, Facebook)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

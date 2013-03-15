@@ -1,14 +1,13 @@
 (function()
 {
     var moduleDependencies = [
-            'jquery',
             'pubsub'
         ],
         moduleName = 'facebook';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, PubSub)
+    define(moduleDependencies, function(PubSub)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

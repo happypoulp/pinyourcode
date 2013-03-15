@@ -1,7 +1,6 @@
 (function()
 {
     var moduleDependencies = [
-            'backbone',
             '/js/modules/templates/login.js',
             'pubsub'
         ],
@@ -9,7 +8,7 @@
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(Backbone, LoginTemplate, PubSub)
+    define(moduleDependencies, function(LoginTemplate, PubSub)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

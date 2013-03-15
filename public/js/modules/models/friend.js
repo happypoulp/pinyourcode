@@ -1,22 +1,32 @@
-define([
-    'backbone'
-], function(Backbone)
+(function()
 {
-    var FriendModel = Backbone.Model.extend({
+    var moduleDependencies = [],
+        moduleName = 'models/friend';
 
-        urlRoot: '/api/friends',
+    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-        defaults: {
-            extensions: [],
-            fb_id: null,
-            user_id: null
-        },
+    define([
+        'backbone'
+    ], function(Backbone)
+    {
+        log(moduleName, "Dependencies loaded", "Build module");
 
-        add: function()
-        {
-            this.save();
-        }
+        var FriendModel = Backbone.Model.extend({
+
+            urlRoot: '/api/friends',
+
+            defaults: {
+                extensions: [],
+                fb_id: null,
+                user_id: null
+            },
+
+            add: function()
+            {
+                this.save();
+            }
+        });
+
+        return FriendModel;
     });
-
-    return FriendModel;
-});
+})();

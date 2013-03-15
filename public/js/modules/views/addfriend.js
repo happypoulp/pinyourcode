@@ -1,16 +1,25 @@
 (function()
 {
     var moduleDependencies = [
-            'backbone',
-            '/js/modules/templates/addfriend.js',
             'pubsub',
-            'facebook'
+            'facebook',
+            '/js/modules/templates/addfriend.js',
+            '/js/modules/templates/emptyresults.js',
+            'models/friend',
+            'views/friend'
         ],
         moduleName = 'views/addfriend';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(Backbone, AddFriendTemplate, PubSub, Facebook)
+    define(moduleDependencies, function(
+        PubSub,
+        Facebook,
+        AddFriendTemplate,
+        EmptyResultsTemplate,
+        FriendModel,
+        FriendView
+    )
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -23,15 +32,18 @@
 
             onInputKeyUp: function(ev)
             {
-                console.log(this);
                 var that = this;
                 clearTimeout(this.inputTO);
 
-                that.inputTO = setTimeout(function()
+                this.inputTO = setTimeout(function()
                 {
-                    var search = $(ev.target).val();
+                    var search = $.trim($(ev.target).val());
+
+                    if (that.lastSearch === search) return;
+
                     console.log('search', search);
                     Facebook.searchFriend(search, $.proxy(that.searchFriendCallback, that));
+                    that.lastSearch = search;
                 }, 150);
             },
 
@@ -48,47 +60,62 @@
 
                 console.log('friends.get response', result);
                 var markupArray = [],
-                    numFriends = result ? result.length : 0,
-                    html = '';
+                    needFBRendering = true;
 
-                if (numFriends > 0)
+                for (var i = 0, l = result.length; i < l; i++)
                 {
-                    for (var i=0; i<numFriends; i++)
+                    var found = $('#fb_search_results .fb_friend[data-uid="' + result[i].uid + '"]');
+
+                    if (!found.length)
                     {
-                        if (!$('#fb_search_results .fb_friend[data-uid="' + result[i].uid + '"]').length)
-                        {
-                            markupArray.push(
-                                this.getFriendHtml(
-                                    i,
-                                    {
-                                        fb_id: result[i].uid,
-                                        name: result[i].name
-                                    }
-                                )
-                            );
-                        }
+                        markupArray.push(
+                            new FriendView(
+                            {
+                                model: new FriendModel(
+                                {
+                                    fb_id: result[i].uid,
+                                    name: result[i].name
+                                }),
+                                extraClass: 'keep'
+                            }).toHTML()
+                        );
+                    }
+                    else
+                    {
+                        found.addClass('keep');
                     }
                 }
 
-                html = markupArray.join('')
-
-                if (!html)
+                if (!result.length)
                 {
-                    html = '<center>No results for this search.'+
-                        '<br /><br />Maybe this person is already in your extended contacts? '+
-                        'Or you could you have possibly misspelled his or her name?</center>';
+                    markupArray.push(EmptyResultsTemplate({search: search}));
+                    needFBRendering = false;
                 }
 
-                friendsContainer.html(html);
+                if (markupArray.length)
+                {
+                    console.log(markupArray);
+                    if (!friendsContainer.find('.fb_friend').length) friendsContainer.empty();
+                    friendsContainer.prepend(markupArray.join(''));
+                }
 
-                if (markupArray.length) Facebook.render(friendsContainer.get(0));
+                $('#fb_search_results .fb_friend').each(function()
+                {
+                    $el = $(this);
+                    if ($el.hasClass('keep'))
+                        $el.removeClass('keep');
+                    else
+                        $el.remove();
+                });
+
+                if (needFBRendering) Facebook.render(friendsContainer.get(0));
             },
 
             getFriendHtml: function(index, friend)
             {
                 var extensionsCount = friend.extensions ? friend.extensions.length : 0;
 
-                return '<div data-uid="' + friend.fb_id + '"class="fb_friend ' + (index%2 ? 'odd' : 'even') + '">'+
+                return '<div data-uid="' + friend.fb_id + '"class="keep fb_friend ' + (index%2 ? 'odd' : 'even') + '">'+
                             // '<span class="checkbox_container">'+
                             //     '<input class="extended" type="checkbox" ' + (friend.active ? 'checked="checked"' : '') + '/>'+
                             // '</span>'+

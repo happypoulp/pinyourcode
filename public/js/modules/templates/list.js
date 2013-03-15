@@ -11,9 +11,10 @@ buf.push('<ul id="friends_list">');
     for (var $index = 0, $$l = friends.length; $index < $$l; $index++) {
       var friend = friends[$index];
 
+buf.push('<li>');
  var fb_id = friend.get('fb_id'), extensions_count = friend.get('extensions').length
-buf.push('<li');
-buf.push(attrs({ 'data-uid':("" + (fb_id) + ""), "class": ("fb_friend") }, {"data-uid":true,"class":true}));
+buf.push('<div');
+buf.push(attrs({ 'data-uid':("" + (fb_id) + ""), "class": ("fb_friend " + (extraClass) + "") }, {"data-uid":true,"class":true}));
 buf.push('><div class="profile_pic"><fb:profile-pic');
 buf.push(attrs({ 'size':("square"), 'uid':("" + (fb_id) + ""), 'facebook-logo':("true") }, {"size":true,"uid":true,"facebook-logo":true}));
 buf.push('></fb:profile-pic></div><span class="name">');
@@ -24,17 +25,17 @@ buf.push(attrs({ 'title':("" + (extensions_count) + " extensions"), "class": ('e
 buf.push('>');
 var __val__ = extensions_count
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</div></li>');
+buf.push('</div></div></li>');
     }
 
   } else {
-    var $$l = 0;
     for (var $index in friends) {
-      $$l++;      var friend = friends[$index];
+      var friend = friends[$index];
 
+buf.push('<li>');
  var fb_id = friend.get('fb_id'), extensions_count = friend.get('extensions').length
-buf.push('<li');
-buf.push(attrs({ 'data-uid':("" + (fb_id) + ""), "class": ("fb_friend") }, {"data-uid":true,"class":true}));
+buf.push('<div');
+buf.push(attrs({ 'data-uid':("" + (fb_id) + ""), "class": ("fb_friend " + (extraClass) + "") }, {"data-uid":true,"class":true}));
 buf.push('><div class="profile_pic"><fb:profile-pic');
 buf.push(attrs({ 'size':("square"), 'uid':("" + (fb_id) + ""), 'facebook-logo':("true") }, {"size":true,"uid":true,"facebook-logo":true}));
 buf.push('></fb:profile-pic></div><span class="name">');
@@ -45,9 +46,8 @@ buf.push(attrs({ 'title':("" + (extensions_count) + " extensions"), "class": ('e
 buf.push('>');
 var __val__ = extensions_count
 buf.push(escape(null == __val__ ? "" : __val__));
-buf.push('</div></li>');
-    }
-
+buf.push('</div></div></li>');
+   }
   }
 }).call(this);
 

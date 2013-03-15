@@ -1,0 +1,6 @@
+- var fb_id = friend.get('fb_id'), extensions_count = friend.get('extensions').length
+div(data-uid="#{fb_id}",class="fb_friend #{extraClass}")
+  div.profile_pic
+    fb:profile-pic(size="square", uid="#{fb_id}", facebook-logo="true")
+  span.name=friend.get('name')
+  div.extensions_count(title="#{extensions_count} extensions")=extensions_count

@@ -1,8 +1,6 @@
 (function()
 {
     var moduleDependencies = [
-            'jquery',
-            'backbone',
             'facebook',
             'collections/friends',
             '/js/modules/templates/list.js',
@@ -12,7 +10,7 @@
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Backbone, Facebook, FriendsCollection, ListTemplate, PubSub)
+    define(moduleDependencies, function(Facebook, FriendsCollection, ListTemplate, PubSub)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

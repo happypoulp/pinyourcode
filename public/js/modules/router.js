@@ -1,8 +1,6 @@
 (function()
 {
     var moduleDependencies = [
-            'jquery',
-            'backbone',
             'session',
             'pubsub',
             'views/start'
@@ -11,13 +9,7 @@
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(
-        $,
-        Backbone,
-        Session,
-        PubSub,
-        StartView
-    )
+    define(moduleDependencies, function(Session, PubSub, StartView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

@@ -1,8 +1,6 @@
 (function()
 {
     var moduleDependencies = [
-            'jquery',
-            'backbone',
             'session',
             'pubsub'
         ],
@@ -10,13 +8,14 @@
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Backbone, Session, PubSub)
+    define(moduleDependencies, function(Session, PubSub)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
         var HeaderView = Backbone.View.extend(
         {
             initialized: false,
+            currentDisplayMode: 'hidden',
         
             events:
             {
@@ -30,16 +29,22 @@
 
             displayForLogin: function()
             {
-                $('.js-back_button, .js-add_fb_friend').hide();
-                var authButton = $('.js-auth_button');
-                authButton.show().html(authButton.data('in'));
+                if (this.currentDisplayMode != 'login')
+                {
+                    $('.js-back_button, .js-add_fb_friend').hide();
+                    var authButton = $('.js-auth_button');
+                    authButton.show().html(authButton.data('in'));
+                }
             },
 
             displayForAny: function()
             {
-                $('.js-back_button, .js-add_fb_friend').show();
-                var authButton = $('.js-auth_button');
-                authButton.show().html(authButton.data('out'));
+                if (this.currentDisplayMode != 'any')
+                {
+                    $('.js-back_button, .js-add_fb_friend').show();
+                    var authButton = $('.js-auth_button');
+                    authButton.show().html(authButton.data('out'));
+                }
             },
 
             initialize: function()

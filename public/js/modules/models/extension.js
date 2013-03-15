@@ -1,13 +1,11 @@
 (function()
 {
-    var moduleDependencies = [
-            'backbone'
-        ],
+    var moduleDependencies = [],
         moduleName = 'models/extension';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(Backbone)
+    define(moduleDependencies, function()
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

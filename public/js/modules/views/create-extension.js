@@ -1,8 +1,6 @@
 (function()
 {
     var moduleDependencies = [
-            'jquery',
-            'backbone',
             'facebook',
             'models/extension',
             '/js/modules/templates/extension-create.js'
@@ -11,7 +9,7 @@
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($, Backbone, Facebook, extensionModel, CreateExtensionTemplate)
+    define(moduleDependencies, function(Facebook, extensionModel, CreateExtensionTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

@@ -1,13 +1,11 @@
 (function()
 {
-    var moduleDependencies = [
-            'jquery'
-        ],
+    var moduleDependencies = [],
         moduleName = 'iandco-api';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function($)
+    define(moduleDependencies, function()
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

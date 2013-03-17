@@ -13,18 +13,22 @@
 
         var FriendModel = Backbone.Model.extend({
 
+            idAttribute: 'fb_id',
+
             urlRoot: '/api/friends',
 
             defaults: {
                 extensions: [],
                 fb_id: null,
-                user_id: null
+                user_id: null,
+                name: null
             },
 
             add: function()
             {
                 this.save();
             }
+
         });
 
         return FriendModel;

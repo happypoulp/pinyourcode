@@ -10,11 +10,14 @@
     url(/fonts/fairplay.woff) format('woff');
 }
 
+ul
+{
+    padding: 0;
+}
 
 .body
 {
     color: $foregroundTextColor;
-    padding: 12px;
     overflow-x: hidden;
 }
 
@@ -196,55 +199,7 @@
 
 /********************* PAGES **********************/
 
-.full-width
-{
-    width: 100%;
-}
-
 #pages
 {
     position: relative;
-    // -webkit-transition: -webkit-transform .2s linear;
-}
-// #pages > div
-// {
-//     width: 100%;
-//     position: absolute;
-//     // -webkit-transition: opacity .2s linear;
-// }
-
-#pages #friends_list
-{
-    opacity: 1;
-    // -webkit-transform: translateX(0);
-}
-
-#pages #friend_details
-{
-    // -webkit-transform: translateX(100%);
-    opacity: 0;
-    background: rgba(100, 100, 100, 0.1);
-}
-
-#pages #friend_details #friend_details_inner,
-#pages #friend_details form
-{
-    margin: 20px;
-}
-
-
-#pages.show_friend_details
-{
-    // -webkit-transform: translateX(-100%);
-}
-
-#pages.show_friend_details #friends_list,
-#pages.show_friend_details #friend_search
-{
-    opacity: 0;
-}
-
-#pages.show_friend_details #friend_details
-{
-    opacity: 1;
 }

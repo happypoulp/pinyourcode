@@ -1,6 +1,8 @@
-- var fb_id = friend.get('fb_id'), extensions_count = friend.get('extensions').length
-div(data-uid="#{fb_id}",class="fb_friend #{extraClass}")
+- var fb_id = friend.fb_id, extensions_count = friend.extensions.length
+li(data-uid="#{fb_id}",class="fb_friend #{locals.extraClass || ''}")
   div.profile_pic
     fb:profile-pic(size="square", uid="#{fb_id}", facebook-logo="true")
-  span.name=friend.get('name')
+  span.name=friend.name
   div.extensions_count(title="#{extensions_count} extensions")=extensions_count
+  div.tools
+    button.button.red.js-remove_fb_friend Remove

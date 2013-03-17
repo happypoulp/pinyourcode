@@ -58,6 +58,19 @@
     line-height: 50px;
 }
 
+.fb_friend .tools
+{
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: none;
+}
+
+.fb_friend:hover .tools
+{
+    display: block;
+}
+
 .fb_friend .checkbox_container
 {
     display: inline-block;
@@ -67,8 +80,8 @@
 .fb_friend .extensions_count
 {
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: 8px;
+    right: 8px;
     background: rgba(0, 168, 255, 0.5);
     color: #fff;
     font-weight: bold;

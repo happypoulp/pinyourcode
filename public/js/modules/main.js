@@ -3,7 +3,8 @@ debuglog(true);
 require.config({
     paths: {
         underscore: '/js/libs/underscore-min',
-        backbone: '/js/libs/backbone-min'
+        backbone: '/js/libs/backbone-dev'
+        // backbone: '/js/libs/backbone-min'
     },
     shim: {
         'backbone': {

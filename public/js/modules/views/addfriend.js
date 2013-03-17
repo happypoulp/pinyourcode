@@ -111,20 +111,6 @@
                 if (needFBRendering) Facebook.render(friendsContainer.get(0));
             },
 
-            getFriendHtml: function(index, friend)
-            {
-                var extensionsCount = friend.extensions ? friend.extensions.length : 0;
-
-                return '<div data-uid="' + friend.fb_id + '"class="keep fb_friend ' + (index%2 ? 'odd' : 'even') + '">'+
-                            // '<span class="checkbox_container">'+
-                            //     '<input class="extended" type="checkbox" ' + (friend.active ? 'checked="checked"' : '') + '/>'+
-                            // '</span>'+
-                            '<div class="profile_pic"><fb:profile-pic size="square" uid="' + friend.fb_id + '" facebook-logo="true"></fb:profile-pic></div>'+
-                            '<span class="name">' + friend.name + '</span>' +
-                            '<div class="extensions_count" title="' + extensionsCount + ' extensions">' + extensionsCount + '</div>' +
-                        '</div>';
-            },
-
             render: function()
             {
                 PubSub.publish('header:any');

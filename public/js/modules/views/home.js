@@ -1,16 +1,16 @@
 (function()
 {
     var moduleDependencies = [
+            'pubsub',
             'facebook',
             'collections/friends',
-            '/js/modules/templates/list.js',
-            'pubsub'
+            'views/list'
         ],
         moduleName = 'views/home';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(Facebook, FriendsCollection, ListTemplate, PubSub)
+    define(moduleDependencies, function(PubSub, Facebook, FriendsCollection, ListView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -30,36 +30,33 @@
                 PubSub.publish('header:any');
 
                 log(moduleName, 'render');
-                var that = this,
-                    friends = new FriendsCollection();
+
+                var friends = new FriendsCollection();
 
                 friends.fetch(
                 {
                     success: function(friends)
                     {
-                        that.$el.html(
-                            ListTemplate(
-                                {
-                                  friends: friends.models
-                                }
-                            )
-                        );
-                        Facebook.render(that.el);
+                        var friends_ids = [],
+                            idToFriend = {};
 
-                        var friends_ids = [];
                         for (var i = friends.models.length - 1; i >= 0; i--)
                         {
-                            friends_ids.push(friends.models[i].get('fb_id'));
+                            var fb_id = friends.models[i].get('fb_id');
+                            friends_ids.push(fb_id);
+                            idToFriend[fb_id] = friends.models[i];
                         }
+
                         Facebook.getFriendsInfos(
                             friends_ids,
                             function(result)
                             {
                                 for (var i = result.length - 1; i >= 0; i--)
                                 {
-                                    var friend_element = $('li[data-uid="' + result[i].uid + '"]');
-                                    friend_element.find('span.name').html(result[i].name);
+                                    idToFriend[result[i].uid].set('name', result[i].name);
                                 }
+
+                                new ListView({collection: friends, el: $('#pages')}).render();
                             }
                         );
                     }

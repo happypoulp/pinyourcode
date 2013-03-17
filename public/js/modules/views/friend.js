@@ -14,11 +14,35 @@
 
         var FriendView = Backbone.View.extend({
 
-            events: {},
+            className: 'fb_friend',
+
+            events: function()
+            {
+                var events = {};
+                events['click .' + this.className + '[data-uid="' + this.model.get('fb_id') + '"] .js-remove_fb_friend'] = 'remove';
+                return events;
+            },
+
+            remove: function(ev)
+            {
+                ev.stopPropagation();
+
+                console.log(this.model.destroy(
+                {
+                    success: function()
+                    {
+                        $(ev.target).closest('.fb_friend').remove();
+                    },
+                    error: function()
+                    {
+                        console.log('ERROR!');
+                    }
+                }));
+            },
 
             toHTML: function()
             {
-                return FriendTemplate({friend: this.model, extraClass: this.options.extraClass});
+                return FriendTemplate({friend: this.model.attributes, extraClass: this.options.extraClass});
             },
 
             render: function()

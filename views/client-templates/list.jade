@@ -1,4 +1,2 @@
 ul#friends_list
-  each friend in friends
-    li
-      include friend
+  | !{locals.listContent || ''}

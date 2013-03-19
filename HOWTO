@@ -6,4 +6,12 @@ gem install compass
 Compile scss to css:
 
 # sass --watch public/css/sass:public/css/gen
+
+DEV:
+
 compass watch .
+nodemon app.js
+
+SUBLIME:
+
+"folder_exclude_patterns": [".sass-cache"]

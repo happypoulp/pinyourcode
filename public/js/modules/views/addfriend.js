@@ -5,7 +5,6 @@
             'pubsub',
             'facebook',
             '/js/modules/templates/addfriend.js',
-            '/js/modules/templates/emptyresults.js',
             'models/friend',
             'views/friend',
             'views/results'
@@ -17,7 +16,6 @@
         PubSub,
         Facebook,
         AddFriendTemplate,
-        EmptyResultsTemplate,
         FriendModel,
         FriendView,
         ResultsView
@@ -32,12 +30,7 @@
                 'submit #add_friend_form': 'onFormSubmit'
             },
 
-            initialize: function()
-            {
-                this.results = [];
-                this.resultsView = new ResultsView();
-                this.el.appendChild(this.resultsView.render().el)
-            },
+            results: [],
 
             onInputKeyUp: function(ev)
             {
@@ -63,61 +56,15 @@
 
             searchFriendCallback: function(search, result)
             {
-                var friendsContainer = $('#fb_search_results');
-
-                if (!search) return friendsContainer.empty();
-
-                console.log('friends.get response', result);
-                var markupArray = [],
-                    needFBRendering = true;
-
-                for (var i = 0, l = result.length; i < l; i++)
+                if (!this.resultsView)
                 {
-                    var found = $('#fb_search_results .fb_friend[data-uid="' + result[i].uid + '"]');
-
-                    if (!found.length)
-                    {
-                        markupArray.push(
-                            new FriendView(
-                            {
-                                model: new FriendModel(
-                                {
-                                    fb_id: result[i].uid,
-                                    name: result[i].name
-                                }),
-                                extraClass: 'keep'
-                            }).toHTML()
-                        );
-                    }
-                    else
-                    {
-                        found.addClass('keep');
-                    }
+                    this.resultsView = new ResultsView();
+                    this.el.appendChild(this.resultsView.render().el);
                 }
 
-                if (!result.length)
-                {
-                    markupArray.push(EmptyResultsTemplate({search: search}));
-                    needFBRendering = false;
-                }
+                if (!search) return this.resultsView.empty();
 
-                if (markupArray.length)
-                {
-                    console.log(markupArray);
-                    if (!friendsContainer.find('.fb_friend').length) friendsContainer.empty();
-                    friendsContainer.prepend(markupArray.join(''));
-                }
-
-                $('#fb_search_results .fb_friend').each(function()
-                {
-                    $el = $(this);
-                    if ($el.hasClass('keep'))
-                        $el.removeClass('keep');
-                    else
-                        $el.remove();
-                });
-
-                if (needFBRendering) Facebook.render(friendsContainer.get(0));
+                this.resultsView.update(search, result);
             },
 
             render: function()

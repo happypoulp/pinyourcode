@@ -4,7 +4,7 @@
         moduleDependencies = [
             'backbone',
             '/js/modules/templates/candidate.js'
-        ],
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -19,13 +19,14 @@
 
             events:
             {
-                'click .js-remove_fb_friend': 'remove'
+                'click': 'add'
             },
 
             add: function(ev)
             {
                 ev.stopPropagation();
                 console.log('add logged');
+                this.model.save();
                 // console.log(this.model.destroy(
                 // {
                 //     success: function()

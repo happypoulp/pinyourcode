@@ -1,31 +1,31 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/candidate',
+        moduleDependencies = [
             'backbone',
-            '/js/modules/templates/friend.js'
+            '/js/modules/templates/candidate.js'
         ],
-        moduleName = 'views/friend';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(Backbone, FriendTemplate)
+    define(moduleDependencies, function(Backbone, CandidateTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
-        var FriendView = Backbone.View.extend({
+        var CandidateView = Backbone.View.extend({
 
             tagName: 'li',
-            className: 'fb_friend',
+            className: 'fb_candidate',
 
             events:
             {
                 'click .js-remove_fb_friend': 'remove'
             },
 
-            remove: function(ev)
+            add: function(ev)
             {
                 ev.stopPropagation();
-                console.log('remove logged');
+                console.log('add logged');
                 // console.log(this.model.destroy(
                 // {
                 //     success: function()
@@ -41,20 +41,19 @@
 
             toHTML: function()
             {
-                return FriendTemplate({friend: this.model.attributes});
+                return CandidateTemplate({candidate: this.model.attributes});
             },
 
             render: function()
             {
                 this.$el
                     .attr('data-uid', this.model.get('fb_id'))
-                    .addClass(this.options.extraClass)
                     .html(this.toHTML());
 
                 return this;
             }
         });
 
-        return FriendView;
+        return CandidateView;
     });
 })();

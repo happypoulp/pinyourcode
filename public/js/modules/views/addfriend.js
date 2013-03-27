@@ -1,14 +1,15 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/addfriend',
+        moduleDependencies = [
             'pubsub',
             'facebook',
             '/js/modules/templates/addfriend.js',
             '/js/modules/templates/emptyresults.js',
             'models/friend',
-            'views/friend'
-        ],
-        moduleName = 'views/addfriend';
+            'views/friend',
+            'views/results'
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -18,7 +19,8 @@
         AddFriendTemplate,
         EmptyResultsTemplate,
         FriendModel,
-        FriendView
+        FriendView,
+        ResultsView
     )
     {
         log(moduleName, "Dependencies loaded", "Build module");
@@ -28,6 +30,13 @@
             events: {
                 'keyup input[name="friend_name"]': 'onInputKeyUp',
                 'submit #add_friend_form': 'onFormSubmit'
+            },
+
+            initialize: function()
+            {
+                this.results = [];
+                this.resultsView = new ResultsView();
+                this.el.appendChild(this.resultsView.render().el)
             },
 
             onInputKeyUp: function(ev)

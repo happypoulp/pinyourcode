@@ -1,11 +1,11 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/results',
+        moduleDependencies = [
             'backbone',
             'facebook',
             'views/friend'
-        ],
-        moduleName = 'views/list';
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -13,10 +13,10 @@
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
-        var ListView = Backbone.View.extend({
+        var ResultsView = Backbone.View.extend({
 
             tagName: 'ul',
-            className: 'friends_list',
+            id: 'fb_search_results',
 
             events: {},
 
@@ -24,9 +24,9 @@
             {
                 var frag = document.createDocumentFragment();
 
-                this.collection.each(function(model)
+                this.results.each(function(result)
                 {
-                    frag.appendChild(new FriendView({model: model}).render().el);
+                    frag.appendChild(new CandidateView({candidate: result}).render().el);
                 });
 
                 return frag;
@@ -45,6 +45,6 @@
             }
         });
 
-        return ListView;
+        return ResultsView;
     });
 })();

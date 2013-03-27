@@ -4,6 +4,7 @@ var _ = require("underscore")._,
 function FriendBuilder(request)
 {
     this.body = request.body;
+
     this.friend = {
         user_id: request.facebook.user_id,
         fb_id: request.body.fb_id,
@@ -15,11 +16,11 @@ FriendBuilder.prototype = {
 
     build : function (cb)
     {
-        if ( this.fb_id )
+        if ( this.friend.fb_id )
         {
-            if ( this.extensions )
+            if ( this.friend.extensions )
             {
-                _.each(this.extensions, function (extension)
+                _.each(this.friend.extensions, function (extension)
                 {
                     if (!extension._id)
                     {

@@ -31,7 +31,8 @@
 
                 log(moduleName, 'render');
 
-                var friends = new FriendsCollection();
+                var friends = new FriendsCollection(),
+                    that = this;
 
                 friends.fetch(
                 {
@@ -56,7 +57,9 @@
                                     idToFriend[result[i].uid].set('name', result[i].name);
                                 }
 
-                                new ListView({collection: friends, el: $('#pages')}).render();
+                                var listView = new ListView({collection: friends});
+                                that.$el.html(listView.render().el);
+                                listView.postRender();
                             }
                         );
                     }

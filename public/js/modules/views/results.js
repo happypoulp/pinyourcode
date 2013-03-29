@@ -6,12 +6,12 @@
             'facebook',
             'models/friend',
             'views/candidate',
-            '/js/modules/templates/emptyresults.js',
+            'views/emptyresults'
         ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(Backbone, Facebook, FriendModel, CandidateView, EmptyResultsTemplate)
+    define(moduleDependencies, function(Backbone, Facebook, FriendModel, CandidateView, EmptyResultsView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -59,50 +59,51 @@
                 this.search = search;
                 this.results = results;
 
-                log(moduleName, 'result', result);
+                log(moduleName, 'results', results);
 
                 var frag = document.createDocumentFragment(),
                     needFBRendering = true;
 
-                for (var i = 0, l = result.length; i < l; i++)
-                {
-                    var found = this.$('.fb_friend[data-uid="' + result[i].uid + '"]');
-
-                    if (!found.length)
-                    {
-                        frag.appendChild(
-                            new CandidateView(
-                            {
-                                model: new FriendModel(
-                                {
-                                    fb_id: result[i].uid,
-                                    name: result[i].name
-                                }),
-                                extraClass: 'keep'
-                            }).render().el
-                        );
-                    }
-                    else
-                    {
-                        found.addClass('keep');
-                    }
-                }
-
-                if (!result.length)
+                if (!results.length)
                 {
                     frag.appendChild(new EmptyResultsView({search: search}).render().el)
-                //     markupArray.push(EmptyResultsTemplate({search: search}));
                     needFBRendering = false;
+                }
+                else
+                {
+                    for (var i = 0, l = results.length; i < l; i++)
+                    {
+                        var found = this.$('.fb_candidate[data-uid="' + results[i].uid + '"]');
+
+                        if (!found.length)
+                        {
+                            frag.appendChild(
+                                new CandidateView(
+                                {
+                                    model: new FriendModel(
+                                    {
+                                        fb_id: results[i].uid,
+                                        name: results[i].name
+                                    }),
+                                    extraClass: 'keep'
+                                }).render().el
+                            );
+                        }
+                        else
+                        {
+                            found.addClass('keep');
+                        }
+                    }
                 }
 
                 if (frag.firstChild)
                 {
                     console.log(frag);
-                    if (!this.$('.fb_friend').length) this.$el.empty();
+                    if (!this.$('.fb_candidate').length) this.$el.empty();
                     this.$el.prepend(frag);
                 }
 
-                $this.$('.fb_friend').each(function()
+                this.$('.fb_candidate').each(function()
                 {
                     $el = $(this);
                     if ($el.hasClass('keep'))

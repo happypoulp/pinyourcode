@@ -25,7 +25,7 @@
             add: function(ev)
             {
                 ev.stopPropagation();
-                console.log('add logged');
+                console.log('add logged', this.model.isNew());
                 this.model.save();
                 // console.log(this.model.destroy(
                 // {
@@ -49,6 +49,7 @@
             {
                 this.$el
                     .attr('data-uid', this.model.get('fb_id'))
+                    .addClass(this.options.extraClass)
                     .html(this.toHTML());
 
                 return this;

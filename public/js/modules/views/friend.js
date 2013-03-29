@@ -48,6 +48,7 @@
             {
                 this.$el
                     .attr('data-uid', this.model.get('fb_id'))
+                    .attr('data-id', this.model.id)
                     .addClass(this.options.extraClass)
                     .html(this.toHTML());
 

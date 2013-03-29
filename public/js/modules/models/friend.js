@@ -13,7 +13,7 @@
 
         var FriendModel = Backbone.Model.extend({
 
-            idAttribute: 'fb_id',
+            idAttribute: '_id',
 
             urlRoot: '/api/friends',
 

@@ -5,7 +5,7 @@ function ExtensionBuilder(request)
     this.body = request.body;
     this.extension = {
         name: request.body.name,
-        type: request.body.type,
+        tags: request.body.tags,
         content: request.body.content
     };
 }

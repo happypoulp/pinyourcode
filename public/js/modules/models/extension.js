@@ -1,7 +1,7 @@
 (function()
 {
-    var moduleDependencies = [],
-        moduleName = 'models/extension';
+    var moduleName = 'models/extension',
+        moduleDependencies = [];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -11,10 +11,7 @@
 
         var ExtensionModel = Backbone.Model.extend({
 
-            initialize: function(options)
-            {
-                this.friend_id = options.friend_id;
-            },
+            idAttribute: '_id',
 
             urlRoot: function()
             {
@@ -23,9 +20,15 @@
 
             defaults: {
                 name: '',
-                type: '',
+                tags: [],
                 content: ''
+            },
+
+            initialize: function(options)
+            {
+                this.friend_id = options.friend_id;
             }
+
         });
 
         return ExtensionModel;

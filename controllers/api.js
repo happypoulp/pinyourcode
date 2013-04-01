@@ -32,7 +32,7 @@ ApiController.prototype =
   {
     db
       .friends
-      .get(req.facebook.user_id, req.params.fb_id, function (err, friend)
+      .getById(req.facebook.user_id, req.params.friend_id, function (err, friend)
       {
           if ( err )
           {
@@ -56,7 +56,7 @@ ApiController.prototype =
   {
     db
       .friends
-      .get(req.facebook.user_id, req.params.fb_id, function (err, friend)
+      .getById(req.facebook.user_id, req.params.friend_id, function (err, friend)
     {
       if ( err )
       {
@@ -83,7 +83,7 @@ ApiController.prototype =
       (
         {
           user_id : req.facebook.user_id,
-          fb_id : req.params.fb_id
+          fb_id : req.params.friend_id
         },
         {
           _id: 0,
@@ -127,7 +127,7 @@ ApiController.prototype =
         // Hitting the db to known if the friend already exists
         db
           .friends
-          .get(req.facebook.user_id, friend.fb_id, function (err, dbFriend)
+          .getByFBId(req.facebook.user_id, friend.fb_id, function (err, dbFriend)
           {
             if ( err )
             {
@@ -173,7 +173,7 @@ ApiController.prototype =
       {
         db
           .friends
-          .get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+          .getById(req.facebook.user_id, req.params.friend_id, function (err, dbFriend)
           {
             if ( err )
             {
@@ -217,8 +217,6 @@ ApiController.prototype =
   },
   friend_update: function(req, res)
   {
-    if (!req.body.fb_id) req.body.fb_id = req.params.fb_id;
-
     // Parsing the request body
     friend_builder.build(
       req, 
@@ -232,11 +230,11 @@ ApiController.prototype =
         else
         {
           // Checking cohesion between document and url
-          if ( req.params.fb_id === friend.fb_id )
+          if ( req.params.friend_id === friend.id )
           {
             db
               .friends
-              .get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+              .getById(req.facebook.user_id, req.params.friend_id, function (err, dbFriend)
               {
                 if ( err )
                 {
@@ -300,7 +298,7 @@ ApiController.prototype =
         // Checking cohesion between document and url
         db
           .friends
-          .get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+          .getById(req.facebook.user_id, req.params.friend_id, function (err, dbFriend)
           {
             if ( err )
             {
@@ -348,7 +346,7 @@ ApiController.prototype =
   {
     db
       .friends
-      .get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+      .getById(req.facebook.user_id, req.params.friend_id, function (err, dbFriend)
       {
         if ( err )
         {
@@ -387,7 +385,7 @@ ApiController.prototype =
   {
     db
       .friends
-      .get(req.facebook.user_id, req.params.fb_id, function (err, dbFriend)
+      .getById(req.facebook.user_id, req.params.friend_id, function (err, dbFriend)
       {
         if ( err )
         {

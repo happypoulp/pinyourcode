@@ -130,7 +130,7 @@
                         // method: 'friends.get'
                         method: 'fql.query',
                         query:
-                            'SELECT uid, name ' +
+                            'SELECT uid, name, pic_big ' +
                                 'FROM user ' +
                                     'WHERE uid IN ' +
                                     '( ' +

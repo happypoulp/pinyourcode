@@ -31,14 +31,14 @@
 
                 _.each(this.results, function(result)
                 {
-                    console.log(result);
                     frag.appendChild(
                         new CandidateView(
                             {
                                 model: new FriendModel(
                                     {
                                         fb_id: result.uid,
-                                        name: result.name
+                                        name: result.name,
+                                        picture: result.pic_big
                                     }
                                 )
                             }
@@ -73,6 +73,7 @@
                 {
                     for (var i = 0, l = results.length; i < l; i++)
                     {
+                        // console.log(results[i]);
                         var found = this.$('.fb_candidate[data-uid="' + results[i].uid + '"]');
 
                         if (!found.length)
@@ -83,7 +84,8 @@
                                     model: new FriendModel(
                                     {
                                         fb_id: results[i].uid,
-                                        name: results[i].name
+                                        name: results[i].name,
+                                        picture: results[i].pic_big
                                     }),
                                     extraClass: 'keep'
                                 }).render().el

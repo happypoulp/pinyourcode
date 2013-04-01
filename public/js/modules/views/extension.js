@@ -1,38 +1,39 @@
 (function()
 {
-    var moduleDependencies = [
-            'backbone',
-            '/js/modules/templates/friend.js'
-        ],
-        moduleName = 'views/friend';
+    var moduleName = 'views/extension',
+        moduleDependencies = [
+            '/js/modules/templates/extension.js'
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(Backbone, FriendTemplate)
+    define(moduleDependencies, function(ExtensionTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
-        var FriendView = Backbone.View.extend({
+        var ExtensionView = Backbone.View.extend({
 
             tagName: 'li',
-            className: 'fb_friend list-item',
+            className: 'extension list-item',
 
             events:
             {
-                'click .js-remove_fb_friend': 'remove'
+                'click .js-remove_extension': 'remove'
             },
 
             remove: function(ev)
             {
+                console.log(ev.target);
+
                 ev.stopPropagation();
 
-                if (confirm('Are you sure you want to delete this friend and all his extensions?'))
+                if (confirm('Are you sure you want to delete this extension?'))
                 {
                     this.model.destroy(
                     {
                         success: function()
                         {
-                            $(ev.target).closest('.fb_friend').remove();
+                            $(ev.target).closest('.extension').remove();
                         },
                         error: function()
                         {
@@ -44,21 +45,19 @@
 
             toHTML: function()
             {
-                return FriendTemplate({friend: this.model.attributes});
+                return ExtensionTemplate({extension: this.model.attributes});
             },
 
             render: function()
             {
                 this.$el
-                    .attr('data-uid', this.model.get('fb_id'))
                     .attr('data-id', this.model.id)
-                    .addClass(this.options.extraClass)
                     .html(this.toHTML());
 
                 return this;
             }
         });
 
-        return FriendView;
+        return ExtensionView;
     });
 })();

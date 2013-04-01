@@ -1,4 +1,5 @@
-var db;
+var db
+  , ObjectID = require("mongodb").ObjectID;
 
 function createDb(app)
 {
@@ -29,7 +30,20 @@ function buildShortcuts()
 {
   db.bind('friends',
   {
-    get : function (user_id, fb_id, cb)
+    getById : function (user_id, friend_id, cb)
+    {
+      this.findOne(
+        {
+          user_id : user_id,
+          _id : new ObjectID(friend_id)
+        },
+        function (err, friend)
+        {
+          cb(err, friend);
+        }
+      );
+    },
+    getByFBId : function (user_id, fb_id, cb)
     {
       this.findOne(
         {

@@ -1,13 +1,11 @@
 (function()
 {
-    var moduleDependencies = [],
-        moduleName = 'models/friend';
+    var moduleName = 'models/friend',
+        moduleDependencies = [];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define([
-        'backbone'
-    ], function(Backbone)
+    define(moduleDependencies, function()
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -21,7 +19,8 @@
                 extensions: [],
                 fb_id: null,
                 user_id: null,
-                name: null
+                name: null,
+                picture: null
             },
 
             add: function()

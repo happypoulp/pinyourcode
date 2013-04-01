@@ -8,6 +8,8 @@ function FriendBuilder(request)
     this.friend = {
         user_id: request.facebook.user_id,
         fb_id: request.body.fb_id,
+        name: request.body.name,
+        picture: request.body.picture,
         extensions: request.body.extensions
     };
 }

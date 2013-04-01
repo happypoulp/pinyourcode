@@ -1,6 +1,6 @@
-/********************* FRIEND CONTAINER **********************/
+/********************* LIST STYLE **********************/
 
-.fb_friend
+.list-item
 {
     margin: 0 8px;
     padding: 16px 8px 16px 20px;
@@ -10,15 +10,28 @@
     position: relative;
 }
 
-.fb_friend:hover,
-.fb_friend.odd:hover,
-.fb_friend.even:hover
+.list-item:hover
 {
     background: rgba(100, 100, 100, 0.3);
     cursor: pointer;
     border-left: 4px solid rgba(0, 190, 255, 0.7);
     padding-left: 16px;
 }
+
+.list-item .tools
+{
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: none;
+}
+
+.list-item:hover .tools
+{
+    display: block;
+}
+
+/********************* FRIEND CONTAINER **********************/
 
 .fb_friend .profile_pic
 {
@@ -28,8 +41,8 @@
 
 .fb_friend .profile_pic img
 {
-    box-shadow: 0 0 2px #AAA;
-    border-radius: 2px;
+    box-shadow: 0 0 3px #AAA;
+    border-radius: 30px; // 2px
 }
 
 .fb_friend h3
@@ -42,39 +55,11 @@
     text-indent: 20px;
 }
 
-.fb_friend.odd
-{
-    background: rgba(100, 100, 100, 0.1);
-}
-.fb_friend.even
-{
-    background: rgba(100, 100, 100, 0.17);
-}
-
 .fb_friend .name
 {
     display: inline-block;
     margin-left: 20px;
     line-height: 50px;
-}
-
-.fb_friend .tools
-{
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    display: none;
-}
-
-.fb_friend:hover .tools
-{
-    display: block;
-}
-
-.fb_friend .checkbox_container
-{
-    display: inline-block;
-    margin-right: 12px;
 }
 
 .fb_friend .extensions_count
@@ -135,4 +120,76 @@
 #friend_details .extension
 {
     margin: 8px 0;
+}
+
+.friend
+{
+    position: relative;
+}
+
+.friend .name
+{
+    margin-bottom: 0;
+}
+
+.extensions_sum
+{
+    text-indent: 4px;
+}
+
+.big_pic
+{
+    float: right;
+    margin-left: 24px;
+}
+
+.big_pic img
+{
+    border-radius: 4px;
+}
+
+.add_extension_form
+{
+    padding-left: 40px;
+}
+
+.input_container,
+.submit_container
+{
+    margin: 8px 0;
+}
+
+.input_container input
+{
+    width: 350px;
+    height: 30px;
+    border: none;
+    border-radius: 4px;
+    padding: 0 12px;
+}
+
+.submit_container input
+{
+    margin-left: 306px;
+    margin-top: 12px;
+}
+
+.extensions
+{
+    list-style-type: none;
+}
+
+.extension_name
+{
+    
+}
+
+.extension_type
+{
+    
+}
+
+.extension_content
+{
+
 }

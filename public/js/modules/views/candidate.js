@@ -15,7 +15,7 @@
         var CandidateView = Backbone.View.extend({
 
             tagName: 'li',
-            className: 'fb_candidate',
+            className: 'fb_candidate list-item',
 
             events:
             {
@@ -25,19 +25,12 @@
             add: function(ev)
             {
                 ev.stopPropagation();
-                console.log('add logged', this.model.isNew());
-                this.model.save();
-                // console.log(this.model.destroy(
-                // {
-                //     success: function()
-                //     {
-                //         $(ev.target).closest('.fb_friend').remove();
-                //     },
-                //     error: function()
-                //     {
-                //         console.log('ERROR!');
-                //     }
-                // }));
+                this.model.save(null, {
+                    success: function()
+                    {
+                        document.location.hash = '/';
+                    }
+                });
             },
 
             toHTML: function()

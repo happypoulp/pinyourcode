@@ -3,7 +3,9 @@
     var moduleDependencies = [
             'facebook',
             'models/friend',
+            'collections/extensions',
             '/js/modules/templates/detail.js',
+            'views/list-extension',
             'views/create-extension',
             'pubsub'
         ],
@@ -11,7 +13,15 @@
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(Facebook, FriendModel, DetailTemplate, CreateExtensionView, PubSub)
+    define(moduleDependencies, function(
+        Facebook,
+        FriendModel,
+        ExtensionsCollection,
+        DetailTemplate,
+        ListExtensionView,
+        CreateExtensionView,
+        PubSub
+    )
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -24,13 +34,12 @@
                 log(moduleName, 'render', id);
 
                 var that = this,
-                    friend = new FriendModel({id: id});
+                    friend = new FriendModel({_id: id});
 
                 friend.fetch(
                 {
                     success: function(friend)
                     {
-                        console.log(friend.toJSON());
                         that.$el.html(
                             DetailTemplate(
                                 {
@@ -38,9 +47,19 @@
                                 }
                             )
                         );
+
                         Facebook.render(that.el);
 
-                        new CreateExtensionView({el: $('#pages')}).render();
+                        var c = new CreateExtensionView().render();
+
+                        console.log(c, c.el);
+
+                        that.$el.append(
+                            [
+                                new ListExtensionView({collection: new ExtensionsCollection(friend.get('extensions'))}).render().el,
+                                c.el
+                            ]
+                        );
                         
                         Facebook.getFriendsInfos(
                             [id],

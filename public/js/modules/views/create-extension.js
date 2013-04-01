@@ -15,27 +15,38 @@
 
         var CreateExtensionView = Backbone.View.extend(
         {
+            tagName: 'form',
+            className: 'add_extension_form',
+            name: 'extension_form',
+
             events: {
-                'submit form.add_extension_form': 'createExtension'
+                'submit': 'createExtension'
             },
 
             createExtension: function(ev)
             {
-                var extension = new extensionModel({friend_id:$('.friend').data('uid')});
+                ev.preventDefault();
 
-                extension.save(
-                {
-                    name: document.extension_form.extension_name.value,
-                    type: document.extension_form.extension_type.value,
-                    content: document.extension_form.extension_content.value
-                });
+                var extension = new extensionModel(
+                    {
+                        friend_id:$('.friend').data('id'),
+                        name: document.extension_form.extension_name.value,
+                        tags: document.extension_form.extension_tags.value,
+                        content: document.extension_form.extension_content.value
+                    }
+                );
 
-                return false;
+                extension.save();
             },
 
             render: function(id)
             {
-                this.$el.append(CreateExtensionTemplate());
+                this
+                    .$el
+                    .attr('name', this.name)
+                    .html(CreateExtensionTemplate());
+
+                return this;
             }
         });
 

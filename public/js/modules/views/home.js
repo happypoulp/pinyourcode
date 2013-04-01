@@ -22,7 +22,7 @@
 
             showFriendDetails: function(ev)
             {
-                document.location.hash = '/friend/' + $(ev.currentTarget).data('uid');
+                document.location.hash = '/friend/' + $(ev.currentTarget).data('id');
             },
 
             render: function()

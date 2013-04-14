@@ -16,7 +16,8 @@
             model: ExtensionModel,
             url: function()
             {
-                return '/api/friends/' + this.friend_id + '/extensions';
+                console.log('COLLECTION URL called', this.options, this.options.friend_id);
+                return '/api/friends/' + this.options.friend_id + '/extensions';
             }
         });
 

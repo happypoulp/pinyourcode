@@ -1,10 +1,10 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/list-extension',
+        moduleDependencies = [
             'facebook',
             'views/extension'
-        ],
-        moduleName = 'views/list-extension';
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -21,11 +21,16 @@
 
             getHTML: function()
             {
-                var frag = document.createDocumentFragment();
+                var frag = document.createDocumentFragment(),
+                    that = this;
+
+                console.log(that);
 
                 this.collection.each(function(model)
                 {
-                    frag.appendChild(new ExtensionView({model: model}).render().el);
+                    model.friend_id = that.options.friend_id;
+
+                    frag.appendChild(new ExtensionView({model: model, friend_id: that.options.friend_id}).render().el);
                 });
 
                 return frag;

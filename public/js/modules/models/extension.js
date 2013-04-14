@@ -22,13 +22,7 @@
                 name: '',
                 tags: [],
                 content: ''
-            },
-
-            initialize: function(options)
-            {
-                this.friend_id = options.friend_id;
             }
-
         });
 
         return ExtensionModel;

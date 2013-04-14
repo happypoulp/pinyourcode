@@ -14,11 +14,15 @@ require.config({
     }
 });
 
-log('main', 'require "application"');
-require(['application'], function(Application)
+log('main', 'require "application" and "backbone"');
+
+require(['backbone'], function()
 {
-    log('main', 'Application.initialize');
-    Application.initialize();
+    require(['application'], function(Application)
+    {
+        log('main', 'Application.initialize');
+        Application.initialize();
+    });
 });
 
 // require(['jquery', 'facebook', 'iandco_api'], function($, Facebook, IAndCo)

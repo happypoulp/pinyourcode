@@ -52,11 +52,14 @@
 
                         var c = new CreateExtensionView().render();
 
-                        console.log(c, c.el);
-
                         that.$el.append(
                             [
-                                new ListExtensionView({collection: new ExtensionsCollection(friend.get('extensions'))}).render().el,
+                                new ListExtensionView(
+                                    {
+                                        collection: new ExtensionsCollection(friend.get('extensions')),
+                                        friend_id: friend.id
+                                    }
+                                ).render().el,
                                 c.el
                             ]
                         );

@@ -1,0 +1,7 @@
+- Better add + remove views
+- Better link between views and models with models onchange events
+- use backbone.sync events instead of models callbacks
+- organize client templates & module views into friend, candidate, extension folders
+
+
+How are model handled? Is there any registry of models already created?

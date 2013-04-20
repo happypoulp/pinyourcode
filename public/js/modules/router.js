@@ -1,11 +1,11 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'router',
+        moduleDependencies = [
             'session',
             'pubsub',
             'views/start'
-        ],
-        moduleName = 'router';
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 

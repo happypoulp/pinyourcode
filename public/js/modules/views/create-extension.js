@@ -1,11 +1,11 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/create-extension',
+        moduleDependencies = [
             'facebook',
             'models/extension',
             '/js/modules/templates/extension-create.js'
-        ],
-        moduleName = 'views/create-extension';
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -27,16 +27,25 @@
             {
                 ev.preventDefault();
 
+                console.log('createExtension', this, this.options.friend_id);
+
                 var extension = new extensionModel(
                     {
-                        friend_id:$('.friend').data('id'),
                         name: document.extension_form.extension_name.value,
                         tags: document.extension_form.extension_tags.value,
                         content: document.extension_form.extension_content.value
                     }
                 );
 
-                extension.save();
+                extension.friend_id = this.options.friend_id;
+
+                extension.save(null, {
+                    success: function()
+                    {
+                        // Ugly. Instead, add the extensions create to the list.
+                        document.location.reload();
+                    }
+                });
             },
 
             render: function(id)

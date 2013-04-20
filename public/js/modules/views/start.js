@@ -1,9 +1,9 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/start',
+        moduleDependencies = [
             'views/header'
-        ],
-        moduleName = 'views/start';
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 

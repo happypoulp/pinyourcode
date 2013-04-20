@@ -56,6 +56,11 @@
                     .html(this.toHTML());
 
                 return this;
+            },
+
+            initialize: function()
+            {
+                this.model.on('change', $.proxy(this.render, this));
             }
         });
 

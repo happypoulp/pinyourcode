@@ -1,38 +1,59 @@
 extends layout
 
-block css
-  link(rel='stylesheet', href='css/gen/test.css')
 block js
-  script(src="js/require-jquery.js", data-main="js/modules/test")
+  script(src="/js/require-jquery.js")
+  script(src="/js/libs/underscore-min.js")
+  script(src="/js/libs/backbone-dev.js")
 
 block content
-  div.viewport
-    div.cube.clearfix
-      div.front
-        p= settings
-        p= settings.env
-        p= title
-        p= FB_APP_ID
-        | front asiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus diasiudhc aisu dchiuadsiuhc iashdi cuh asiudhciasud ciua sdiuc iaushdi uchaisud ciaus diuchasiduhc iaus di
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-      div.right
-        | right
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
-        br
+  h2 test
+  div#main
+  button#btn(onclick="m.set('name', getAName())") New Name
+  script
+    window.onload = function()
+    {
+      var V = Backbone.View.extend({
+        tagName: 'span',
+        className: 'name',
+        render: function()
+        {
+          this.$el.html(this.model.get('name'));
+
+          return this;
+        },
+        initialize: function()
+        {
+          this.model.on('change', $.proxy(this.render, this));
+        }
+      });
+
+      var M = Backbone.Model.extend({
+        defaults: {
+          name: ''
+        }
+      });
+
+      window.getAName = function getAName()
+      {
+        var names = ['Jack', 'John', 'Ringo', 'Paul', 'Bob', 'Rick', 'William'];
+
+        if (!getAName.lastNameChosen)
+        {
+          return getAName.lastNameChosen = names[0];
+        }
+
+        var newName = getAName.lastNameChosen;
+
+        while(newName == getAName.lastNameChosen)
+        {
+          newName = names[Math.ceil(Math.random()*(names.length - 1))];
+        }
+
+        return getAName.lastNameChosen = newName;
+      };
+
+      window.m = new M({name: getAName()});
+      window.v = new V({model: m});
+
+      $('#main').html(v.render().el);
+    };

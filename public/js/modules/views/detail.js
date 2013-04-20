@@ -1,6 +1,7 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/detail',
+        moduleDependencies = [
             'facebook',
             'models/friend',
             'collections/extensions',
@@ -8,8 +9,7 @@
             'views/list-extension',
             'views/create-extension',
             'pubsub'
-        ],
-        moduleName = 'views/detail';
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -50,7 +50,7 @@
 
                         Facebook.render(that.el);
 
-                        var c = new CreateExtensionView().render();
+                        var c = new CreateExtensionView({friend_id: friend.id}).render();
 
                         that.$el.append(
                             [

@@ -1,2 +1,4 @@
 /public/js/modules/templates/*
+/public/css/*
 .git/*
+.sass-cache/*

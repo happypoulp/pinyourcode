@@ -20,6 +20,12 @@
                     alert(Array.prototype.join.call( arguments, " " ));
                 }
             }
+        },
+        clearLogInterval = 1000*60*60*2, // 2 hours
+        clear = function()
+        {
+            logs = [];
+            log('Logger', '##### Cleared logs #####')
         };
 
     DM_Log.prototype = {
@@ -71,5 +77,7 @@
     w.log = dmlog.log;
     w.showlog = dmlog.show;
     w.debuglog = dmlog.setDebug;
+    // Security to avoid logging until browser runs out of memory: We clear logs every 2 hours
+    setInterval(clear, clearLogInterval);
 })(window);
 

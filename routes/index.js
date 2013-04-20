@@ -32,8 +32,8 @@ routes['test'] =
 {
   'get':
   {
-    'templating': '/templating',
-    'authenticated': '/authenticated'
+    'templating': '/test/templating',
+    'authenticated': '/test/authenticated'
   }
 };
 

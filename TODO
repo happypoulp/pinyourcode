@@ -4,4 +4,5 @@
 - organize client templates & module views into friend, candidate, extension folders
 
 
-How are model handled? Is there any registry of models already created?
+How are model handled?
+-> Is there any registry of models already created? ### No

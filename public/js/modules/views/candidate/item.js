@@ -1,9 +1,9 @@
 (function()
 {
-    var moduleName = 'views/candidate',
+    var moduleName = 'views/candidate/item',
         moduleDependencies = [
             'backbone',
-            '/js/modules/templates/candidate.js'
+            'templates/candidate/item'
         ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));

@@ -1,10 +1,10 @@
 (function()
 {
-    var moduleName = 'views/create-extension',
+    var moduleName = 'views/extension/create',
         moduleDependencies = [
             'facebook',
             'models/extension',
-            '/js/modules/templates/extension-create.js'
+            'templates/extension/create'
         ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
@@ -27,25 +27,30 @@
             {
                 ev.preventDefault();
 
-                console.log('createExtension', this, this.options.friend_id);
-
                 var extension = new extensionModel(
-                    {
-                        name: document.extension_form.extension_name.value,
-                        tags: document.extension_form.extension_tags.value,
-                        content: document.extension_form.extension_content.value
-                    }
-                );
+                        {
+                            name: document.extension_form.extension_name.value,
+                            tags: document.extension_form.extension_tags.value,
+                            content: document.extension_form.extension_content.value
+                        }
+                    ),
+                    that = this;
 
-                extension.friend_id = this.options.friend_id;
+                extension.friend_id = this.options.friend.id;
 
                 extension.save(null, {
-                    success: function()
+                    success: function(extension)
                     {
-                        // Ugly. Instead, add the extensions create to the list.
-                        document.location.reload();
+                        that.options.friend.addExtension(extension);
+                        that.reset();
                     }
                 });
+            },
+
+            reset: function()
+            {
+                this.el.reset();
+                this.$el.find('input:first').focus();
             },
 
             render: function(id)

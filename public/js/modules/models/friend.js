@@ -1,11 +1,11 @@
 (function()
 {
     var moduleName = 'models/friend',
-        moduleDependencies = [];
+        moduleDependencies = ['collections/extensions'];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function()
+    define(moduleDependencies, function(ExtensionsCollection)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -16,16 +16,23 @@
             urlRoot: '/api/friends',
 
             defaults: {
-                extensions: [],
+                extensions: null,
                 fb_id: null,
                 user_id: null,
                 name: null,
                 picture: null
             },
 
-            add: function()
+            parse: function(rawFriend)
             {
-                this.save();
+                rawFriend.extensions = new ExtensionsCollection(rawFriend.extensions, { friend: this });
+
+                return rawFriend;
+            },
+
+            addExtension: function(extension)
+            {
+                this.get('extensions').add(extension);
             }
 
         });

@@ -1,24 +1,35 @@
 (function()
 {
     var moduleDependencies = [
-            '/js/modules/templates/login.js',
-            'pubsub'
+            'pubsub',
+            'views/generic',
+            'templates/login'
         ],
         moduleName = 'views/login';
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(LoginTemplate, PubSub)
+    define(moduleDependencies, function(PubSub, GenericView, LoginTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
         var LoginView = Backbone.View.extend(
         {
+            name: moduleName,
+
             render: function()
             {
                 PubSub.publish('header:login');
 
-                this.$el.html(LoginTemplate());
+                this.renderChild(
+                    new GenericView(
+                        {
+                            template: LoginTemplate,
+                            data: null,
+                            tagName: 'center'
+                        }
+                    )
+                );
             }
         });
 

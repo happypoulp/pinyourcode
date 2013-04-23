@@ -1,8 +1,8 @@
 (function()
 {
-    var moduleName = 'views/extension',
+    var moduleName = 'views/extension/item',
         moduleDependencies = [
-            '/js/modules/templates/extension.js'
+            'templates/extension/item'
         ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
@@ -18,12 +18,12 @@
 
             events:
             {
-                'click .js-remove_extension': 'remove'
+                'click .js-remove_extension': 'delete'
             },
 
-            remove: function(ev)
+            delete: function(ev)
             {
-                console.log(ev.target);
+                var that = this;
 
                 ev.stopPropagation();
 
@@ -33,7 +33,7 @@
                     {
                         success: function()
                         {
-                            $(ev.target).closest('.extension').remove();
+                            that.remove();
                         },
                         error: function()
                         {
@@ -43,16 +43,11 @@
                 }
             },
 
-            toHTML: function()
-            {
-                return ExtensionTemplate({extension: this.model.attributes});
-            },
-
             render: function()
             {
                 this.$el
                     .attr('data-id', this.model.id)
-                    .html(this.toHTML());
+                    .html(ExtensionTemplate({extension: this.model.attributes}));
 
                 return this;
             }

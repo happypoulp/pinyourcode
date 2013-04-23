@@ -4,8 +4,12 @@
     img(src="#{friend.get('picture')}")
   h2.name= friend.get('name')
   if extensions_count
-    div.fgd2.small.it.extensions_sum.
-      - #{extensions_count} extensions -
+    div.fgd2.small.it.extensions_sum
+      | -
+      | 
+      span.extensions_count= extensions_count
+      | 
+      | extensions -
   else
     div.fgd2.small.it.
       - no extensions yet -

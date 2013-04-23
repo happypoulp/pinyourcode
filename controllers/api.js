@@ -202,7 +202,7 @@ ApiController.prototype =
                   {
                     // Update dbFriend extensions and send it (manual merging)
                     dbFriend.extensions.push(extension);
-                    res.json(dbFriend);
+                    res.json(extension);
                   }
                 });
               }

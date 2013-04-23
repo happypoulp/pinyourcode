@@ -2,7 +2,7 @@
 {
     var logs = [],
         debug = {},
-        DM_Log = function() {},
+        Logger = function() {},
         print = function()
         {
             try
@@ -28,20 +28,14 @@
             log('Logger', '##### Cleared logs #####')
         };
 
-    DM_Log.prototype = {
+    Logger.prototype = {
         show: function(context)
         {
+            var contextRe = new RegExp(context || '');
+
             for (var i = 0, l = logs.length; i < l; i++)
             {
-                if (!context)
-                {
-                    print.apply(w, logs[i]);
-                    continue;
-                }
-                if (context && logs[i][1] == context)
-                {
-                    print.apply(w, logs[i]);
-                }
+                if (context && contextRe.test(logs[i][1])) print.apply(w, logs[i]);
             }
         },
         setDebug: function(bool, context)
@@ -73,10 +67,10 @@
     {
         return;
     }
-    dmlog = new DM_Log();
-    w.log = dmlog.log;
-    w.showlog = dmlog.show;
-    w.debuglog = dmlog.setDebug;
+    var logger = new Logger();
+    w.log = logger.log;
+    w.showlog = logger.show;
+    w.debuglog = logger.setDebug;
     // Security to avoid logging until browser runs out of memory: We clear logs every 2 hours
     setInterval(clear, clearLogInterval);
 })(window);

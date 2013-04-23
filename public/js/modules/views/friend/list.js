@@ -1,11 +1,11 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/friend/list',
+        moduleDependencies = [
             'backbone',
             'facebook',
-            'views/friend'
-        ],
-        moduleName = 'views/list';
+            'views/friend/item'
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -15,32 +15,35 @@
 
         var ListView = Backbone.View.extend({
 
+            name: moduleName,
+
             tagName: 'ul',
             className: 'friends_list',
 
             events: {},
 
-            getHTML: function()
+            render: function()
             {
-                var frag = document.createDocumentFragment();
+                var that = this,
+                    renderDeferred = $.Deferred(),
+                    renderPromises = [];
 
                 this.collection.each(function(model)
                 {
-                    frag.appendChild(new FriendView({model: model}).render().el);
+                    renderPromises.push(that.renderChild(new FriendView({model: model})));
                 });
 
-                return frag;
-            },
+                $.when.apply($, renderPromises).then(function()
+                {
+                    renderDeferred.resolve();
+                });
 
-            render: function()
-            {
-                this.el.appendChild(this.getHTML());
-
-                return this;
+                return renderDeferred;
             },
 
             postRender: function()
             {
+                log(moduleName, '... postRender');
                 Facebook.render(this.el);
             }
         });

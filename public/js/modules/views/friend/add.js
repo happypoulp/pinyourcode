@@ -1,13 +1,14 @@
 (function()
 {
-    var moduleName = 'views/addfriend',
+    var moduleName = 'views/friend/add',
         moduleDependencies = [
             'pubsub',
             'facebook',
-            '/js/modules/templates/addfriend.js',
             'models/friend',
-            'views/friend',
-            'views/results'
+            'views/friend/item',
+            'views/candidate/results',
+            'views/generic',
+            'templates/friend/add'
         ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
@@ -15,10 +16,11 @@
     define(moduleDependencies, function(
         PubSub,
         Facebook,
-        AddFriendTemplate,
         FriendModel,
         FriendView,
-        ResultsView
+        ResultsView,
+        GenericView,
+        AddFriendTemplate
     )
     {
         log(moduleName, "Dependencies loaded", "Build module");
@@ -56,24 +58,38 @@
 
             searchFriendCallback: function(search, result)
             {
+                var isNew = false;
+
                 if (!this.resultsView)
                 {
+                    isNew = true;
                     this.resultsView = new ResultsView();
-                    this.el.appendChild(this.resultsView.render().el);
                 }
 
-                if (!search) return this.resultsView.empty();
+                this.resultsView
+                    .setSearch(search)
+                    .setResult(result);
 
-                this.resultsView.update(search, result);
+                if (isNew)
+                {
+                    this.renderChild(this.resultsView, {after: '#friend_search'});
+                }
+                else
+                {
+                    this.resultsView.update();
+                }
             },
 
             render: function()
             {
                 PubSub.publish('header:any');
 
-                this.$el
-                    .html(AddFriendTemplate())
-                    .find('input[name="friend_name"]').focus();
+                this.renderChild(new GenericView({template: AddFriendTemplate}));
+            },
+
+            postRender: function()
+            {
+                this.$el.find('input[name="friend_name"]').focus();
             }
         });
 

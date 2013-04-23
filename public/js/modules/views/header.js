@@ -14,7 +14,10 @@
 
         var HeaderView = Backbone.View.extend(
         {
-            initialized: false,
+            name: moduleName,
+
+            permanent: true,
+
             currentDisplayMode: 'hidden',
         
             events:
@@ -52,11 +55,6 @@
                 PubSub
                     .subscribe('header:login', this.displayForLogin, this)
                     .subscribe('header:any', this.displayForAny, this);
-            },
-
-            render: function()
-            {
-                if (!this.initialized) this.initialize();
             }
         });
 

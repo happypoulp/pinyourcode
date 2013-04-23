@@ -1,14 +1,13 @@
 (function()
 {
-    var moduleName = 'views/emptyresults',
+    var moduleName = 'views/candidate/empty',
         moduleDependencies = [
-            'backbone',
-            '/js/modules/templates/emptyresults.js'
+            'templates/candidate/empty'
         ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
-    define(moduleDependencies, function(Backbone, EmptyResultsTemplate)
+    define(moduleDependencies, function(EmptyResultsTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

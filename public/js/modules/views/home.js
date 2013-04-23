@@ -1,12 +1,12 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/home',
+        moduleDependencies = [
             'pubsub',
             'facebook',
             'collections/friends',
-            'views/list'
-        ],
-        moduleName = 'views/home';
+            'views/friend/list'
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -16,13 +16,15 @@
 
         var HomeView = Backbone.View.extend(
         {
+            name: moduleName,
+
             events: {
                 'click li.fb_friend': 'showFriendDetails'
             },
 
             showFriendDetails: function(ev)
             {
-                document.location.hash = '/friend/' + $(ev.currentTarget).data('id');
+                app.navigate('/friend/' + $(ev.currentTarget).data('id'), {trigger: true});
             },
 
             render: function()
@@ -31,37 +33,54 @@
 
                 log(moduleName, 'render');
 
-                var friends = new FriendsCollection(),
-                    that = this;
+                var that = this,
+                    renderDeferred = $.Deferred();
 
-                friends.fetch(
+                this.dataPromise.done(function()
+                {
+                    log(moduleName, 'data promise fulfilled');
+                    var friends_ids = [],
+                        idToFriend = {};
+
+                    for (var i = that.collection.models.length - 1; i >= 0; i--)
+                    {
+                        var fb_id = that.collection.models[i].get('fb_id');
+                        friends_ids.push(fb_id);
+                        idToFriend[fb_id] = that.collection.models[i];
+                    }
+
+                    Facebook.getFriendsInfos(
+                        friends_ids,
+                        function(result)
+                        {
+                            for (var i = result.length - 1; i >= 0; i--)
+                            {
+                                idToFriend[result[i].uid].set('name', result[i].name);
+                            }
+
+                            window.listV = new ListView({collection: that.collection});
+
+                            $.when(that.renderChild(listV)).then(function()
+                            {
+                                renderDeferred.resolve();
+                            });
+                        }
+                    );
+                });
+
+                return renderDeferred;
+            },
+
+            initialize: function()
+            {
+                var that = this;
+
+                this.dataPromise = new FriendsCollection().fetch(
                 {
                     success: function(friends)
                     {
-                        var friends_ids = [],
-                            idToFriend = {};
-
-                        for (var i = friends.models.length - 1; i >= 0; i--)
-                        {
-                            var fb_id = friends.models[i].get('fb_id');
-                            friends_ids.push(fb_id);
-                            idToFriend[fb_id] = friends.models[i];
-                        }
-
-                        Facebook.getFriendsInfos(
-                            friends_ids,
-                            function(result)
-                            {
-                                for (var i = result.length - 1; i >= 0; i--)
-                                {
-                                    idToFriend[result[i].uid].set('name', result[i].name);
-                                }
-
-                                var listView = new ListView({collection: friends});
-                                that.$el.html(listView.render().el);
-                                listView.postRender();
-                            }
-                        );
+                        log(moduleName, 'success fetching friends');
+                        that.collection = friends;
                     }
                 });
             }

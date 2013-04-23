@@ -1,12 +1,12 @@
 (function()
 {
-    var moduleName = 'views/results',
+    var moduleName = 'views/candidate/results',
         moduleDependencies = [
             'backbone',
             'facebook',
             'models/friend',
-            'views/candidate',
-            'views/emptyresults'
+            'views/candidate/item',
+            'views/candidate/empty'
         ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
@@ -17,11 +17,13 @@
 
         var ResultsView = Backbone.View.extend({
 
+            name: moduleName,
+
             tagName: 'ul',
             id: 'fb_search_results',
 
             search: '',
-            results: [],
+            result: [],
 
             events: {},
 
@@ -29,7 +31,7 @@
             {
                 var frag = document.createDocumentFragment();
 
-                _.each(this.results, function(result)
+                _.each(this.result, function(result)
                 {
                     frag.appendChild(
                         new CandidateView(
@@ -49,43 +51,60 @@
                 return frag;
             },
 
+            setSearch: function(search)
+            {
+                this.search = search;
+
+                return this;
+            },
+
+            setResult: function(result)
+            {
+                this.result = result;
+
+                return this;
+            },
+
             empty: function()
             {
                 this.$el.empty();
             },
 
-            update: function(search, results)
+            update: function()
             {
-                this.search = search;
-                this.results = results;
+                log(moduleName, 'result', this.result, 'search', this.search);
 
-                log(moduleName, 'results', results);
+                if (!this.search) return this.empty();
 
                 var frag = document.createDocumentFragment(),
                     needFBRendering = true;
 
-                if (!results.length)
+                if (!this.result.length)
                 {
-                    frag.appendChild(new EmptyResultsView({search: search}).render().el)
+                    log(moduleName, 'results empty');
+                    frag.appendChild(new EmptyResultsView({search: this.search}).render().el)
                     needFBRendering = false;
                 }
                 else
                 {
-                    for (var i = 0, l = results.length; i < l; i++)
+                    log(moduleName, 'has results');
+                    for (var i = 0, l = this.result.length; i < l; i++)
                     {
-                        // console.log(results[i]);
-                        var found = this.$('.fb_candidate[data-uid="' + results[i].uid + '"]');
+                        log(moduleName, this.result[i]);
+                        var found = this.$('.fb_candidate[data-uid="' + this.result[i].uid + '"]');
+                        log(moduleName, found);
 
                         if (!found.length)
                         {
+                            log(moduleName, 'is new');
                             frag.appendChild(
                                 new CandidateView(
                                 {
                                     model: new FriendModel(
                                     {
-                                        fb_id: results[i].uid,
-                                        name: results[i].name,
-                                        picture: results[i].pic_big
+                                        fb_id: this.result[i].uid,
+                                        name: this.result[i].name,
+                                        picture: this.result[i].pic_big
                                     }),
                                     extraClass: 'keep'
                                 }).render().el
@@ -93,6 +112,7 @@
                         }
                         else
                         {
+                            log(moduleName, 'is already here');
                             found.addClass('keep');
                         }
                     }
@@ -114,18 +134,19 @@
                         $el.remove();
                 });
 
-                if (needFBRendering) this.postRender();
+                // if (needFBRendering) this.postRender();
             },
 
             render: function()
             {
-                this.el.appendChild(this.getHTML());
+                this.$el.html(this.getHTML());
 
                 return this;
             },
 
             postRender: function()
             {
+                log(moduleName, 'postRender ...');
                 Facebook.render(this.el);
             }
         });

@@ -1,10 +1,10 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/friend/item',
+        moduleDependencies = [
             'backbone',
-            '/js/modules/templates/friend.js'
-        ],
-        moduleName = 'views/friend';
+            'templates/friend/item'
+        ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
@@ -13,6 +13,8 @@
         log(moduleName, "Dependencies loaded", "Build module");
 
         var FriendView = Backbone.View.extend({
+
+            name: moduleName,
 
             tagName: 'li',
             className: 'fb_friend list-item',
@@ -42,20 +44,14 @@
                 }
             },
 
-            toHTML: function()
-            {
-                return FriendTemplate({friend: this.model.attributes});
-            },
-
             render: function()
             {
+                log(moduleName, '==== render', this.cid);
                 this.$el
                     .attr('data-uid', this.model.get('fb_id'))
                     .attr('data-id', this.model.id)
                     .addClass(this.options.extraClass)
-                    .html(this.toHTML());
-
-                return this;
+                    .html(FriendTemplate({friend: this.model.attributes}));
             },
 
             initialize: function()

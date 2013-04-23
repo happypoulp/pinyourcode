@@ -9,7 +9,7 @@ module.exports = function(app)
 
   if (app.settings.env == 'development')
   {
-    locals.FB_APP_ID = '397068970352801';
+    locals.FB_APP_ID = '468370469906930';
     locals.FB_APP_DOMAIN = 'localhost:3000';
   }
 

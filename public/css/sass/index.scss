@@ -38,7 +38,6 @@
 {
     display: inline-block;
     width: 50px;
-    overflow: hidden;
 }
 
 .fb_friend .profile_pic img
@@ -115,6 +114,12 @@
 #fb_search_results
 {
     margin-top: 30px;
+}
+
+.profile_pic
+{
+    float: left;
+    margin-right: 12px;
 }
 
 /********************** FRIEND DETAILS **************************/

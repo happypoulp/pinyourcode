@@ -14,6 +14,8 @@
 
         var CandidateView = Backbone.View.extend({
 
+            name: moduleName,
+
             tagName: 'li',
             className: 'fb_candidate list-item',
 
@@ -33,17 +35,12 @@
                 });
             },
 
-            toHTML: function()
-            {
-                return CandidateTemplate({candidate: this.model.attributes});
-            },
-
             render: function()
             {
                 this.$el
                     .attr('data-uid', this.model.get('fb_id'))
                     .addClass(this.options.extraClass)
-                    .html(this.toHTML());
+                    .html(CandidateTemplate({candidate: this.model.attributes}));
 
                 return this;
             }

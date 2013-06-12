@@ -72,11 +72,6 @@
                 return renderDeferred;
             },
 
-            postRender: function()
-            {
-                Facebook.render(this.el);
-            },
-
             updateExtensionsCounter: function()
             {
                 $('.extensions_count').html(this.model.get('extensions').length);

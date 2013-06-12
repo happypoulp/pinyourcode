@@ -201,6 +201,9 @@ require(['backbone'], function()
             log('Main', 'clean', this.cid, this.name);
 
             this.beforeRemoveChildren();
+            delete(this.children);
+
+            return this;
         },
         remove: (function()
         {
@@ -215,6 +218,11 @@ require(['backbone'], function()
                 }
 
                 this.beforeRemoveChildren();
+
+                if (this.parent && this.parent.children)
+                {
+                    this.parent.children.splice(this.parent.children.indexOf(this), 1);
+                }
 
                 _remove.apply(this, arguments);
 

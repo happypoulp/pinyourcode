@@ -23,33 +23,10 @@
             id: 'fb_search_results',
 
             search: '',
-            result: [],
+            UIDs: [],
+            results: [],
 
             events: {},
-
-            getHTML: function()
-            {
-                var frag = document.createDocumentFragment();
-
-                _.each(this.result, function(result)
-                {
-                    frag.appendChild(
-                        new CandidateView(
-                            {
-                                model: new FriendModel(
-                                    {
-                                        fb_id: result.uid,
-                                        name: result.name,
-                                        picture: result.pic_big
-                                    }
-                                )
-                            }
-                        ).render().el
-                    );
-                });
-
-                return frag;
-            },
 
             setSearch: function(search)
             {
@@ -58,9 +35,9 @@
                 return this;
             },
 
-            setResult: function(result)
+            setResults: function(results)
             {
-                this.result = result;
+                this.results = results;
 
                 return this;
             },
@@ -68,86 +45,168 @@
             empty: function()
             {
                 this.$el.empty();
+                this.UIDs = [];
+                this.results = [];
             },
 
             update: function()
             {
-                log(moduleName, 'result', this.result, 'search', this.search);
+                log(moduleName, 'result', this.results, 'search', this.search);
 
-                if (!this.search) return this.empty();
+                if (!this.search)
+                {
+                    this.clean();
+                    this.empty();
+                    return;
+                }
 
-                var frag = document.createDocumentFragment(),
-                    needFBRendering = true;
+                this.needFBRendering = true;
 
-                if (!this.result.length)
+                var hasNewResults = false,
+                    that = this,
+                    resultUIDs = _.map(this.results, function(candidate){ return candidate.uid; });
+
+                log(moduleName, 'resultUIDs', resultUIDs);
+
+                if (!this.results.length)
                 {
                     log(moduleName, 'results empty');
-                    frag.appendChild(new EmptyResultsView({search: this.search}).render().el)
-                    needFBRendering = false;
+
+                    this.clean()
+                        .renderChild(new EmptyResultsView({search: this.search}), {meth: 'html', target: this.$el});
+
+                    this.needFBRendering = false;
                 }
                 else
                 {
                     log(moduleName, 'has results');
-                    for (var i = 0, l = this.result.length; i < l; i++)
-                    {
-                        log(moduleName, this.result[i]);
-                        var found = this.$('.fb_candidate[data-uid="' + this.result[i].uid + '"]');
-                        log(moduleName, found);
 
-                        if (!found.length)
+                    var newUIDs = [],
+                        removeChildren = [],
+                        alreadyPresentUIDs = [];
+
+                    log(moduleName, 'current UIDS', this.UIDs);
+
+                    // current page has no result, remove potential "empty message"
+                    if (!this.UIDs.length)
+                    {
+                        log(moduleName, 'CLEAR current result content.');
+                        this.clean()
+                            .$el.empty();
+                    }
+                    else
+                    {
+                        log(moduleName, 'children', this.children.length, 'resultUIDs', resultUIDs);
+                        _.each(this.children, function(child)
                         {
-                            log(moduleName, 'is new');
-                            frag.appendChild(
-                                new CandidateView(
+                            log(moduleName, 'child', child, child.model);
+                            if (child.model)
+                            {
+                                var UID = child.model.get('fb_id');
+                                log(moduleName, 'UID', UID, resultUIDs.indexOf(UID));
+                                if (resultUIDs.indexOf(UID) == -1)
                                 {
-                                    model: new FriendModel(
-                                    {
-                                        fb_id: this.result[i].uid,
-                                        name: this.result[i].name,
-                                        picture: this.result[i].pic_big
-                                    }),
-                                    extraClass: 'keep'
-                                }).render().el
-                            );
-                        }
-                        else
+                                    log(moduleName, child.model.get('name'), 'not present in results, remove it');
+                                    removeChildren.push(child);
+                                    that.UIDs.splice(that.UIDs.indexOf(UID), 1)
+                                }
+                                else
+                                {
+                                    log(moduleName, child.model.get('name'), 'already present');
+                                    alreadyPresentUIDs.push(UID);
+                                }
+                            }
+                        });
+                    }
+
+                    _.each(removeChildren, function(child)
+                    {
+                        child.remove();
+                    });
+
+                    var newUIDs = _.difference(resultUIDs, alreadyPresentUIDs);
+
+                    if (newUIDs.length)
+                    {
+                        _.each(this.results, function(result)
                         {
-                            log(moduleName, 'is already here');
-                            found.addClass('keep');
-                        }
+                            if (newUIDs.indexOf(result.uid) == -1) return;
+
+                            log(moduleName, 'add child', result);
+
+                            that.renderChild
+                            (
+                                new CandidateView(
+                                    {
+                                        model: new FriendModel(
+                                            {
+                                                fb_id: result.uid,
+                                                name: result.name,
+                                                picture: result.pic_big,
+                                                picture_small: result.pic_square
+                                            }
+                                        )
+                                    }
+                                )
+                            , {meth: 'prepend', target: that.$el});
+                        });
+
+                        this.needFBRendering = true;
                     }
                 }
-
-                if (frag.firstChild)
-                {
-                    console.log(frag);
-                    if (!this.$('.fb_candidate').length) this.$el.empty();
-                    this.$el.prepend(frag);
-                }
-
-                this.$('.fb_candidate').each(function()
-                {
-                    $el = $(this);
-                    if ($el.hasClass('keep'))
-                        $el.removeClass('keep');
-                    else
-                        $el.remove();
-                });
-
-                // if (needFBRendering) this.postRender();
+                this.UIDs = resultUIDs;
             },
 
             render: function()
             {
-                this.$el.html(this.getHTML());
+                var that = this,
+                    renderDeferred = $.Deferred(),
+                    childPromises = [];
 
-                return this;
-            },
+                if (!this.results.length)
+                {
+                    log(moduleName, 'results empty');
 
-            postRender: function()
-            {
-                log(moduleName, 'postRender ...');
-                Facebook.render(this.el);
+                    childPromises.push(this.renderChild(new EmptyResultsView({search: this.search})));
+                    this.needFBRendering = false;
+                }
+                else
+                {
+                    var resultUIDs = _.map(this.results, function(candidate){ return candidate.uid; });
+
+                    _.each(this.results, function(result)
+                    {
+                        childPromises.push(
+                            that.renderChild
+                            (
+                                new CandidateView(
+                                    {
+                                        model: new FriendModel(
+                                            {
+                                                fb_id: result.uid,
+                                                name: result.name,
+                                                picture: result.pic_big,
+                                                picture_small: result.pic_square
+                                            }
+                                        )
+                                    }
+                                )
+                            )
+                        );
+                    });
+
+                    this.UIDs = resultUIDs;
+
+                    this.needFBRendering = true;
+                }
+
+
+                $.when.apply($, childPromises).then(function()
+                {
+                    renderDeferred.resolve();
+                });
+
+                return renderDeferred;
             }
         });
 

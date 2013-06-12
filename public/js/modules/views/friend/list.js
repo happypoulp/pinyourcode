@@ -39,12 +39,6 @@
                 });
 
                 return renderDeferred;
-            },
-
-            postRender: function()
-            {
-                log(moduleName, '... postRender');
-                Facebook.render(this.el);
             }
         });
 

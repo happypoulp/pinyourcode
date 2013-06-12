@@ -130,7 +130,7 @@
                         // method: 'friends.get'
                         method: 'fql.query',
                         query:
-                            'SELECT uid, name, pic_big ' +
+                            'SELECT uid, name, pic_square, pic_big ' +
                                 'FROM user ' +
                                     'WHERE uid IN ' +
                                     '( ' +
@@ -152,7 +152,7 @@
                 FB.api(
                     {
                         method: 'fql.query',
-                        query: 'SELECT uid, name FROM user WHERE uid IN (' + friend_list.join(',') + ')'
+                        query: 'SELECT uid, name, pic_square FROM user WHERE uid IN (' + friend_list.join(',') + ')'
                     },
                     callback
                 );

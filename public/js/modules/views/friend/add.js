@@ -27,12 +27,12 @@
 
         var AddFriendView = Backbone.View.extend(
         {
+            name: moduleName,
+
             events: {
                 'keyup input[name="friend_name"]': 'onInputKeyUp',
                 'submit #add_friend_form': 'onFormSubmit'
             },
-
-            results: [],
 
             onInputKeyUp: function(ev)
             {
@@ -56,23 +56,24 @@
                 ev.preventDefault();
             },
 
-            searchFriendCallback: function(search, result)
+            searchFriendCallback: function(search, results)
             {
                 var isNew = false;
 
                 if (!this.resultsView)
                 {
                     isNew = true;
+                    console.log('ResultsView', ResultsView);
                     this.resultsView = new ResultsView();
                 }
 
                 this.resultsView
                     .setSearch(search)
-                    .setResult(result);
+                    .setResults(results);
 
                 if (isNew)
                 {
-                    this.renderChild(this.resultsView, {after: '#friend_search'});
+                    this.renderChild(this.resultsView, {meth: 'after', target: '#friend_search'});
                 }
                 else
                 {

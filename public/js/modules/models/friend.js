@@ -16,11 +16,12 @@
             urlRoot: '/api/friends',
 
             defaults: {
-                extensions: null,
+                extensions: [],
                 fb_id: null,
                 user_id: null,
                 name: null,
-                picture: null
+                picture: null,
+                picture_small: null
             },
 
             parse: function(rawFriend)

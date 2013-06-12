@@ -1,5 +1,5 @@
 - var fb_id = candidate.fb_id || candidate.id
 div.profile_pic
-  fb:profile-pic(size="square", uid="#{fb_id}", facebook-logo="true")
+  img(src="#{candidate.picture_small}", width="50", height="50")
 span.name=candidate.name
 

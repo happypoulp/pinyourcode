@@ -15,16 +15,9 @@
 
             className: 'emptyresults',
 
-            toHTML: function()
-            {
-                return EmptyResultsTemplate({search: this.options.search});
-            },
-
             render: function()
             {
-                this.$el.html(this.toHTML());
-
-                return this;
+                this.$el.html(EmptyResultsTemplate({search: this.options.search}));
             }
         });
 

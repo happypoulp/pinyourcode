@@ -1,0 +1,17 @@
+- var fb_id = friend.get('fb_id')
+- var extensions_count = friend.get('extensions').length
+- var extension_0 = 'no extensions yet'
+- var extension_1 = '<span class="extensions_count">1</span> extension'
+- var extension_many = '<span class="extensions_count"></span> extensions'
+.friend(data-uid="#{fb_id}", data-id="#{friend.id}")
+  div.big_pic
+    img(src="#{friend.get('picture')}")
+  h2.name= friend.get('name')
+  div.fgd2.small.it.extensions_sum
+    case extensions_count
+        when 0
+          | - #{extension_0} -
+        when 1
+          | - #{extension_1} -
+        default
+          | - #{extension_many} -

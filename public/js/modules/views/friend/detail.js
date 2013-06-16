@@ -5,11 +5,9 @@
             'pubsub',
             'facebook',
             'models/friend',
-            'collections/extensions',
             'views/extension/list',
             'views/extension/create',
-            'views/generic',
-            'templates/friend/detail'
+            'views/friend/detail-top'
         ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
@@ -18,11 +16,9 @@
         PubSub,
         Facebook,
         FriendModel,
-        ExtensionsCollection,
         ListExtensionView,
         CreateExtensionView,
-        GenericView,
-        DetailTemplate
+        DetailTopView
     )
     {
         log(moduleName, "Dependencies loaded", "Build module");
@@ -42,11 +38,11 @@
 
                 this.dataPromise.done(function()
                 {
-                    var DetailView = new GenericView({template: DetailTemplate, data: {friend: that.model}}),
+                    var DetailTopView = new DetailTopView({friend: that.model}),
                         createView = new CreateExtensionView({friend: that.model}),
                         listExtensionView = new ListExtensionView({collection: that.model.get('extensions')});
 
-                    var r1 = that.renderChild(DetailView);
+                    var r1 = that.renderChild(DetailTopView);
                     var r2 = that.renderChild(listExtensionView);
                     var r3 = that.renderChild(createView);
 
@@ -72,11 +68,6 @@
                 return renderDeferred;
             },
 
-            updateExtensionsCounter: function()
-            {
-                $('.extensions_count').html(this.model.get('extensions').length);
-            },
-
             initialize: function(options)
             {
                 var id = options.routeParameters[0],
@@ -87,8 +78,6 @@
                     success: function(friend)
                     {
                         that.model = friend;
-                        friend.get('extensions').on('add', $.proxy(that.updateExtensionsCounter, that));
-                        friend.get('extensions').on('remove', $.proxy(that.updateExtensionsCounter, that));
                     }
                 });
             }

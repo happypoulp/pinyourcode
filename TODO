@@ -1,11 +1,3 @@
-- Better add + remove views
-
-View
-    update : does not remove from DOM, update part of the view html => events delegated are still active. no pb.
-    render : potentially render from scratch or replace full view html (except the outer container) => events delegated are still active. no pb.
-    remove: remove all view html (with the outer container) => all events should be dropped as well as model / collection events
-
-
 We define render function for each view but we NEVER call render directly.
 Instead, we call renderChild.
 renderChild register the child view and call render for us.
@@ -15,23 +7,9 @@ renderChild register the child view and call render for us.
 missing post render for renderChild with "how"
 Write renderer with complex view management
 
-each view is assciated with a renderTree
-VIEW1 - renderTree 1
-    VIEW2 - renderTree 1
-        VIEW2.1 - renderTree 1
-        VIEW2.2 - renderTree 1
-        VIEW2.3 - renderTree 1
-    VIEW3 - renderTree 1
-    VIEW4 - renderTree 1
-
-trees[1]
-    rendered: false,
-    fragment: document.createDocumentFragment()
-
-
 - Better link between views and models with models onchange events
 - use backbone.sync events instead of models callbacks
-
+- fix change from "no extentions yet" to "1 extention". (data-msg / env?)
 
 promise = promesse = deferred
 

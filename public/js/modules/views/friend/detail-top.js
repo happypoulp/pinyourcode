@@ -2,17 +2,17 @@
 {
     var moduleName = 'views/friend/detail-top',
         moduleDependencies = [
-            'models/friend',
-            'collections/extensions',
-            'templates/friend/detail-top'
+            'views/generic',
+            'views/extension/count',
+            'templates/friend/name-and-picture'
         ];
 
     log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
 
     define(moduleDependencies, function(
-        FriendModel,
-        ExtensionsCollection,
-        DetailTemplate
+        GenericView,
+        ExtensionCountView,
+        NameAndPictureTemplate
     )
     {
         log(moduleName, "Dependencies loaded", "Build module");
@@ -28,27 +28,18 @@
 
                 log(moduleName, 'render');
 
-                var DetailTopView = new DetailTopView({friend: that.model});
+                var nameAndPict = new GenericView({template: NameAndPictureTemplate, data:{friend: that.model}});
+                var extensionCount = new ExtensionCountView({collection: that.model.get('extensions')});
 
-                var r1 = that.renderChild(DetailTopView);
+                var r1 = that.renderChild(nameAndPict),
+                    r2 = that.renderChild(extensionCount);
 
-                $.when(r1).then(function()
+                $.when.apply([r1, r2]).then(function()
                 {
                     renderDeferred.resolve();
                 });
 
                 return renderDeferred;
-            },
-
-            updateExtensionsCounter: function()
-            {
-                $('.extensions_count').html(this.model.get('extensions').length);
-            },
-
-            initialize: function(options)
-            {
-                friend.get('extensions').on('add', $.proxy(that.updateExtensionsCounter, this));
-                friend.get('extensions').on('remove', $.proxy(that.updateExtensionsCounter, this));
             }
         });
 

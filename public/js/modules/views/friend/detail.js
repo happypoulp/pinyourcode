@@ -38,11 +38,11 @@
 
                 this.dataPromise.done(function()
                 {
-                    var DetailTopView = new DetailTopView({friend: that.model}),
+                    var detailTopView = new DetailTopView({model: that.model}),
                         createView = new CreateExtensionView({friend: that.model}),
                         listExtensionView = new ListExtensionView({collection: that.model.get('extensions')});
 
-                    var r1 = that.renderChild(DetailTopView);
+                    var r1 = that.renderChild(detailTopView);
                     var r2 = that.renderChild(listExtensionView);
                     var r3 = that.renderChild(createView);
 

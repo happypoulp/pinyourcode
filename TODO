@@ -3,16 +3,9 @@ Instead, we call renderChild.
 renderChild register the child view and call render for us.
 
 !!!!!!!!!! Render MUST return a PROMISE (= DEFERRED) !!!!!!!!!!!!!!!!!!
-
-missing post render for renderChild with "how"
-Write renderer with complex view management
-
-- Better link between views and models with models onchange events
-- use backbone.sync events instead of models callbacks
-- fix change from "no extentions yet" to "1 extention". (data-msg / env?)
-
 promise = promesse = deferred
 
-p1 renderChild1
-p2 renderChild2
-p3 renderChild3
+- use backbone.sync events instead of models callbacks
+- use r.js to pack js
+- go to prod
+- setup fb app

@@ -46,9 +46,21 @@
                 this.renderChild(new ExtensionView({model: extension, friend: this.collection.friend}), {meth: 'append', target: '.extensions'});
             },
 
+            beforeRemove: function(options)
+            {
+                this.collection.off('add', this.getAddProxy());
+
+                return this;
+            },
+
+            getAddProxy: function()
+            {
+                return this.addProxy || (this.addProxy = $.proxy(this.add, this));
+            },
+
             initialize: function()
             {
-                this.collection.on('add', $.proxy(this.add, this));
+                this.collection.on('add', this.getAddProxy());
             }
         });
 

@@ -54,9 +54,21 @@
                     .html(FriendTemplate({friend: this.model.attributes}));
             },
 
+            beforeRemove: function(options)
+            {
+                this.model.off('change', this.getRenderProxy());
+
+                return this;
+            },
+
+            getRenderProxy: function()
+            {
+                return this.renderProxy || (this.renderProxy = $.proxy(this.render, this));
+            },
+
             initialize: function()
             {
-                this.model.on('change', $.proxy(this.render, this));
+                this.model.on('change', this.getRenderProxy());
             }
         });
 

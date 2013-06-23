@@ -1,0 +1,9 @@
+- var extensions_count = extensions.length
+div.fgd2.small.it.extensions_sum
+  case extensions_count
+      when 0
+        | - no extensions yet -
+      when 1
+        | - <span class="extensions_count">1</span> extension -
+      default
+        | - <span class="extensions_count">#{extensions_count}</span> extensions -

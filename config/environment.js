@@ -22,8 +22,8 @@ module.exports = function(app)
       app.use(
         require(rootPath + '/middlewares/facebook-session.js').getMiddleware(
         {
-          app_id: process.env.FACEBOOK_APP_ID || '468370469906930',
-          secret: process.env.FACEBOOK_SECRET || '53ee070236fcd8c137c64de49217b229'
+          app_id: process.env.FACEBOOK_APP_ID,
+          secret: process.env.FACEBOOK_SECRET
         })
       );
       app.use(app.router);

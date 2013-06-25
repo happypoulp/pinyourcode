@@ -10,7 +10,9 @@ Compile scss to css:
 DEV:
 
 compass watch .
-nodemon app.js
+nodemon app.js (or better to automatically add missing envs: ./start-server)
+
+Add missing env variables: source envs
 
 SUBLIME:
 

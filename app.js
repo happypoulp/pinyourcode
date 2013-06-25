@@ -1,6 +1,9 @@
 var express = require('express')
   , app = module.exports = express();
 
+// Check essential env variables
+require('./config/check.js');
+
 require('./config/locals.js')(app);
 require('./config/environment.js')(app);
 require('./config/templates.js')(app);

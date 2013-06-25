@@ -1,4 +1,4 @@
-debuglog(true);
+// debuglog(true);
 
 require.config({
     paths: {

@@ -1,14 +1,10 @@
 (function()
 {
-    var moduleName = 'views/candidate/item',
-        moduleDependencies = [
-            'backbone',
+    var moduleName = 'views/candidate/item';
+
+    define([
             'templates/candidate/item'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(Backbone, CandidateTemplate)
+        ], function(CandidateTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

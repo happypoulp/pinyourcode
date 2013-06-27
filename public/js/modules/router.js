@@ -1,15 +1,12 @@
 (function()
 {
-    var moduleName = 'router',
-        moduleDependencies = [
+    var moduleName = 'router';
+
+    define([
             'session',
             'pubsub',
             'views/app'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(Session, PubSub, AppView)
+        ], function(Session, PubSub, AppView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

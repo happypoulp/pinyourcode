@@ -1,16 +1,13 @@
 (function()
 {
-    var moduleName = 'views/home',
-        moduleDependencies = [
+    var moduleName = 'views/home';
+
+    define([
             'pubsub',
             'facebook',
             'collections/friends',
             'views/friend/list'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(PubSub, Facebook, FriendsCollection, ListView)
+        ], function(PubSub, Facebook, FriendsCollection, ListView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

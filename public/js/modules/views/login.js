@@ -1,15 +1,12 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/login';
+
+    define([
             'pubsub',
             'views/generic',
             'templates/login'
-        ],
-        moduleName = 'views/login';
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(PubSub, GenericView, LoginTemplate)
+        ], function(PubSub, GenericView, LoginTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

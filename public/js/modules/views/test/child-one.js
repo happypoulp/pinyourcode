@@ -1,15 +1,12 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/test/child-one';
+
+    define([
             'pubsub',
             'views/test/child-one-a',
             'views/test/child-one-b'
-        ],
-        moduleName = 'views/test/child-one';
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(PubSub, ChildOneAView, ChildOneBView)
+        ], function(PubSub, ChildOneAView, ChildOneBView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

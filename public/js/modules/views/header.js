@@ -1,14 +1,11 @@
 (function()
 {
-    var moduleName = 'views/header',
-        moduleDependencies = [
+    var moduleName = 'views/header';
+
+    define([
             'session',
             'pubsub'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(Session, PubSub)
+        ], function(Session, PubSub)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

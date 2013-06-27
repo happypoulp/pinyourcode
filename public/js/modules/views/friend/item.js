@@ -1,14 +1,10 @@
 (function()
 {
-    var moduleName = 'views/friend/item',
-        moduleDependencies = [
-            'backbone',
+    var moduleName = 'views/friend/item';
+
+    define([
             'templates/friend/item'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(Backbone, FriendTemplate)
+        ], function(FriendTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

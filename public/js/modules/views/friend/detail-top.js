@@ -1,15 +1,12 @@
 (function()
 {
-    var moduleName = 'views/friend/detail-top',
-        moduleDependencies = [
+    var moduleName = 'views/friend/detail-top';
+
+    define([
             'views/generic',
             'views/extension/count',
             'templates/friend/name-and-picture'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(
+        ], function(
         GenericView,
         ExtensionCountView,
         NameAndPictureTemplate

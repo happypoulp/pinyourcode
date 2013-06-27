@@ -1,14 +1,11 @@
 (function()
 {
-    var moduleName = 'views/app',
-        moduleDependencies = [
+    var moduleName = 'views/app';
+
+    define([
             'session',
             'views/header'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(Session, HeaderView)
+        ], function(Session, HeaderView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

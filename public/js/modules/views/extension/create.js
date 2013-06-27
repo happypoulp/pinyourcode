@@ -1,15 +1,12 @@
 (function()
 {
-    var moduleName = 'views/extension/create',
-        moduleDependencies = [
+    var moduleName = 'views/extension/create';
+
+    define([
             'facebook',
             'models/extension',
             'templates/extension/create'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(Facebook, extensionModel, CreateExtensionTemplate)
+        ], function(Facebook, extensionModel, CreateExtensionTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

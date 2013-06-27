@@ -7,4 +7,6 @@ node_modules
 public/css/gen/
 public/js/modules/templates/*
 envs
-r.js
+build/r.js
+public/gen/
+requirejstest/gen

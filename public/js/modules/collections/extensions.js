@@ -1,13 +1,10 @@
 (function()
 {
-    var moduleName = 'collections/extensions',
-        moduleDependencies = [
+    var moduleName = 'collections/extensions';
+
+    define([
             'models/extension'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(ExtensionModel)
+        ], function(ExtensionModel)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

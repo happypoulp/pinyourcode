@@ -1,18 +1,15 @@
 (function()
 {
-    var moduleName = 'views/friend/detail',
-        moduleDependencies = [
+    var moduleName = 'views/friend/detail';
+
+    define([
             'pubsub',
             'facebook',
             'models/friend',
             'views/extension/list',
             'views/extension/create',
             'views/friend/detail-top'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(
+        ], function(
         PubSub,
         Facebook,
         FriendModel,

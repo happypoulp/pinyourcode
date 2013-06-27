@@ -1,11 +1,8 @@
 (function()
 {
-    var moduleName = 'views/generic',
-        moduleDependencies = [];
+    var moduleName = 'views/generic';
 
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function()
+    define([], function()
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

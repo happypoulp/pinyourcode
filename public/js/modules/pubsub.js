@@ -1,13 +1,10 @@
 (function(w)
 {
-    var moduleDependencies = [],
-        moduleName = 'pubsub';
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
+    var moduleName = 'pubsub';
 
     define(function()
     {
-        log(moduleName, "Dependencies loaded", "Build module");
+        log(moduleName, "Build module");
 
         var subscribers = {},
             instance = null,

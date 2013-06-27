@@ -1,13 +1,10 @@
 (function()
 {
-    var moduleName = 'views/friend/extension-count',
-        moduleDependencies = [
+    var moduleName = 'views/friend/extension-count';
+
+    define([
             'templates/extension/count'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(
+        ], function(
         CountTemplate
     )
     {

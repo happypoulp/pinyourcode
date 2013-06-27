@@ -1,11 +1,8 @@
 (function()
 {
-    var moduleName = 'models/extension',
-        moduleDependencies = [];
+    var moduleName = 'models/extension';
 
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function()
+    define([], function()
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

@@ -1,13 +1,10 @@
 (function()
 {
-    var moduleName = 'views/candidate/empty',
-        moduleDependencies = [
+    var moduleName = 'views/candidate/empty';
+
+    define([
             'templates/candidate/empty'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(EmptyResultsTemplate)
+        ], function(EmptyResultsTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

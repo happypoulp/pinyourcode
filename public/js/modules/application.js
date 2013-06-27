@@ -1,15 +1,11 @@
 (function()
 {
-    var moduleName = 'application',
-        moduleDependencies = [
+    var moduleName = 'application';
+
+    define([
             'router',
             'facebook'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-
-    define(moduleDependencies, function(Router, Facebook)
+        ], function(Router, Facebook)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

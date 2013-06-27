@@ -1,17 +1,13 @@
 (function()
 {
-    var moduleName = 'views/candidate/results',
-        moduleDependencies = [
-            'backbone',
+    var moduleName = 'views/candidate/results';
+
+    define([
             'facebook',
             'models/friend',
             'views/candidate/item',
             'views/candidate/empty'
-        ];
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(Backbone, Facebook, FriendModel, CandidateView, EmptyResultsView)
+        ], function(Facebook, FriendModel, CandidateView, EmptyResultsView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

@@ -1,13 +1,10 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'collections/friends';
+
+    define([
             'models/friend'
-        ],
-        moduleName = 'collections/friends';
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(FriendModel)
+        ], function(FriendModel)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

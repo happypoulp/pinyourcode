@@ -1,13 +1,10 @@
 (function()
 {
-    var moduleDependencies = [
+    var moduleName = 'views/test/child-three-b';
+
+    define([
             'pubsub'
-        ],
-        moduleName = 'views/test/child-three-b';
-
-    log(moduleName, "define - Dependencies: ", moduleDependencies.join(', '));
-
-    define(moduleDependencies, function(PubSub)
+        ], function(PubSub)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 

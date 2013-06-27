@@ -46,22 +46,10 @@
                     var r2 = that.renderChild(listExtensionView);
                     var r3 = that.renderChild(createView);
 
-                    Facebook.getFriendsInfos(
-                        [that.model.get('fb_id')],
-                        function(result)
-                        {
-                            for (var i = result.length - 1; i >= 0; i--)
-                            {
-                                var friend_element = $('div[data-uid="' + result[i].uid + '"]');
-                                friend_element.find('span.name').html(result[i].name);
-
-                                $.when(r1, r2, r3).then(function()
-                                {
-                                    renderDeferred.resolve();
-                                });
-                            }
-                        }
-                    );
+                    $.when(r1, r2, r3).then(function()
+                    {
+                        renderDeferred.resolve();
+                    });
                 });
 
 

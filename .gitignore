@@ -4,9 +4,10 @@
 # Node files
 node_modules
 .sass-cache
-public/css/gen/
-public/js/modules/templates/*
+# public/css/gen/
+# public/js/modules/templates/*
 envs
 build/r.js
 public/gen/
+public/css/css-gen
 requirejstest/gen

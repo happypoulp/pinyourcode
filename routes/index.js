@@ -67,7 +67,14 @@ module.exports = function(app)
       for (action in methodRoutes)
       {
         var route = methodRoutes[action];
-        app[method].call(app, route, controllerInstance[action]);
+        app[method].call(app, route, (function(controllerInstance, action)
+        {
+          return function(req, res)
+          {
+            res.cookie('iacv', app.locals.version, { maxAge: 1000*60*60*24*365 });
+            controllerInstance[action].apply(app, arguments);
+          }
+        })(controllerInstance, action));
       }
     }
   }

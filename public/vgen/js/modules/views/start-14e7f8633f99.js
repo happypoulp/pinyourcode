@@ -1,0 +1,1 @@
+(function(){var e="views/start";define(["views/header"],function(t){log(e,"Dependencies loaded","Build module");var n=Backbone.View.extend({render:function(){(new t({el:$("header")})).render()}});return n})})();

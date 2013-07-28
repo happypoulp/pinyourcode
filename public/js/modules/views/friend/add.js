@@ -1,10 +1,12 @@
 (function()
 {
-    var moduleName = 'views/friend/add';
+    var moduleName = 'views/friend/add',
+        pubsub = 'pubsub',
+        facebook = 'facebook';
 
     define([
-            'pubsub',
-            'facebook',
+            pubsub,
+            facebook,
             'models/friend',
             'views/friend/item',
             'views/candidate/results',

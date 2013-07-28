@@ -1,0 +1,1 @@
+(function(){var e="views/test/child-three-a";define(["pubsub"],function(t){log(e,"Dependencies loaded","Build module");var n=Backbone.View.extend({name:e,render:function(){var e=$.Deferred(),t=this;return setTimeout(function(){t.$el.html("child three a"),e.resolve()},400),e}});return n})})();

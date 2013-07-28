@@ -1,15 +1,19 @@
 module.exports = function(app)
 {
-  var locals =
-  {
-    title : 'I & Co',
-    FB_APP_ID : process.env.FACEBOOK_APP_ID,
-    FB_APP_DOMAIN : ''
-  };
+  var fs = require('fs'),
+    locals =
+    {
+      // env: 'production',
+      env: app.get('env'),
+      title : 'I & Co',
+      FB_APP_ID : process.env.FACEBOOK_APP_ID,
+      FB_APP_DOMAIN : 'localhost:3000',
+      version: fs.readFileSync('build/version', {encoding: 'utf8'}).replace(/[^0-9]/, '')
+    };
 
-  if (app.settings.env == 'development')
+  if (locals.env == 'production')
   {
-    locals.FB_APP_DOMAIN = 'localhost:3000';
+    locals.FB_APP_DOMAIN = '';
   }
 
   app.locals(locals);

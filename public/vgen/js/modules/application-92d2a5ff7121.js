@@ -1,0 +1,1 @@
+(function(){var e="application";define(["router","facebook","pubsub","jade-runtime"],function(t,n){log(e,"Dependencies loaded","Build module");var r=function(){};return r.prototype={initialize:function(){log(e,"initialize");var r=this;$(function(){log(e,"Facebook.init"),n.init(function(){log(e,"Facebook.init - DONE"),log(e,"Router.initialize"),t.initialize()})})}},new r})})();

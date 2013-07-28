@@ -1,9 +1,12 @@
 extends layout
 
 block css
-  link(rel='stylesheet', href='/css/gen/index.css')
+  link(rel='stylesheet', href='#{ressources.css.index}')
 block js
-  script(src="/js/require-jq-_-bckbn.js", data-main="/js/modules/main")
-
+  script.
+    var require ={baseUrl: "/js/modules"};
+  if env == 'production'
+    include includes/prod-require-paths
+  script(src="#{ressources.js.core}", data-main="main")
 block content
   div#pages

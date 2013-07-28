@@ -1,10 +1,12 @@
 (function()
 {
-    var moduleName = 'views/home';
+    var moduleName = 'views/home',
+        pubsub = 'pubsub',
+        facebook = 'facebook';
 
     define([
-            'pubsub',
-            'facebook',
+            pubsub,
+            facebook,
             'collections/friends',
             'views/friend/list'
         ], function(PubSub, Facebook, FriendsCollection, ListView)

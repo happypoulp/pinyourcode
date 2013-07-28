@@ -14,6 +14,10 @@ nodemon app.js (or better to automatically add missing envs: ./start-server)
 
 Add missing env variables: source envs
 
+Install r.js in /build
+
+node build/r.js -o build/build-profile.js
+
 SUBLIME:
 
 "folder_exclude_patterns": [".sass-cache"]

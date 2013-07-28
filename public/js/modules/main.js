@@ -70,6 +70,8 @@ Backbone.Renderer.prototype =
                 log('Renderer', '!!!!!!!!!!! promise fulfilled for', view.name, view.renderId);
                 if (that.trees[view.renderId] && view.parent.cid == that.trees[view.renderId].initiatorCid)
                 {
+                    if (window.reloading) return;
+
                     log('Renderer', '**************************************', view.el);
                     if (how)
                     {
@@ -215,6 +217,38 @@ Backbone.View = Backbone.View.extend(
 
     })()
 });
+
+(function()
+{
+    var overwriter = function(classBase, property)
+    {
+        var _property = classBase.prototype[property];
+
+        return function()
+        {
+            this.on('sync error', function()
+            {
+                if (app.needReload())
+                {
+                    window.reloading = true;
+                    app.reload();
+                }
+            });
+
+            _property.apply(this, arguments);
+
+            return this;
+        }
+    };
+
+    Backbone.Model = Backbone.Model.extend({
+        initialize: overwriter(Backbone.Model, 'initialize')
+    });
+
+    Backbone.Collection = Backbone.Collection.extend({
+        initialize: overwriter(Backbone.Collection, 'initialize')
+    });
+})();
 
 require(['application'], function(Application)
 {

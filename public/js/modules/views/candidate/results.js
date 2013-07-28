@@ -1,9 +1,10 @@
 (function()
 {
-    var moduleName = 'views/candidate/results';
+    var moduleName = 'views/candidate/results',
+        facebook = 'facebook';
 
     define([
-            'facebook',
+            facebook,
             'models/friend',
             'views/candidate/item',
             'views/candidate/empty'

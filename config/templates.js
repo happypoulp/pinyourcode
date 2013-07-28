@@ -81,7 +81,7 @@ module.exports = function(app)
         mkdirp(dir, 0755, function(err)
         {
           if (err) throw err;
-          fs.writeFile(filePath, 'define(["jade-runtime"], function() { return function' + fn + ' });', function(err)
+          fs.writeFile(filePath, 'var jd_rt="jade-runtime";define([jd_rt], function() { return function' + fn + ' });', function(err)
           {
             if (err) throw err;
             console.log('  \33[90mrendered \33[36m%s\33[0m', filePath);

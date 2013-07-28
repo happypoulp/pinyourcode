@@ -1,0 +1,1 @@
+(function(){var e="views/candidate/empty";define(["templates/candidate/empty"],function(t){log(e,"Dependencies loaded","Build module");var n=Backbone.View.extend({className:"emptyresults",render:function(){this.$el.html(t({search:this.options.search}))}});return n})})();

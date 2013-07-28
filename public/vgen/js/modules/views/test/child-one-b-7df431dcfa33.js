@@ -1,0 +1,1 @@
+(function(){var e="views/test/child-one-b";define(["pubsub"],function(t){log(e,"Dependencies loaded","Build module");var n=Backbone.View.extend({name:e,render:function(){this.$el.html("child one b")}});return n})})();

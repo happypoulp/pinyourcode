@@ -1,10 +1,11 @@
 (function()
 {
-    var moduleName = 'router';
+    var moduleName = 'router',
+        pubsub = 'pubsub';
 
     define([
             'session',
-            'pubsub',
+            pubsub,
             'views/app'
         ], function(Session, PubSub, AppView)
     {
@@ -18,6 +19,18 @@
               'add': "add",
               'test-renderer': "testRenderer",
               '*actions': 'any'
+            },
+            needReload: function()
+            {
+                if ($.cookie('iacv') != window.IAC_VERSION)
+                {
+                    return true;
+                }
+                return false;
+            },
+            reload: function()
+            {
+                document.location.reload();
             }
         });
       

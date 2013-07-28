@@ -1,11 +1,14 @@
-We define render function for each view but we NEVER call render directly.
-Instead, we call renderChild.
-renderChild register the child view and call render for us.
-
-!!!!!!!!!! Render MUST return a PROMISE (= DEFERRED) !!!!!!!!!!!!!!!!!!
-promise = promesse = deferred
-
 - use backbone.sync events instead of models callbacks
-- use r.js to pack js
-- go to prod
-- setup fb app
+
+PROD:
+
+OK ... 1) optimize all with r.js in /gen
+OK ... 2) md5 files and copy them in /vgen with names like: 'name-v023984902384'
+OK ... 3) add "paths" to requirejs config in prod-require-paths.jade ('toto': 'toto-v238480912390'). only for page modules.
+OK ... 4) put prod version in html
+OK ... 5) minimize css
+?? ... 7) git commit
+?? ... 8) go prod
+
+
+better commit messages

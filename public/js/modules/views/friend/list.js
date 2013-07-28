@@ -1,9 +1,10 @@
 (function()
 {
-    var moduleName = 'views/friend/list';
+    var moduleName = 'views/friend/list',
+        facebook = 'facebook';
 
     define([
-            'facebook',
+            facebook,
             'views/friend/item'
         ], function(Facebook, FriendView)
     {

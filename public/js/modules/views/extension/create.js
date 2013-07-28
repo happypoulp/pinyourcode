@@ -1,9 +1,10 @@
 (function()
 {
-    var moduleName = 'views/extension/create';
+    var moduleName = 'views/extension/create',
+        facebook = 'facebook';
 
     define([
-            'facebook',
+            facebook,
             'models/extension',
             'templates/extension/create'
         ], function(Facebook, extensionModel, CreateExtensionTemplate)

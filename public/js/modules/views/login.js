@@ -1,9 +1,10 @@
 (function()
 {
-    var moduleName = 'views/login';
+    var moduleName = 'views/login',
+        pubsub = 'pubsub';
 
     define([
-            'pubsub',
+            pubsub,
             'views/generic',
             'templates/login'
         ], function(PubSub, GenericView, LoginTemplate)

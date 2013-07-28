@@ -1,5 +1,7 @@
 /public/gen
-/public/js/modules/templates/*
-/public/css/*
-.git/*
-.sass-cache/*
+/public/js/modules/templates
+/public/css
+/public/vgen
+.git
+.sass-cache
+/build

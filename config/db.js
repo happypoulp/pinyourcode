@@ -3,7 +3,7 @@ var db
 
 function createDb(app)
 {
-  if (app.settings.env == 'development')
+  if (app.locals.env == 'development')
   {
     db = require('mongoskin').db('localhost:27017/friends', {safe: true});
   }

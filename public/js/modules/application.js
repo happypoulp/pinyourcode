@@ -4,7 +4,9 @@
 
     define([
             'router',
-            'facebook'
+            'facebook',
+            'pubsub', // Just for packing
+            'jade-runtime' // Just for packing
         ], function(Router, Facebook)
     {
         log(moduleName, "Dependencies loaded", "Build module");

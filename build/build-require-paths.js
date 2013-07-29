@@ -31,7 +31,7 @@ fs.readFile('./build/ressource-mapping.json', 'utf8', function (err, data) {
     }
 
     var pathsStr = "script.\n" +
-      "  require[paths]=" + JSON.stringify(packs) + ";"
+      "  require['paths']=" + JSON.stringify(packs) + ";"
 
     fs.writeFileSync('views/includes/prod-require-paths.jade', pathsStr, 'utf8');
   });

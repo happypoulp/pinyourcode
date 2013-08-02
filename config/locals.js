@@ -13,7 +13,7 @@ module.exports = function(app)
 
   if (locals.env == 'production')
   {
-    locals.FB_APP_DOMAIN = '';
+    locals.FB_APP_DOMAIN = 'iandco.beardsonwheels.com';
   }
 
   app.locals(locals);

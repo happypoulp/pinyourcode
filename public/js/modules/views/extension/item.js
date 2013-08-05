@@ -3,7 +3,8 @@
     var moduleName = 'views/extension/item';
 
     define([
-            'templates/extension/item'
+            'templates/extension/item',
+            'templates/extension/edit'
         ], function(ExtensionTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
@@ -15,7 +16,8 @@
 
             events:
             {
-                'click .js-remove_extension': 'delete'
+                'click .js-remove_extension': 'delete',
+                'click .js-edit_extension': 'edit'
             },
 
             delete: function(ev)
@@ -38,6 +40,15 @@
                         }
                     });
                 }
+            },
+
+            edit: function(ev)
+            {
+                var that = this;
+
+                ev.stopPropagation();
+
+                console.log('edit');
             },
 
             render: function()

@@ -1,26 +1,25 @@
 (function()
 {
-    var moduleName = 'views/extension/create';
+    var moduleName = 'views/extension/edit';
 
     define([
             'models/extension',
-            'templates/extension/create',
             'templates/extension/form'
-        ], function(ExtensionModel, CreateExtensionTemplate, FormExtensionTemplate)
+        ], function(ExtensionModel, FormExtensionTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
-        var CreateExtensionView = Backbone.View.extend(
+        var EditExtensionView = Backbone.View.extend(
         {
             tagName: 'form',
-            className: 'add_extension_form',
+            className: 'edit_extension_form list-item',
             name: 'extension_form',
 
             events: {
-                'submit': 'createExtension'
+                'submit': 'editExtension'
             },
 
-            createExtension: function(ev)
+            editExtension: function(ev)
             {
                 ev.preventDefault();
 
@@ -39,15 +38,8 @@
                     success: function(extension)
                     {
                         that.options.friend.addExtension(extension);
-                        that.reset();
                     }
                 });
-            },
-
-            reset: function()
-            {
-                this.el.reset();
-                this.$el.find('input:first').focus();
             },
 
             render: function(id)
@@ -55,13 +47,12 @@
                 this
                     .$el
                     .attr('name', this.name)
-                    .html(CreateExtensionTemplate())
-                    .append(FormExtensionTemplate());
+                    .html(FormExtensionTemplate());
 
                 return this;
             }
         });
 
-        return CreateExtensionView;
+        return EditExtensionView;
     });
 })();

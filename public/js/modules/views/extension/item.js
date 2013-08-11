@@ -4,8 +4,8 @@
 
     define([
             'templates/extension/item',
-            'templates/extension/edit'
-        ], function(ExtensionTemplate)
+            'views/extension/edit'
+        ], function(ExtensionTemplate, EditExtensionView)
     {
         log(moduleName, "Dependencies loaded", "Build module");
 
@@ -49,6 +49,7 @@
                 ev.stopPropagation();
 
                 console.log('edit');
+                this.replaceWith(new EditExtensionView({extension: that.model}));
             },
 
             render: function()

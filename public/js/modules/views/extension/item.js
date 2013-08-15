@@ -3,8 +3,8 @@
     var moduleName = 'views/extension/item';
 
     define([
-            'templates/extension/item',
-            'templates/extension/edit'
+            'templates/extension/item'
+            // , 'templates/extension/edit'
         ], function(ExtensionTemplate)
     {
         log(moduleName, "Dependencies loaded", "Build module");

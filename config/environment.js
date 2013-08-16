@@ -7,6 +7,7 @@ module.exports = function(app)
     // Configuration
     app.configure(function()
     {
+      app.use(express.compress());
       app.set('views', rootPath + '/views');
       app.set('view engine', 'jade');
       app.set('view options', { layout: false });
@@ -16,7 +17,6 @@ module.exports = function(app)
         if (toobusy()) res.send(503, "I'm busy right now, sorry.");
         else next();
       });
-      app.use(express.compress());
       app.use(express.bodyParser());
       app.use(express.cookieParser());
       app.use(express.methodOverride());
@@ -42,7 +42,7 @@ module.exports = function(app)
     app.configure('production', function()
     {
       app.use(express.errorHandler());
-      var threeYears = 3600*24*365*3;
-      app.use(express.static(rootPath + '/public'), { maxAge: threeYears });
+      var threeYears = 3600*24*365*3*1000;
+      app.use(express.static(rootPath + '/public', { maxAge: threeYears }));
     });
 };

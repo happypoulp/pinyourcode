@@ -19,6 +19,10 @@ var StaticsHelper = function(app)
 
 StaticsHelper.prototype =
 {
+  getCDNUrl: function(path)
+  {
+    return this.app.locals.cdnBaseUrl + path;
+  },
   cssPath: function(name)
   {
     if (this.app.locals.env == 'development')
@@ -27,7 +31,7 @@ StaticsHelper.prototype =
     }
     else
     {
-      return this.packsMapping['public' + this.cssGenBaseDir + name + '.css'].replace('public', '');
+      return this.getCDNUrl(this.packsMapping['public' + this.cssGenBaseDir + name + '.css'].replace('public', ''));
     }
   },
   jsPath: function(name)
@@ -38,7 +42,7 @@ StaticsHelper.prototype =
     }
     else
     {
-      return this.packsMapping['public' + this.jsGenBaseDir + name + '.js'].replace('public', '');
+      return this.getCDNUrl(this.packsMapping['public' + this.jsGenBaseDir + name + '.js'].replace('public', ''));
     }
   }
 };

@@ -27,7 +27,7 @@ fs.readFile('./build/ressource-mapping.json', 'utf8', function (err, data) {
 
     for (i in data)
     {
-      packs[data[i].name] = 'http://d2tj71e6lmjccb.cloudfront.net' + packsMapping['public/gen/js/modules/' + data[i].name + '.js'].replace(/public/, '');
+      packs[data[i].name] = 'http://d2tj71e6lmjccb.cloudfront.net' + packsMapping['public/gen/js/modules/' + data[i].name + '.js'].replace(/public/, '').replace('.js', '');
     }
 
     var pathsStr = "script.\n" +

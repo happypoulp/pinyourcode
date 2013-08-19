@@ -1,6 +1,5 @@
 - use backbone.sync events instead of models callbacks
 
-cloud front - fix dynamic loading not going through CDN + images url in css
 edit extension
 centralize routing between client & sever (+ go to real urls, not #! and add Model Data On Page Load)
 page notice to report current wip (getting datas, connecting to fb, ...) after a timeout

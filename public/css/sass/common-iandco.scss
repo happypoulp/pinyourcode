@@ -50,7 +50,7 @@ ul
 
 .logo .logo-text
 {
-    color: $logoColor;
+    color: $logoColor !important;
     text-decoration: none;
 }
 
@@ -107,7 +107,7 @@ ul
     cursor: pointer;
 }
  
-.button:hover
+.no-touch .button:hover
 {
     background-color: #111;
     color: #fff;
@@ -152,7 +152,7 @@ ul
 {
     background-color: #e22092;
 }
-.pink.button:hover
+.no-touch .pink.button:hover
 {
     background-color: #c81e82;
 }
@@ -160,7 +160,7 @@ ul
 {
     background-color: #91bd09;
 }
-.green.button:hover
+.no-touch .green.button:hover
 {
     background-color: #749a02;
 }
@@ -168,7 +168,7 @@ ul
 {
     background-color: #e62727;
 }
-.red.button:hover
+.no-touch .red.button:hover
 {
     background-color: #cf2525;
 }
@@ -176,7 +176,7 @@ ul
 {
     background-color: #ff5c00;
 }
-.orange.button:hover
+.no-touch .orange.button:hover
 {
     background-color: #d45500;
 }
@@ -184,7 +184,7 @@ ul
 {
     background-color: #2981e4;
 }
-.blue.button:hover
+.no-touch .blue.button:hover
 {
     background-color: #2575cf;
 }
@@ -192,7 +192,7 @@ ul
 {
     background-color: #ffb515;
 }
-.yellow.button:hover
+.no-touch .yellow.button:hover
 {
     background-color: #fc9200;
 }

@@ -1,6 +1,9 @@
-header.header.background
-  h1.logo
+header.header
+  h1.logo.pull-start
     a.logo-text(href="/#")= title
-  div.top_buttons_container
-    a.large.button.green.add_fb_friend.js-add_fb_friend(style="display:none", href="#/add") Add friend
-    button.large.button.red.auth_button.js-auth_button(style="display:none", data-in="login", data-out="logout") ...
+  nav
+    ul.pull-end
+      li.pull-start.mrg-lg-end
+        a.link.foreground.nav-item.add_fb_friend.js-add_fb_friend(style="display:none", href="#/add") Add friend
+      li.pull-start.mrg-lg-end
+        a.link.foreground.nav-item.auth_button.js-auth_button(style="display:none", data-in="login", data-out="logout", href="#") ...

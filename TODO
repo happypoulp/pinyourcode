@@ -3,3 +3,40 @@
 edit extension
 centralize routing between client & sever (+ go to real urls, not #! and add Model Data On Page Load)
 page notice to report current wip (getting datas, connecting to fb, ...) after a timeout
+
+
+
+
+WHAT TO OPTIMIZE:
+
+Heavy resources:
+
+20K    backbone-min.js
+16K    underscore-min.js
+92K    jquery-1.8.3.min.js
+16K    require.js
+
+= 144K
+
+Alternatives:
+
+############# + Zepto / - jQuery
+
+20K    backbone-min.js
+16K    underscore-min.js
+28K    zepto.min.js
+16K    require.js
+
+= 80K
+
+############# + Zepto / - jQuery - requirejs
+
+20K    backbone-min.js
+16K    underscore-min.js
+28K    zepto.min.js
+
+= 64K
+
+FYI:
+
+Angular: 104K

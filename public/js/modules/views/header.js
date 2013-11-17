@@ -33,7 +33,7 @@
             {
                 if (this.currentDisplayMode != 'login')
                 {
-                    $('.js-back_button, .js-add_fb_friend').hide();
+                    $('.js-add_fb_friend').hide();
                     var authButton = $('.js-auth_button');
                     authButton.show().html(authButton.data('in'));
                 }
@@ -43,7 +43,7 @@
             {
                 if (this.currentDisplayMode != 'any')
                 {
-                    $('.js-back_button, .js-add_fb_friend').show();
+                    $('.js-add_fb_friend').show();
                     var authButton = $('.js-auth_button');
                     authButton.show().html(authButton.data('out'));
                 }

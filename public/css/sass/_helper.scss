@@ -1,0 +1,72 @@
+@import "skin";
+
+.media
+{
+    display: block;
+}
+
+.pull-start
+{
+    float: left;
+}
+
+.pull-end
+{
+    float: right;
+}
+
+.mrg-tb-8
+{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.mrg-lg-end
+{
+    margin-right: 16px;
+}
+
+.nav-item
+{
+    position: relative;
+    display: block;
+    padding: 19px 15px;
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+/* Smartphones (landscape) ----------- */
+/* Smartphones (portrait) ----------- */
+@media
+    only screen and (min-device-width : 1px) and (max-device-width : 480px),
+    only screen and (max-width : 480px)
+{
+    .nav-item
+    {
+        padding: 9px 4px;
+    }
+}
+
+
+.link
+{
+    text-decoration: none;
+}
+
+.list-item
+{
+    margin: 0 8px;
+    padding: 16px 8px 16px 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    border-bottom: 2px solid #333;
+    position: relative;
+    background: rgba(40, 40, 40, 0.6);
+}
+
+.no-touch .list-item:hover
+{
+    background: rgba(100, 100, 100, 0.3);
+    cursor: pointer;
+    border-left: 4px solid rgba(0, 190, 255, 0.7);
+    padding-left: 16px;
+}

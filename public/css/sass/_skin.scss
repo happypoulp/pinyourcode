@@ -1,8 +1,18 @@
-$backgroundColor: #222;
+$backgroundColor: #151515;
 $foregroundTextColor: #eee;
 $logoColor: #fff;
 
 .background
 {
-    background: $backgroundColor url(/images/asfalt.png) repeat 0 0;
+    background: $backgroundColor;
+}
+
+.foreground
+{
+    color: $foregroundTextColor;
+}
+
+.foreground:visited
+{
+    color: $foregroundTextColor;
 }

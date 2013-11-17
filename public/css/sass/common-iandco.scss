@@ -1,4 +1,4 @@
-@import "skin";
+@import "helper";
 
 @font-face
 {
@@ -31,7 +31,7 @@ ul
     top: 0;
     left: 0;
     right: 0;
-    height: 90px;
+    height: 60px;
     z-index: 2;
 }
 
@@ -39,7 +39,8 @@ ul
 
 .logo
 {
-    font-size: 3.6em;
+    font-size: 2.6em;
+    line-height: 1.3em;
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 20px;
@@ -54,30 +55,6 @@ ul
     text-decoration: none;
 }
 
-/********************* HEADER BUTTONS **********************/
-
-.top_buttons_container
-{
-    position: absolute;
-    top: 36px;
-    right: 20px;
-}
-
-.top_buttons_container .button
-{
-    margin-left: 8px;
-    float: left;
-}
-
-.auth_button
-{
-    display: none;
-}
-
-.back_button
-{
-    display: none;
-}
 
 /********************* PAGE CONTENT **********************/
 
@@ -91,7 +68,7 @@ ul
 .button,
 .button:visited
 {
-    background: $backgroundColor url(/images/overlay.png) repeat-x;
+    background: $backgroundColor;
     border: none;
     display: inline-block;
     padding: 5px 10px 6px;
@@ -203,7 +180,6 @@ ul
 {
     position: relative;
     margin: 0 20px;
-    background: rgba(20,20,20,0.6);
     padding-bottom: 40px;
 }
 
@@ -221,3 +197,65 @@ ul
 {
     font-style: italic;
 }
+
+// mobile
+// @media only screen and (min-width : 1px) and (max-width : 480px)
+// @media only screen and (min-device-width : 1px) and (max-device-width : 480px)
+// {
+//     .logo
+//     {
+//         font-size: 1.6em;
+//         margin-top: 0;
+//         margin-bottom: 0;
+//         margin-left: 20px;
+//         text-shadow: 2px 2px 0 rgba(0, 168, 255, 0.9);
+//         letter-spacing: -5px;
+//         font-family: 'Playfair Display', serif;
+//     }
+// }
+
+// tablets
+// @media only screen and (min-device-width : 481px) and (max-device-width : 768px)
+// {
+// }
+
+// desktop
+// @media only screen and (min-device-width : 769px)
+// {
+// }
+
+
+
+
+
+
+/* Smartphones (portrait and landscape) ----------- */
+/* Smartphones (landscape) ----------- */
+/* Smartphones (portrait) ----------- */
+@media
+    only screen and (min-device-width : 1px) and (max-device-width : 480px),
+    only screen and (max-width : 480px)
+{
+    .logo
+    {
+        font-size: 1.6em;
+    }
+    .header
+    {
+        height: 38px;
+    }
+}
+
+// /* iPads (portrait and landscape) ----------- */
+// @media only screen and (min-device-width : 768px) and (max-device-width : 1024px),
+// /* iPads (landscape) ----------- */
+// @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape),
+// /* iPads (portrait) ----------- */
+// @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait)
+// {
+// }
+
+// /* Desktops and laptops ----------- */
+// @media only screen and (min-width : 1224px)
+// {
+// }

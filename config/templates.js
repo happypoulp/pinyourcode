@@ -6,7 +6,6 @@ module.exports = function(app)
     , out = __dirname + '/../public/js/modules/templates'
     , templateExtensionRe = /\.jade$/
     , options = {
-      client: true,
       compileDebug: false
     }
     , fs = require('fs')
@@ -72,7 +71,7 @@ module.exports = function(app)
         // console.log('filePath:', filePath);
         if (err) throw err;
         options.filename = filePath;
-        var fn = jade.compile(str, options).toString().substring(18);
+        var fn = jade.compileClient(str, options).toString().replace(/[^\(]+\(/, '('); // remove leading "function template" string
         filePath = filePath.replace(templateExtensionRe, '.js');
         if (out) filePath = join(out, filePath.replace(templatesPath, ''));
         // Original code below. BUGGY: does not reproduce subdirectories structure to compiled folder
@@ -81,7 +80,7 @@ module.exports = function(app)
         mkdirp(dir, 0755, function(err)
         {
           if (err) throw err;
-          fs.writeFile(filePath, 'var jd_rt="jade-runtime";define([jd_rt], function() { return function' + fn + ' });', function(err)
+          fs.writeFile(filePath, 'var jd_rt="jade-runtime";define([jd_rt], function(jade) { return function' + fn + ' });', function(err)
           {
             if (err) throw err;
             console.log('  \33[90mrendered \33[36m%s\33[0m', filePath);

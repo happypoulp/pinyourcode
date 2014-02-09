@@ -1,6 +1,8 @@
-var jd_rt="jade-runtime";define([jd_rt], function() { return function(locals) {
+var jd_rt="jade-runtime";define([jd_rt], function(jade) { return function(locals) {
 var buf = [];
-var locals_ = (locals || {}),extensions = locals_.extensions;var extensions_count = extensions.length
+var jade_mixins = {};
+var locals_ = (locals || {}),extensions = locals_.extensions;
+var extensions_count = extensions.length
 buf.push("<div class=\"fgd2 small it extensions_sum\">");
 switch (extensions_count){
 case 0:

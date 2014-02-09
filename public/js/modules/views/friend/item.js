@@ -42,6 +42,7 @@
 
             render: function()
             {
+                console.log(FriendTemplate);
                 log(moduleName, '==== render', this.cid);
                 this.$el
                     .attr('data-uid', this.model.get('fb_id'))

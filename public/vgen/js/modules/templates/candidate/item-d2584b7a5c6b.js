@@ -1,0 +1,1 @@
+var jd_rt="jade-runtime";define([jd_rt],function(e){return function(t){var n=[],r={},i=t||{},s=i.candidate,o=s.fb_id||s.id;return n.push('<div class="profile_pic"><img'+e.attr("src",""+s.picture_small+"",!0,!1)+' width="50" height="50"/></div><span class="name">'+e.escape(null==(e.interp=s.name)?"":e.interp)+"</span>"),n.join("")}});

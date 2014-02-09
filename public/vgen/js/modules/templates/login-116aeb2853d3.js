@@ -1,0 +1,1 @@
+var jd_rt="jade-runtime";define([jd_rt],function(e){return function(e){var t=[],n={};return t.push("<h2>You need to be logged to use this app.</h2>"),t.join("")}});

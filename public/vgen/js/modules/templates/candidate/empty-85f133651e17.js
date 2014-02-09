@@ -1,1 +1,0 @@
-var jd_rt="jade-runtime";define([jd_rt],function(){return function(e){var t=[],n=e||{},r=n.search;return t.push("<center>No results for this search: <b>"+jade.escape(null==(jade.interp=r)?"":jade.interp)+"</b><br/><br/>Maybe this person is already in your extended contacts?\nOr you could you have possibly misspelled his or her name?</center>"),t.join("")}});

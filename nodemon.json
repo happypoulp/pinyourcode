@@ -1,0 +1,4 @@
+{
+    "verbose": true,
+    "ignore": ["/public/js/modules/templates/*", "/public/gen", "/public/css", "/public/vgen", ".git", ".sass-cache", "/build"]
+}

@@ -1,11 +1,34 @@
 @import "skin";
 
+/*
+[<namespace>-]<ComponentName>[--modifierName|-descendantName]
+
+// Utility
+.u-utilityName {}
+
+// Component
+.ComponentName {}
+
+// Component modifier
+.ComponentName--modifierName {}
+
+// Component descendant
+.ComponentName-descendant {}
+
+// Component descendant modifier
+.ComponentName-descendant--modifierName {}
+
+// Component state (scoped to component)
+.ComponentName.is-stateOfComponent {}
+
+*/
+
 .media
 {
     display: block;
 }
 
-.pull-start
+.u-pull--start
 {
     float: left;
 }

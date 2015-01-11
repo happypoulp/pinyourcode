@@ -50,15 +50,14 @@
 .fb_friend .extensions_count
 {
     position: absolute;
-    top: 8px;
-    right: 8px;
+    top: 0;
+    right: 0;
     background: rgba(0, 168, 255, 0.5);
     color: #fff;
     font-weight: bold;
     font-size: 0.8em;
     padding: 3px 8px 2px 8px;
     text-align: center;
-    border-radius: 20px;
     opacity: 0.8;
 }
 
@@ -155,7 +154,6 @@
     width: 350px;
     height: 30px;
     border: none;
-    border-radius: 4px;
     padding: 0 12px;
 }
 

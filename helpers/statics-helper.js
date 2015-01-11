@@ -9,6 +9,13 @@ var StaticsHelper = function(app)
   this.jsGenBaseDir = '/gen/js/'; // js files minified and packed by optimizer r.js
   this.jsVgenBaseDir = '/vgen/js/'; // versionned js files minified and packed by optimizer r.js
 
+  this.app.use(function(req, res, next)
+  {
+    res.header("Access-Control-Allow-Origin", "http://d2tj71e6lmjccb.cloudfront.net");
+    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
   var fs = require('fs'),
     file = './build/ressource-mapping.json';
 

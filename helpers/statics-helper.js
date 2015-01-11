@@ -12,7 +12,7 @@ var StaticsHelper = function(app)
   this.app.use(function(req, res, next)
   {
     res.header("Access-Control-Allow-Origin", "http://d2tj71e6lmjccb.cloudfront.net");
-    // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
     next();
   });
 

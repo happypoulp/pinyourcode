@@ -1,20 +1,21 @@
 {
-    "name":"pinyourcode",
-    "version":"0.0.1",
-    "private":true,
-    "dependencies":{
-        "express":"3.x",
-        "jade":"1.1.4",
-        "mongoskin":"0.6.1",
-        "mongodb": "1.3.23",
-        "b64url":  "1.0.3",
-        "underscore" : "1.3.3",
-        "toobusy": "0.2.3",
-        "mkdirp": "0.3.5",
-        "requirejs": "2.1.10"
-    },
-    "engines":{
-        "node":"0.10.15",
-        "npm":"1.3.2"
-    }
+  "name": "pinyourcode",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "b64url": "1.0.3",
+    "express": "3.x",
+    "jade": "1.1.4",
+    "mkdirp": "0.3.5",
+    "mongodb": "1.3.23",
+    "mongoskin": "0.6.1",
+    "reflux": "^0.2.3",
+    "requirejs": "2.1.10",
+    "toobusy": "0.2.3",
+    "underscore": "1.3.3"
+  },
+  "engines": {
+    "node": "0.10.15",
+    "npm": "1.3.2"
+  }
 }

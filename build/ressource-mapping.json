@@ -10,7 +10,7 @@
 "public/gen/js/modules/collections/friends.js":"public/vgen/js/modules/collections/friends-10548e745a14.js",
 "public/gen/js/modules/facebook.js":"public/vgen/js/modules/facebook-f26907e02b04.js",
 "public/gen/js/modules/jade-runtime.js":"public/vgen/js/modules/jade-runtime-b560808ff7da.js",
-"public/gen/js/modules/main.js":"public/vgen/js/modules/main-c9181fa38ad9.js",
+"public/gen/js/modules/main.js":"public/vgen/js/modules/main-26b4f2b7d2c2.js",
 "public/gen/js/modules/models/extension.js":"public/vgen/js/modules/models/extension-e4c7ec0d74cd.js",
 "public/gen/js/modules/models/friend.js":"public/vgen/js/modules/models/friend-51dff202f479.js",
 "public/gen/js/modules/pubsub.js":"public/vgen/js/modules/pubsub-84044183aa4f.js",
@@ -22,8 +22,6 @@
 "public/gen/js/modules/templates/extension/create.js":"public/vgen/js/modules/templates/extension/create-3d25eb08c31a.js",
 "public/gen/js/modules/templates/extension/item.js":"public/vgen/js/modules/templates/extension/item-86330549e991.js",
 "public/gen/js/modules/templates/friend/add.js":"public/vgen/js/modules/templates/friend/add-beaf0e39d56f.js",
-"public/gen/js/modules/templates/friend/detail-top.js":"public/vgen/js/modules/templates/friend/detail-top-507201901498.js",
-"public/gen/js/modules/templates/friend/detail.js":"public/vgen/js/modules/templates/friend/detail-507201901498.js",
 "public/gen/js/modules/templates/friend/item.js":"public/vgen/js/modules/templates/friend/item-8b5ad70ba3e4.js",
 "public/gen/js/modules/templates/friend/name-and-picture.js":"public/vgen/js/modules/templates/friend/name-and-picture-ffb1e6a074cc.js",
 "public/gen/js/modules/templates/login.js":"public/vgen/js/modules/templates/login-116aeb2853d3.js",
@@ -42,7 +40,7 @@
 "public/gen/js/modules/views/friend/item.js":"public/vgen/js/modules/views/friend/item-835a0fd9a388.js",
 "public/gen/js/modules/views/friend/list.js":"public/vgen/js/modules/views/friend/list-76ad9d62899a.js",
 "public/gen/js/modules/views/generic.js":"public/vgen/js/modules/views/generic-78ee327bf683.js",
-"public/gen/js/modules/views/header.js":"public/vgen/js/modules/views/header-715fbafc3b5b.js",
+"public/gen/js/modules/views/header.js":"public/vgen/js/modules/views/header-d94390fbda77.js",
 "public/gen/js/modules/views/home.js":"public/vgen/js/modules/views/home-077b06073954.js",
 "public/gen/js/modules/views/login.js":"public/vgen/js/modules/views/login-e3f154f9243b.js",
 "public/gen/js/modules/views/start.js":"public/vgen/js/modules/views/start-14e7f8633f99.js",
@@ -57,4 +55,4 @@
 "public/gen/js/modules/views/test/child-two.js":"public/vgen/js/modules/views/test/child-two-5e056e48458a.js",
 "public/gen/js/modules/views/test/page.js":"public/vgen/js/modules/views/test/page-7601c3e130a3.js",
 "public/gen/js/plugins.js":"public/vgen/js/plugins-e08d922f428d.js",
-"public/gen/css/index.css":"public/vgen/css/index-d3a23c4f6218.css"}
+"public/gen/css/index.css":"public/vgen/css/index-ae6ba076107c.css"}

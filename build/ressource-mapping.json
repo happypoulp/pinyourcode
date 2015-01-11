@@ -19,7 +19,7 @@
 "public/gen/js/modules/templates/candidate/empty.js":"public/vgen/js/modules/templates/candidate/empty-90d283de8ceb.js",
 "public/gen/js/modules/templates/candidate/item.js":"public/vgen/js/modules/templates/candidate/item-d2584b7a5c6b.js",
 "public/gen/js/modules/templates/extension/count.js":"public/vgen/js/modules/templates/extension/count-c3e348a80965.js",
-"public/gen/js/modules/templates/extension/create.js":"public/vgen/js/modules/templates/extension/create-3d25eb08c31a.js",
+"public/gen/js/modules/templates/extension/create.js":"public/vgen/js/modules/templates/extension/create-1cb684ec1163.js",
 "public/gen/js/modules/templates/extension/item.js":"public/vgen/js/modules/templates/extension/item-86330549e991.js",
 "public/gen/js/modules/templates/friend/add.js":"public/vgen/js/modules/templates/friend/add-beaf0e39d56f.js",
 "public/gen/js/modules/templates/friend/item.js":"public/vgen/js/modules/templates/friend/item-8b5ad70ba3e4.js",
@@ -36,7 +36,7 @@
 "public/gen/js/modules/views/extension/list.js":"public/vgen/js/modules/views/extension/list-0388b4904e6f.js",
 "public/gen/js/modules/views/friend/add.js":"public/vgen/js/modules/views/friend/add-3286f2fddc6b.js",
 "public/gen/js/modules/views/friend/detail-top.js":"public/vgen/js/modules/views/friend/detail-top-843ee8c6649c.js",
-"public/gen/js/modules/views/friend/detail.js":"public/vgen/js/modules/views/friend/detail-576a6cf9c778.js",
+"public/gen/js/modules/views/friend/detail.js":"public/vgen/js/modules/views/friend/detail-a35138d6ef97.js",
 "public/gen/js/modules/views/friend/item.js":"public/vgen/js/modules/views/friend/item-835a0fd9a388.js",
 "public/gen/js/modules/views/friend/list.js":"public/vgen/js/modules/views/friend/list-76ad9d62899a.js",
 "public/gen/js/modules/views/generic.js":"public/vgen/js/modules/views/generic-78ee327bf683.js",
@@ -55,4 +55,4 @@
 "public/gen/js/modules/views/test/child-two.js":"public/vgen/js/modules/views/test/child-two-5e056e48458a.js",
 "public/gen/js/modules/views/test/page.js":"public/vgen/js/modules/views/test/page-7601c3e130a3.js",
 "public/gen/js/plugins.js":"public/vgen/js/plugins-e08d922f428d.js",
-"public/gen/css/index.css":"public/vgen/css/index-ae6ba076107c.css"}
+"public/gen/css/index.css":"public/vgen/css/index-87076a87d1ad.css"}
